@@ -2,9 +2,6 @@
 <a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=35&duration=4000&pause=1000&color=237BA1&center=true&vCenter=true&random=false&width=500&height=70&lines=Hi+There!%F0%9F%91%8B;Web+3+Project" alt="Typing SVG" /></a>
 </h1>
 
-
-<hr/>
-
 <h2 align="center">🛠️ Languages-Frameworks Used 🛠️</h2>
 <br/>
 <div align="center">
