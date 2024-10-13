@@ -11,7 +11,7 @@
 </div>
 
 <div align="center">
-  <h2>Framework pros: </h2>
+  <h2>Framework</h2>
   <br>
     <img alt="snake eating my contributions" src="https://skillicons.dev/icons?i=firebase" />
   <br/>
