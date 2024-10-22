@@ -63,6 +63,3 @@
 }
 
 /* Push content down to avoid being covered by fixed navbar */
-.homepage {
-  padding-top: 100px; /* Adjust padding to accommodate the larger navbar */
-}

@@ -1,0 +1,107 @@
+.hero-container {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Centrer tout le contenu verticalement */
+  background-color: #0a0a0c;
+  color: white;
+  padding: 3rem 0;
+  min-height: 100vh;
+}
+
+.hero-overlay {
+  width: 80%; /* Même largeur que la navbar */
+  margin: 0 auto; /* Centrer l'overlay */
+  position: relative; /* Pour garder un contrôle sur les éléments à l'intérieur */
+}
+
+.hero-text-wrapper {
+  margin: 0 auto;
+  width: 100%; /* Utiliser toute la largeur de l'overlay */
+}
+
+.hero-text-container {
+  flex: 1;
+  padding-right: 2rem;
+}
+
+.hero-heading {
+  font-size: 5rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-heading .highlight {
+  color: #ff5c2b;
+}
+
+.hero-subheading {
+  font-size: 2.5rem;
+  margin: 1rem 0;
+  font-weight: bold;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 600px;
+}
+
+.hero-btn {
+  background-color: #ff5c2b;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #d94c1b;
+}
+
+.hero-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image {
+  max-width: 90%;
+  height: auto;
+  border-radius: 10px;
+}
+
+/* Responsiveness */
+@media (max-width: 768px) {
+  .hero-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .hero-overlay {
+    width: 100%; /* Laisser l'overlay occuper toute la largeur sur les petits écrans */
+  }
+
+  .hero-text-container {
+    padding-right: 0;
+  }
+
+  .hero-heading {
+    font-size: 3rem;
+  }
+
+  .hero-subheading {
+    font-size: 2rem;
+  }
+
+  .hero-description {
+    font-size: 1rem;
+  }
+
+  .hero-image {
+    margin-top: 2rem;
+    max-width: 100%;
+  }
+}

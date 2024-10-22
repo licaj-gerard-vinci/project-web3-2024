@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import Home from '../pages/Home'; // Adjust paths based on your structure
+import Home from '../pages/HomePage/Home';
 import About from '../pages/About'; // Adjust paths based on your structure
-import Exemple from '../pages/Exemple2'; // Adjust paths based on your structure
+import Exemple from '../pages/Exemple'; // Adjust paths based on your structure
 
 function App() {
   return (
@@ -16,9 +16,7 @@ function App() {
           <ul className="navbar-links">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
-            <li><Link to="/services">Services</Link></li>
-            <li><Link to="/blog">Blog</Link></li>
-            <li><Link to="/contact">Contact</Link></li>
+            <li><Link to="/exemple">Exemple</Link></li>
           </ul>
           <button className="join-now-btn">Join Now</button>
         </nav>
@@ -26,7 +24,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Exemple />} />
+          <Route path="/exemple" element={<Exemple />} />
         </Routes>
       </div>
     </Router>
