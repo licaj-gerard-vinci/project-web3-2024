@@ -1,6 +1,7 @@
 import React from 'react';
 import './WelcomeBlock.css';
 import '../Home.css';
+import image from '../../../assets/imageTest.webp';
 
 const WelComeBlock = () => {
   return (
@@ -21,9 +22,15 @@ const WelComeBlock = () => {
             <button className="hero-btn">JOIN NOW</button>
           </div>
         </div>
-        <div className="hero-image-container">
+        <div className="hero-image-container" style={{
+            backgroundImage: `url(${image})`, // Appliquer l'image d'arrière-plan
+            backgroundSize: 'cover',          // Faire couvrir l'image sur toute la section
+            backgroundPosition: 'center',     // Centrer l'image
+            backgroundRepeat: 'no-repeat',    // Empêcher la répétition de l'image
+            opacity: 0.6,                     // Optionnel : ajuster la transparence si besoin
+          }}>
           <img
-            src="path_to_your_image.jpg" // Remplace par le chemin correct de ton image
+            src={image} // Remplace par le chemin correct de ton image
             alt="Gym Fitness"
             className="hero-image"
           />

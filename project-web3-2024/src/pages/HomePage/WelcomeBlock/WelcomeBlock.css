@@ -16,7 +16,7 @@
 
 .hero-text-wrapper {
   margin: 0 auto;
-  width: 100%; /* Utiliser toute la largeur de l'overlay */
+  width: 50%; /* Utiliser toute la largeur de l'overlay */
 }
 
 .hero-text-container {
@@ -65,12 +65,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  
 }
 
 .hero-image {
-  max-width: 90%;
-  height: auto;
-  border-radius: 10px;
+  height: 100%;
+  max-width: 100%;
 }
 
 /* Responsiveness */
