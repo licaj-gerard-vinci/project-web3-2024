@@ -1,12 +1,12 @@
 import React from 'react';
 import './WelcomeBlock.css';
-import '../Home.css';
-import image from '../../../assets/imageTest.webp';
+import image from '../../../assets/image.jpg'; // Chemin vers l'image
 
 const WelComeBlock = () => {
   return (
     <div className="hero-container">
-      <div className="container-overlay">
+      <div className="hero-content">
+        {/* Texte à gauche */}
         <div className="hero-text-wrapper">
           <div className="hero-text-container">
             <h1 className="hero-heading">
@@ -22,18 +22,18 @@ const WelComeBlock = () => {
             <button className="hero-btn">JOIN NOW</button>
           </div>
         </div>
-        <div className="hero-image-container" style={{
-            backgroundImage: `url(${image})`, // Appliquer l'image d'arrière-plan
-            backgroundSize: 'cover',          // Faire couvrir l'image sur toute la section
-            backgroundPosition: 'center',     // Centrer l'image
-            backgroundRepeat: 'no-repeat',    // Empêcher la répétition de l'image
-            opacity: 0.6,                     // Optionnel : ajuster la transparence si besoin
-          }}>
-          <img
-            src={image} // Remplace par le chemin correct de ton image
-            alt="Gym Fitness"
-            className="hero-image"
-          />
+        {/* Image à droite */}
+        <div className="hero-image-container">
+          <div 
+            className="hero-image" 
+            style={{
+              backgroundImage: `url(${image})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              width: '100%',
+              height: '100%',
+            }}>
+          </div>
         </div>
       </div>
     </div>

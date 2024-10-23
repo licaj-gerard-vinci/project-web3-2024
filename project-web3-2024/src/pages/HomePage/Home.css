@@ -1,5 +1,5 @@
 .container-overlay {
-    width: 63.9%; /* Même largeur que la navbar */
+    width: 65%; /* Même largeur que la navbar */
     margin: 0 auto; /* Centrer l'overlay */
     position: relative; 
     display: flex;
