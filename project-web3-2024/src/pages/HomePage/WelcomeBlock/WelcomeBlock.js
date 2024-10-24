@@ -1,6 +1,10 @@
 import React from 'react';
 import './WelcomeBlock.css';
-import image from '../../../assets/image.jpg'; // Chemin vers l'image
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
+import image1 from '../../../assets/image2.jpg';
+import image2 from '../../../assets/image.jpg';
+import image3 from '../../../assets/image.jpg';
 
 const WelComeBlock = () => {
   return (
@@ -22,18 +26,19 @@ const WelComeBlock = () => {
             <button className="hero-btn">JOIN NOW</button>
           </div>
         </div>
-        {/* Image à droite */}
+        {/* Carousel à droite */}
         <div className="hero-image-container">
-          <div 
-            className="hero-image" 
-            style={{
-              backgroundImage: `url(${image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              width: '100%',
-              height: '100%',
-            }}>
-          </div>
+          <Carousel showThumbs={false} infiniteLoop={true} autoPlay={true} interval={2000} showArrows={false} showStatus={false}>
+            <div>
+              <img src={image1} alt="Slide 1" />
+            </div>
+            <div>
+              <img src={image2} alt="Slide 2" />
+            </div>
+            <div>
+              <img src={image3} alt="Slide 3" />
+            </div>
+          </Carousel>
         </div>
       </div>
     </div>

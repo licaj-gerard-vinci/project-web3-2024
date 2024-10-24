@@ -4,11 +4,20 @@ import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
 import About from '../pages/About'; // Adjust paths based on your structure
 import Exemple from '../pages/Exemple'; // Adjust paths based on your structure
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 
 function App() {
   return (
     <Router>
       <div className="homepage">
+        {/* Social Bar */}
+        <div className="social-bar">
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+          <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+        </div>
+
         <nav className="navbar">
           <div className="navbar-logo">
             <img src="path_to_logo.png" alt="GYMFITO Logo" />
