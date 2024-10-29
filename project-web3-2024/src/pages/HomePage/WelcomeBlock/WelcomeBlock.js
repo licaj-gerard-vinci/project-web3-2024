@@ -26,7 +26,6 @@ const WelComeBlock = () => {
             <button className="hero-btn">JOIN NOW</button>
           </div>
         </div>
-        {/* Carousel à droite */}
         <div className="hero-image-container">
           <Carousel showThumbs={false} infiniteLoop={true} autoPlay={true} interval={2000} showArrows={false} showStatus={false}>
             <div>

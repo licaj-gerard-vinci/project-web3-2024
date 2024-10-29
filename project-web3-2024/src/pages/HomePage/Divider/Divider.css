@@ -1,0 +1,32 @@
+  /* Scrolling line styling */
+  .scrolling-line {
+    position: relative;
+    overflow: hidden;
+    background-color: #ff5c2b; /* Background color of the scrolling line */
+    padding: 1rem 0;
+    white-space: nowrap; /* Prevents the text from wrapping */
+  }
+  
+  .scrolling-content {
+    display: flex; /* Use flex to keep items in a row */
+    animation: scroll-left 30s linear infinite; /* Slower scroll (30 seconds) */
+  }
+  
+  .scrolling-content span {
+    font-size: 1.5rem;
+    color: white;
+    font-weight: bold;
+    padding-right: 2rem; 
+  }
+  
+  @keyframes scroll-left {
+    0% {
+      transform: translateX(100%); /* Start from the right */
+    }
+    50% {
+      transform: translateX(-100%); /* End at the left */
+    }
+    100% {
+      transform: translateX(100%); /* Start from the right again */
+    }
+  }
