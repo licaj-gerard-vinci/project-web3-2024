@@ -1,79 +1,112 @@
 .muscle-carousel-container {
-    width: 80%;
-    margin: 0 auto;
-    padding: 2rem 0;
+    width: 100vw; /* Full viewport width */
+    margin: 0; /* Remove any margins */
+    background-color: #0a0a0c; /* Full black background */
+    padding: 3rem 0;
     position: relative;
-    text-align: center; /* Center-align the content */
+    text-align: center;
+    color: white; /* Ensure text is white to contrast the background */
+    overflow-x: hidden; /* Prevent horizontal scroll if the width exceeds viewport */
+}
+
+.carousel .slider-wrapper {
+    width: 100%; /* Full width of the container */
+    display: flex;
+    justify-content: center; /* Ensure the carousel content is centered */
+}
+
+.carousel .slide {
+    display: flex;
+    justify-content: center; /* Center each slide content */
+    margin: 0 10px; /* Add space between the images */
+}
+
+.carousel-title {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    color: white; /* White title to match the dark background */
+    position: relative;
+    text-align: center;
+    font-weight: 600;
+}
+
+/* Arrows for carousel */
+.arrow-prev, .arrow-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    border: none;
+    color: white;
+    font-size: 2rem;
+    padding: 10px;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    transition: background-color 0.3s ease;
+}
+
+.arrow-prev:hover, .arrow-next:hover {
+    background-color: rgba(255, 92, 43, 0.8); /* Hover effect for arrows */
+}
+
+.arrow-prev {
+    left: 20px; /* Position arrow to the left */
+}
+
+.arrow-next {
+    right: 20px; /* Position arrow to the right */
 }
 
 /* Style the muscle slide */
 .muscle-slide {
     position: relative;
-    max-width: 90%;
     overflow: hidden;
 }
 
-/* Set fixed width and height for images */
+/* Set smaller width and height for images */
 .muscle-image {
-    width: 420px; /* Fixed width */
-    height: 420px; /* Fixed height */
+    width: 300px; /* Smaller image width */
+    height: 300px; /* Smaller image height */
     object-fit: cover; /* Ensures the image covers the entire area without distortion */
-    border-radius: 15px; /* Rounded corners */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow around the image */
+    border-radius: 25px; /* More aesthetic border radius for a softer look */
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow around the image */
+    transition: transform 0.3s ease-in-out;
+}
+
+.muscle-image:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover to make it more interactive */
 }
 
 /* Muscle name overlay */
 .muscle-name-overlay {
     position: absolute;
-    bottom: 10px;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
-    padding: 5px 15px;
+    padding: 10px 20px;
     border-radius: 10px;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     text-align: center;
-}
-
-/* Customize the default library arrows */
-.carousel .control-arrow {
-    background-color: rgba(0, 0, 0, 0.6); /* Dark background */
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-}
-
-.carousel .control-arrow:hover {
-    background-color: rgba(255, 92, 43, 0.8); /* Matches the orange color of your design */
-}
-
-.carousel .control-prev.control-arrow:before {
-    border-right: 8px solid #fff;
-}
-
-.carousel .control-next.control-arrow:before {
-    border-left: 8px solid #fff;
+    font-weight: bold;
 }
 
 /* Responsive Design */
 @media (max-width: 768px) {
     .muscle-carousel-container {
-        width: 95%; /* Adjust container width for smaller screens */
+        width: 100vw; /* Ensure full width on smaller screens as well */
     }
 
     .muscle-image {
-        width: 300px; /* Adjust width for smaller screens */
-        height: 330px; /* Adjust height for smaller screens */
+        width: 220px; /* Adjust width for smaller screens */
+        height: 270px; /* Adjust height for smaller screens */
     }
 
-    .carousel .control-arrow {
-        width: 30px;
-        height: 30px;
-    }
-
-    .carousel .control-prev.control-arrow:before,
-    .carousel .control-next.control-arrow:before {
-        border-width: 6px;
+    .arrow-prev, .arrow-next {
+        font-size: 1.5rem;
+        padding: 8px;
     }
 }

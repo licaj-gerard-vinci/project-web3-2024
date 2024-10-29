@@ -21,7 +21,7 @@ const MuscleCarousel = () => {
 
   return (
     <div className="muscle-carousel-container">
-      <h2 className="carousel-title">Different Muscles</h2>
+      <h2 className="carousel-title">Different Muscles you can train 💪</h2>
       <Carousel
         showThumbs={false}
         infiniteLoop={true}
@@ -43,13 +43,13 @@ const MuscleCarousel = () => {
         interval={2500}
         showArrows={true}
         showStatus={false}
-        showIndicators={false}
+        showIndicators={false}  // Hide dots
         centerMode={true}
-        centerSlidePercentage={33.33} /* Shows 3 slides at a time */
+        centerSlidePercentage={33.3} // Show 3 slides at a time
       >
         {muscleGroups.map((muscle, index) => (
           <div key={index} className="muscle-slide">
-            <img src={muscle.image} alt={muscle.name} />
+            <img src={muscle.image} alt={muscle.name} className="muscle-image" />
             <div className="muscle-name-overlay">
               <h3>{muscle.name}</h3>
             </div>
