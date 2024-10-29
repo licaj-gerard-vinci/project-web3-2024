@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
@@ -10,6 +10,26 @@ import logoM from '../assets/logoM.png';
 
 
 function App() {
+  const [showNavbar, setShowNavbar] = useState(true);
+  let lastScrollTop = 0;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+
+      if (scrollTop > lastScrollTop) {
+        setShowNavbar(false); // Masquer la navbar en défilant vers le bas
+      } else {
+        setShowNavbar(true); // Afficher la navbar en défilant vers le haut
+      }
+
+      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
     <Router>
       <div className="homepage">
@@ -20,7 +40,8 @@ function App() {
           <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
         </div>
 
-        <nav className="navbar">
+        {/* Navbar with conditional rendering */}
+        <nav className={`navbar ${showNavbar ? '' : 'navbar-hidden'}`}>
           <div className="navbar-logo">
             <img src={logoM} alt="GYMFITO Logo" />
           </div>
