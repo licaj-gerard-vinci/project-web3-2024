@@ -6,6 +6,8 @@ import About from '../pages/About'; // Adjust paths based on your structure
 import Exemple from '../pages/Exemple'; // Adjust paths based on your structure
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import logoM from '../assets/logoM.png';
+
 
 function App() {
   return (
@@ -20,7 +22,7 @@ function App() {
 
         <nav className="navbar">
           <div className="navbar-logo">
-            <img src="path_to_logo.png" alt="GYMFITO Logo" />
+            <img src={logoM} alt="GYMFITO Logo" />
           </div>
           <ul className="navbar-links">
             <li><Link to="/">Home</Link></li>

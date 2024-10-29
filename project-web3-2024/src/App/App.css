@@ -17,13 +17,15 @@
   -webkit-backdrop-filter: blur(10px); /* For Safari support */
   transition: background-color 0.3s ease; /* Smooth background transition */
   border: 2px solid #4a4a4a; /* Added dark gray border */
+  border-radius: 10px; /* Rounded corners */
 
 }
 
 /* Logo styling */
 .navbar-logo img {
-  width: 180px; /* Increased logo size */
+  width: 60px; /* Increased logo size */
   height: auto;
+  border-radius: 10%; /* Rounded corners */
 }
 
 /* Navbar links */
