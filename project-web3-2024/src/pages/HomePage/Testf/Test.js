@@ -21,7 +21,7 @@ const MuscleCarousel = () => {
 
   return (
     <div className="muscle-carousel-container">
-      <h2 className="carousel-title">Our Upcoming Classes</h2>
+      <h2 className="carousel-title">Different Muscles</h2>
       <Carousel
         showThumbs={false}
         infiniteLoop={true}
