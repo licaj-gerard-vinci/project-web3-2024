@@ -1,15 +1,63 @@
 import React from 'react';
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
+import './Test.css'; // Custom CSS for the carousel
 
-function Test() {
+// Sample muscle group images (replace with actual images)
+import chestImage from '../../../assets/image2.jpg';
+import backImage from '../../../assets/image2.jpg';
+import armsImage from '../../../assets/image2.jpg';
+import legsImage from '../../../assets/image2.jpg';
+import shouldersImage from '../../../assets/image2.jpg';
+
+const MuscleCarousel = () => {
+  const muscleGroups = [
+    { name: 'Chest', image: chestImage },
+    { name: 'Back', image: backImage },
+    { name: 'Arms', image: armsImage },
+    { name: 'Legs', image: legsImage },
+    { name: 'Shoulders', image: shouldersImage },
+  ];
+
   return (
-    <div className="container-overlay">
-      <h1>Our Services</h1>
-      <p>Explore the services we offer to help you achieve your fitness goals.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod tincidunt justo, vitae ultricies ligula vulputate a. Phasellus commodo felis eget lacus vestibulum, et interdum lectus vehicula. Integer nec eros neque. Fusce in turpis nec urna vehicula venenatis. Suspendisse potenti. Duis ac diam eget libero ultricies luctus. Mauris auctor massa nec libero blandit tristique. Cras sit amet lorem sapien. Vestibulum eget metus at libero vehicula tristique id vel odio.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod tincidunt justo, vitae ultricies ligula vulputate a. Phasellus commodo felis eget lacus vestibulum, et interdum lectus vehicula. Integer nec eros neque. Fusce in turpis nec urna vehicula venenatis. Suspendisse potenti. Duis ac diam eget libero ultricies luctus. Mauris auctor massa nec libero blandit tristique. Cras sit amet lorem sapien. Vestibulum eget metus at libero vehicula tristique id vel odio.</p>
-      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed euismod tincidunt justo, vitae ultricies ligula vulputate a. Phasellus commodo felis eget lacus vestibulum, et interdum lectus vehicula. Integer nec eros neque. Fusce in turpis nec urna vehicula venenatis. Suspendisse potenti. Duis ac diam eget libero ultricies luctus. Mauris auctor massa nec libero blandit tristique. Cras sit amet lorem sapien. Vestibulum eget metus at libero vehicula tristique id vel odio.</p>
+    <div className="muscle-carousel-container">
+      <h2 className="carousel-title">Our Upcoming Classes</h2>
+      <Carousel
+        showThumbs={false}
+        infiniteLoop={true}
+        autoPlay={true}
+        renderArrowPrev={(onClickHandler, hasPrev, label) =>
+          hasPrev && (
+            <button type="button" onClick={onClickHandler} title={label} className="arrow-prev">
+              &#8249;
+            </button>
+          )
+        }
+        renderArrowNext={(onClickHandler, hasNext, label) =>
+          hasNext && (
+            <button type="button" onClick={onClickHandler} title={label} className="arrow-next">
+              &#8250;
+            </button>
+          )
+        }
+        interval={2500}
+        showArrows={true}
+        showStatus={false}
+        showIndicators={false}
+        centerMode={true}
+        centerSlidePercentage={33.33} /* Shows 3 slides at a time */
+      >
+        {muscleGroups.map((muscle, index) => (
+          <div key={index} className="muscle-slide">
+            <img src={muscle.image} alt={muscle.name} />
+            <div className="muscle-name-overlay">
+              <h3>{muscle.name}</h3>
+            </div>
+          </div>
+        ))}
+      </Carousel>
     </div>
   );
-}
+};
 
-export default Test;
+export default MuscleCarousel;

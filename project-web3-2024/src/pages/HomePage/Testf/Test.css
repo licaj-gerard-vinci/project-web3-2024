@@ -1,0 +1,79 @@
+.muscle-carousel-container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 2rem 0;
+    position: relative;
+    text-align: center; /* Center-align the content */
+}
+
+/* Style the muscle slide */
+.muscle-slide {
+    position: relative;
+    max-width: 90%;
+    overflow: hidden;
+}
+
+/* Set fixed width and height for images */
+.muscle-image {
+    width: 420px; /* Fixed width */
+    height: 420px; /* Fixed height */
+    object-fit: cover; /* Ensures the image covers the entire area without distortion */
+    border-radius: 15px; /* Rounded corners */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* Soft shadow around the image */
+}
+
+/* Muscle name overlay */
+.muscle-name-overlay {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    padding: 5px 15px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+/* Customize the default library arrows */
+.carousel .control-arrow {
+    background-color: rgba(0, 0, 0, 0.6); /* Dark background */
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+.carousel .control-arrow:hover {
+    background-color: rgba(255, 92, 43, 0.8); /* Matches the orange color of your design */
+}
+
+.carousel .control-prev.control-arrow:before {
+    border-right: 8px solid #fff;
+}
+
+.carousel .control-next.control-arrow:before {
+    border-left: 8px solid #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .muscle-carousel-container {
+        width: 95%; /* Adjust container width for smaller screens */
+    }
+
+    .muscle-image {
+        width: 300px; /* Adjust width for smaller screens */
+        height: 330px; /* Adjust height for smaller screens */
+    }
+
+    .carousel .control-arrow {
+        width: 30px;
+        height: 30px;
+    }
+
+    .carousel .control-prev.control-arrow:before,
+    .carousel .control-next.control-arrow:before {
+        border-width: 6px;
+    }
+}
