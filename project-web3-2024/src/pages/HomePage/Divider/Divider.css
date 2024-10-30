@@ -1,32 +1,31 @@
-/* Scrolling line styling */
 .scrolling-line {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(90deg, #ff5c2b, #ff704d); /* Gradient background */
+  background: linear-gradient(90deg, #ff5c2b, #ff704d);
   padding: 1rem 0;
-  white-space: nowrap; /* Prevents the text from wrapping */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Adds shadow for depth */
+  white-space: nowrap;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .scrolling-content {
-  display: flex; /* Use flex to keep items in a row */
-  animation: scroll-left 20s linear infinite; /* Smoother scroll */
+  display: inline-flex;
+  animation: scroll-left 20s linear infinite;
 }
 
 .scrolling-content span {
   font-size: 1.5rem;
   color: white;
   font-weight: bold;
-  padding-right: 2rem; 
-  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5); /* Subtle shadow for readability */
+  padding-right: 2rem;
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
-/* Keyframes for scrolling animation */
+/* Keyframes for continuous scrolling animation */
 @keyframes scroll-left {
   0% {
-      transform: translateX(100%); /* Start from the right */
+    transform: translateX(0);
   }
   100% {
-      transform: translateX(-100%); /* Loop seamlessly to the start */
+    transform: translateX(-50%);
   }
 }
