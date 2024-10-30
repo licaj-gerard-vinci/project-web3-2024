@@ -7,28 +7,41 @@ import Exemple from '../pages/Exemple'; // Adjust paths based on your structure
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import logoM from '../assets/logoM.png';
+import { auth } from '../pages/Login/firebase';
+import { onAuthStateChanged } from 'firebase/auth'; // Firebase auth import
+import Login from '../pages/Login/login'  // Import the login component
+import { signOut } from 'firebase/auth';
+
+
+
+
 
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  // Vérifier l'état de connexion de l'utilisateur via Firebase
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return () => unsubscribe();  // Clean up the subscription when the component unmounts
+  }, []);
+
+  const handleLogout = () => {
+    signOut(auth)
+      .then(() => {
+        setUser(null); // Met à jour l'état pour déconnecter l'utilisateur
+        console.log("User signed out");
+      })
+      .catch((error) => {
+        console.error("Error signing out:", error);
+      });
+  };
+
+
   const [showNavbar, setShowNavbar] = useState(true);
   let lastScrollTop = 0;
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-      if (scrollTop > lastScrollTop) {
-        setShowNavbar(false); // Masquer la navbar en défilant vers le bas
-      } else {
-        setShowNavbar(true); // Afficher la navbar en défilant vers le haut
-      }
-
-      lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <Router>
@@ -41,7 +54,7 @@ function App() {
         </div>
 
         {/* Navbar with conditional rendering */}
-        <nav className={`navbar ${showNavbar ? '' : 'navbar-hidden'}`}>
+        <nav className="navbar">
           <div className="navbar-logo">
             <img src={logoM} alt="GYMFITO Logo" />
           </div>
@@ -49,18 +62,26 @@ function App() {
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
             <li><Link to="/exemple">Exemple</Link></li>
+            {!user ? (
+              <li><Link to="/login">Connection</Link></li>
+            ) : (
+              <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
+            )}
           </ul>
-          <button className="join-now-btn">Join Now</button>
+          
         </nav>
-
+        
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/exemple" element={<Exemple />} />
+          <Route path="/login" element={<Login />} />
         </Routes>
       </div>
     </Router>
   );
 }
+
+/* "<button className="join-now-btn">Join Now</button>"*/
 
 export default App;
