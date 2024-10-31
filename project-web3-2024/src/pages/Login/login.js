@@ -10,6 +10,7 @@ const Login = () => {
   const [error, setError] = useState('');
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {

@@ -11,11 +11,14 @@ import { ref, get, set, update } from 'firebase/database';
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
   const [consecutiveLogins, setConsecutiveLogins] = useState(0);
+  const [prenom, setprenom] = useState("");
+ 
 
   useEffect(() => {
     // Écoute les changements d'état de l'utilisateur
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
       setUser(currentUser);
+      
       if (currentUser) {
         await handleConsecutiveLogins(currentUser.uid); // Gère les connexions consécutives
       }
@@ -33,6 +36,8 @@ const WelcomeBlock = () => {
       if (snapshot.exists()) {
         const userData = snapshot.val();
         const lastLoginDate = userData.lastLoginDate;
+        const prenom = userData.Nom;
+        setprenom(prenom);
 
         if (isYesterday(lastLoginDate)) {
           // Si la dernière connexion est la veille, incrémentez le compteur
@@ -81,7 +86,7 @@ const WelcomeBlock = () => {
           <div className="hero-text-container">
             {user ? ( // Si l'utilisateur est connecté, afficher un message de bienvenue avec le compteur de connexions consécutives
               <>
-                <h1 className="hero-heading">Bienvenue de retour parmi nous !</h1>
+                <h1 className="hero-heading">De retour parmi nous {prenom}!</h1>
                 <p>Connexions consécutives : {consecutiveLogins}</p>
               </>
             ) : (
