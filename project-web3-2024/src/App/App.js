@@ -40,8 +40,7 @@ function App() {
   };
 
 
-  const [showNavbar, setShowNavbar] = useState(true);
-  let lastScrollTop = 0;
+  
 
   return (
     <Router>

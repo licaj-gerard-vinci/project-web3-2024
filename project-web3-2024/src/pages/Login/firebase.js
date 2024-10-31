@@ -1,16 +1,14 @@
-// Import the functions you need from the SDKs you need
+// Import the necessary functions from Firebase SDKs
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
 import { getAuth } from 'firebase/auth';
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getDatabase } from 'firebase/database';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBTzjA42vr0Ecz3U9k1NnRltzs9hawRW80",
   authDomain: "muscles-web3.firebaseapp.com",
   projectId: "muscles-web3",
+  databaseURL: "https://muscles-web3-default-rtdb.europe-west1.firebasedatabase.app", // Remplacez ici par l'URL correcte
   storageBucket: "muscles-web3.appspot.com",
   messagingSenderId: "597277649833",
   appId: "1:597277649833:web:50ed1ab9e7e0bf65f3b2b8",
@@ -19,7 +17,5 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
-const auth = getAuth(app); 
-
-export { auth , analytics };
+export const auth = getAuth(app); // Export auth to use in authentication
+export const db = getDatabase(app); // Export database to use in real-time database
