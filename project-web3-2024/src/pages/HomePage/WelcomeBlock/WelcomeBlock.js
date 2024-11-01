@@ -5,7 +5,7 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carous
 import image1 from '../../../assets/image2.jpg';
 import image2 from '../../../assets/image.jpg';
 import image3 from '../../../assets/image.jpg';
-import { auth, db } from '../../../firebase'; // Importez l'authentification et la base de données Firebase
+import { auth, db } from '../../../firebaseConfig'; // Importez l'authentification et la base de données Firebase
 import { ref, get, set, update } from 'firebase/database';
 
 const WelcomeBlock = () => {
