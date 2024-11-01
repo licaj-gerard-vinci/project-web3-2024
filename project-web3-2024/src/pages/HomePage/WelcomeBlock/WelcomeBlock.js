@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import './WelcomeBlock.css';
-import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
-import image1 from '../../../assets/image2.jpg';
-import image2 from '../../../assets/image.jpg';
-import image3 from '../../../assets/image.jpg';
 import { auth, db } from '../../../firebaseConfig'; // Importez l'authentification et la base de données Firebase
 import { ref, get, set, update } from 'firebase/database';
+import ImageCarousel from '../../../components/ImageCarousel';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
@@ -123,24 +120,7 @@ const WelcomeBlock = () => {
           </div>
         </div>
         <div className="hero-image-container">
-          <Carousel
-            showThumbs={false}
-            infiniteLoop={true}
-            autoPlay={true}
-            interval={2000}
-            showArrows={false}
-            showStatus={false}
-          >
-            <div>
-              <img src={image1} alt="Slide 1" />
-            </div>
-            <div>
-              <img src={image2} alt="Slide 2" />
-            </div>
-            <div>
-              <img src={image3} alt="Slide 3" />
-            </div>
-          </Carousel>
+          <ImageCarousel folderPath="HomePage/WelcomeBlock" />
         </div>
       </div>
     </div>
