@@ -36,7 +36,7 @@ const WelcomeBlock = () => {
       if (snapshot.exists()) {
         const userData = snapshot.val();
         const lastLoginDate = userData.lastLoginDate;
-        const prenom = userData.Nom;
+        const prenom = userData.prenom;
         setprenom(prenom);
 
         if (isYesterday(lastLoginDate)) {
@@ -73,11 +73,27 @@ const WelcomeBlock = () => {
 
   // Fonction pour vérifier si une date est celle d'hier
   const isYesterday = (date) => {
-    const yesterday = new Date();
-    yesterday.setDate(yesterday.getDate() - 1);
-    return new Date(date).toISOString().split('T')[0] === yesterday.toISOString().split('T')[0];
+    try {
+      if (!date || typeof date !== 'string') {
+        throw new Error("Date invalide ou absente");
+      }
+  
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+  
+      // Convertir la date fournie en objet Date
+      const providedDate = new Date(date);
+      if (isNaN(providedDate.getTime())) {
+        throw new Error("Date non valide");
+      }
+  
+      // Comparez les dates au format "YYYY-MM-DD"
+      return providedDate.toISOString().split('T')[0] === yesterday.toISOString().split('T')[0];
+    } catch (error) {
+      console.error("Erreur dans la fonction isYesterday:", error.message);
+      return false;
+    }
   };
-
   return (
     <div className="hero-container">
       <div className="hero-content">

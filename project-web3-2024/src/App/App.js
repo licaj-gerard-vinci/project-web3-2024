@@ -11,6 +11,8 @@ import { auth } from '../pages/Login/firebase';
 import { onAuthStateChanged } from 'firebase/auth'; // Firebase auth import
 import Login from '../pages/Login/login'  // Import the login component
 import { signOut } from 'firebase/auth';
+import Register from '../pages/Login/register'; // Assurez-vous du bon chemin
+
 
 
 
@@ -60,9 +62,15 @@ function App() {
           <ul className="navbar-links">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
+            
             <li><Link to="/exemple">Exemple</Link></li>
+            
             {!user ? (
-              <li><Link to="/login">Connection</Link></li>
+               <>
+               <li><Link to="/register">S'enregistrer</Link></li>
+               <li><Link to="/login">Connection</Link></li>
+             </>
+              
             ) : (
               <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
             )}
@@ -75,6 +83,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/exemple" element={<Exemple />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </Router>
