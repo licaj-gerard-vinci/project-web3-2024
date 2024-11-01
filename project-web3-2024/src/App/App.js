@@ -2,17 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
-import About from '../pages/About'; // Adjust paths based on your structure
-import Exemple from '../pages/Exemple'; // Adjust paths based on your structure
+import About from '../pages/About';
+import Exemple from '../pages/Exemple';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
-import logoM from '../assets/logoM.png';
-
 import { auth } from '../firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth'; // Firebase auth import
-import Login from '../pages/Login/login';  // Import the login component
+import { onAuthStateChanged } from 'firebase/auth';
+import Login from '../pages/Login/login';
 import { signOut } from 'firebase/auth';
-import Register from '../pages/Login/register'; // Assurez-vous du bon chemin
+import Register from '../pages/Login/register';
+import ImageDisplay from '../components/ImageDisplay';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -22,22 +21,19 @@ function App() {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-    return () => unsubscribe();  // Clean up the subscription when the component unmounts
+    return () => unsubscribe();
   }, []);
 
   const handleLogout = () => {
     signOut(auth)
       .then(() => {
-        setUser(null); // Met à jour l'état pour déconnecter l'utilisateur
+        setUser(null);
         console.log("User signed out");
       })
       .catch((error) => {
         console.error("Error signing out:", error);
       });
   };
-
-
-  
 
   return (
     <Router>
@@ -52,25 +48,22 @@ function App() {
         {/* Navbar with conditional rendering */}
         <nav className="navbar">
           <div className="navbar-logo">
-            <img src={logoM} alt="GYMFITO Logo" />
+            {/* Utilisation correcte de ImageDisplay pour afficher le logo */}
+            <ImageDisplay imagePath="HomePage/logoM.png" altText="Logo du site" />
           </div>
           <ul className="navbar-links">
             <li><Link to="/">Home</Link></li>
             <li><Link to="/about">About</Link></li>
-            
             <li><Link to="/exemple">Exemple</Link></li>
-            
             {!user ? (
-               <>
-               <li><Link to="/register">S'enregistrer</Link></li>
-               <li><Link to="/login">Connection</Link></li>
-             </>
-              
+              <>
+                <li><Link to="/register">S'enregistrer</Link></li>
+                <li><Link to="/login">Connection</Link></li>
+              </>
             ) : (
               <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
             )}
           </ul>
-          
         </nav>
         
         <Routes>
@@ -84,7 +77,5 @@ function App() {
     </Router>
   );
 }
-
-/* "<button className="join-now-btn">Join Now</button>"*/
 
 export default App;
