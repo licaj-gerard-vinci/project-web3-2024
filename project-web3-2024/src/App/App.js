@@ -7,17 +7,12 @@ import Exemple from '../pages/Exemple'; // Adjust paths based on your structure
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import logoM from '../assets/logoM.png';
-import { auth } from '../pages/Login/firebase';
+
+import { auth } from '../firebase';
 import { onAuthStateChanged } from 'firebase/auth'; // Firebase auth import
-import Login from '../pages/Login/login'  // Import the login component
+import Login from '../pages/Login/login';  // Import the login component
 import { signOut } from 'firebase/auth';
 import Register from '../pages/Login/register'; // Assurez-vous du bon chemin
-
-
-
-
-
-
 
 function App() {
   const [user, setUser] = useState(null);
