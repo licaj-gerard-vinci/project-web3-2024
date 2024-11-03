@@ -1,0 +1,77 @@
+/* Conteneur de la page de connexion */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #121212; /* Fond sombre similaire à la page d'accueil */
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+}
+
+/* Titre de la page de connexion */
+.login-container h2 {
+    color: #ff5c2b; /* Couleur d'accent similaire au bouton de la page d'accueil */
+    font-size: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Formulaire de connexion */
+form {
+    background-color: #1e1e1e; /* Fond du formulaire */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Labels et champs de saisie */
+form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #ff5c2b; /* Couleur d'accent */
+}
+
+form input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+    border: none;
+    border-radius: 5px;
+    background-color: #333333;
+    color: #ffffff;
+    font-size: 1rem;
+}
+
+form input:focus {
+    outline: none;
+    border: 2px solid #ff5c2b; /* Bordure accentuée au focus */
+}
+
+/* Bouton de connexion */
+form button {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #ff5c2b;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+form button:hover {
+    background-color: #e04a1e; /* Couleur légèrement plus foncée au survol */
+}
+
+/* Message d'erreur */
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+}

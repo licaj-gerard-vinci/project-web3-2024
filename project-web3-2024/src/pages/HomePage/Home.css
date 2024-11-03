@@ -1,0 +1,7 @@
+.container-overlay {
+    width: 65%; /* Même largeur que la navbar */
+    margin: 0 auto; /* Centrer l'overlay */
+    position: relative; 
+    display: flex;
+    flex-direction: row;
+  }
