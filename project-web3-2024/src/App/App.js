@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
-import About from '../pages/About';
 import Exemple from '../pages/Exemple';
+import MusclePage from '../pages/MusclePage/musclePage';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { auth } from '../firebaseConfig';
@@ -53,7 +53,7 @@ function App() {
           </div>
           <ul className="navbar-links">
             <li><Link to="/">Home</Link></li>
-            <li><Link to="/about">About</Link></li>
+            <li><Link to="/musclePage">MusclePage</Link></li>
             <li><Link to="/exemple">Exemple</Link></li>
             {!user ? (
               <>
@@ -68,7 +68,7 @@ function App() {
         
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/musclePage" element={<MusclePage />} />
           <Route path="/exemple" element={<Exemple />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
