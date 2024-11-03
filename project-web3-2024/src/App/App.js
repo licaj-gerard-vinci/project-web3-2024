@@ -77,7 +77,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           
           {/* Condition pour la page Profil */}
-          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/login" />} />
+          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>
