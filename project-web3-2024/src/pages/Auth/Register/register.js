@@ -1,14 +1,27 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { ref, set } from 'firebase/database';
+import { useNavigate } from 'react-router-dom';
 
 const Register = () => {
+  const [user, setUser] = useState(null);
   const [prenom, setPrenom] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        navigate('/');  // Redirige vers la page d'accueil si l'utilisateur est connecté
+      }
+    });
+    return () => unsubscribe();
+  }, [navigate]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -26,7 +39,7 @@ const Register = () => {
         email: email,
       });
 
-      setSuccess('Inscription réussie !');
+      
     } catch (err) {
       setError('Erreur lors de l\'inscription : ' + err.message);
     }

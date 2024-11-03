@@ -14,8 +14,11 @@ import Register from '../pages/Auth/Register/register';
 import ImageDisplay from '../components/Image/ImageDisplay';
 import Profil from '../pages/ProfilPage/Profil';
 
+
+
 function App() {
   const [user, setUser] = useState(null);
+ 
 
   // Vérifier l'état de connexion de l'utilisateur via Firebase
   useEffect(() => {
@@ -34,6 +37,7 @@ function App() {
       .catch((error) => {
         console.error("Error signing out:", error);
       });
+      
   };
 
   return (
@@ -76,7 +80,7 @@ function App() {
           <Route path="/exemple" element={<Exemple />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/profil" element={<Profil/>} />
+          <Route path="/profil" element={<Profil />} />
         </Routes>
       </div>
     </Router>
