@@ -3,7 +3,7 @@ import './WelcomeBlock.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
 import { auth, db } from '../../../firebaseConfig'; // Importez l'authentification et la base de données Firebase
 import { ref, get, set, update } from 'firebase/database';
-import ImageCarousel from '../../../components/ImageCarousel';
+import ImageCarousel from '../../../components/Image/ImageCarousel';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);

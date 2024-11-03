@@ -8,10 +8,10 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { auth } from '../firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import Login from '../pages/Login/login';
+import Login from '../pages/Auth/Login/login';
 import { signOut } from 'firebase/auth';
-import Register from '../pages/Login/register';
-import ImageDisplay from '../components/ImageDisplay';
+import Register from '../pages/Auth/Register/register';
+import ImageDisplay from '../components/Image/ImageDisplay';
 
 function App() {
   const [user, setUser] = useState(null);
