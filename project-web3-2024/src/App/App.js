@@ -58,7 +58,7 @@ function App() {
             {!user ? (
               <>
                 <li><Link to="/register">S'enregistrer</Link></li>
-                <li><Link to="/login">Connection</Link></li>
+                <li><Link to="/login">Connextion</Link></li>
               </>
             ) : (
               <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>

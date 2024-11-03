@@ -1,20 +1,21 @@
 import React, { useState } from 'react';
 import './BodyMap.css';
-import { ReactComponent as BodyImage } from '../../assets/body.svg'; // Assurez-vous de la bonne importation du SVG
+import { ReactComponent as BodyFront } from '../../assets/body.svg';
+import { ReactComponent as BodyBack } from '../../assets/bodyBack.svg';
 
 const BodyMap = () => {
   const [selectedMuscle, setSelectedMuscle] = useState(null);
 
   const handleMuscleClick = (e) => {
-    const muscle = e.target.id; // Récupère l'ID de la partie cliquée
-    setSelectedMuscle(muscle); // Définit l'état du muscle sélectionné
+    const muscle = e.target.id;
+    setSelectedMuscle(muscle);
   };
 
   return (
     <div className="body-map">
-      <BodyImage onClick={handleMuscleClick} className="svg-body" />
+      <BodyFront onClick={handleMuscleClick} className="svg-body" />
+      <BodyBack onClick={handleMuscleClick} className="svg-body" />
       
-      {/* Affichage des informations sur le muscle sélectionné */}
       {selectedMuscle && (
         <div className="muscle-info">
           <h2>{selectedMuscle}</h2>
