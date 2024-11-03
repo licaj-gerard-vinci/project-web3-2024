@@ -41,12 +41,12 @@ const ImageCarousel = ({ folderPath }) => {
         infiniteLoop
         autoPlay
         interval={3000}
-        showArrows
+        showArrows={false}
         showStatus={false}
       >
         {imageUrls.map((url, index) => (
           <div key={index}>
-            <img src={url} alt={`Image ${index + 1}`} style={{ maxWidth: '100%' }} />
+            <img src={url} alt={`Image ${index + 1}`} style={{ maxWidth: '70%' }} />
           </div>
         ))}
       </Carousel>
