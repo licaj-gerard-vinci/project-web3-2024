@@ -28,7 +28,7 @@ const Profil = () => {
                 const prenom = userData?.prenom || '';
                 const email = userData?.email || '';
                 const lastLoginDate = userData?.lastLoginDate || '';
-                setConnecté(true);
+               
 
                 setUser(currentUser);
                 setConsecutiveLogins(logins);
