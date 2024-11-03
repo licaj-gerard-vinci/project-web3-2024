@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Link, Navigate } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
 import Exemple from '../pages/Exemple';
 import MusclePage from '../pages/MusclePage/musclePage';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { auth } from '../firebaseConfig';
-import { onAuthStateChanged } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import Login from '../pages/Auth/Login/login';
-import { signOut } from 'firebase/auth';
 import Register from '../pages/Auth/Register/register';
 import ImageDisplay from '../components/Image/ImageDisplay';
+import Profil from '../pages/ProfilPage/Profil';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -58,20 +58,26 @@ function App() {
             {!user ? (
               <>
                 <li><Link to="/register">S'enregistrer</Link></li>
-                <li><Link to="/login">Connection</Link></li>
+                <li><Link to="/login">Connexion</Link></li>
               </>
             ) : (
-              <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
+              <>
+                <li><Link to="/profil">Profil</Link></li>
+                <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
+              </>
             )}
           </ul>
         </nav>
-        
+
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/musclePage" element={<MusclePage />} />
           <Route path="/exemple" element={<Exemple />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          
+          {/* Condition pour la page Profil */}
+          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>
