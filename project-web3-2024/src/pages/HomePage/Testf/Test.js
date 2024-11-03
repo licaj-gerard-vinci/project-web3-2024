@@ -24,8 +24,11 @@ const MuscleCarousel = () => {
       <h2 className="carousel-title">Different Muscles you can train 💪</h2>
       <Carousel
         showThumbs={false}
-        infiniteLoop={true}
-        autoPlay={true}
+        showArrows={true}
+        showStatus={false}
+        showIndicators={false}  // Hide dots
+        centerMode={true}
+        centerSlidePercentage={33.33} // Show 3 slides at a time
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
             <button type="button" onClick={onClickHandler} title={label} className="arrow-prev">
@@ -40,16 +43,11 @@ const MuscleCarousel = () => {
             </button>
           )
         }
-        interval={2500}
-        showArrows={true}
-        showStatus={false}
-        showIndicators={false}  // Hide dots
-        centerMode={true}
-        centerSlidePercentage={33.3} // Show 3 slides at a time
+        
       >
         {muscleGroups.map((muscle, index) => (
           <div key={index} className="muscle-slide">
-            <img src={muscle.image} alt={muscle.name} className="muscle-image" />
+            <img src={muscle.image} alt={muscle.name} className="muscle-image"  style={{ maxWidth: '60%' }} />
             <div className="muscle-name-overlay">
               <h3>{muscle.name}</h3>
             </div>

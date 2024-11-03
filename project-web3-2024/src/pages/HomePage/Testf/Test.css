@@ -15,11 +15,6 @@
     justify-content: center; /* Ensure the carousel content is centered */
 }
 
-.carousel .slide {
-    display: flex;
-    justify-content: center; /* Center each slide content */
-    margin: 0 10px; /* Add space between the images */
-}
 
 .carousel-title {
     font-size: 2.5rem;
@@ -110,3 +105,8 @@
         padding: 8px;
     }
 }
+
+
+
+
+
