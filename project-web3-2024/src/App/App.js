@@ -12,6 +12,7 @@ import Login from '../pages/Auth/Login/login';
 import { signOut } from 'firebase/auth';
 import Register from '../pages/Auth/Register/register';
 import ImageDisplay from '../components/Image/ImageDisplay';
+import Profil from '../pages/ProfilPage/Profil';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -58,10 +59,13 @@ function App() {
             {!user ? (
               <>
                 <li><Link to="/register">S'enregistrer</Link></li>
-                <li><Link to="/login">Connection</Link></li>
+                <li><Link to="/login">Connexion</Link></li>
               </>
             ) : (
+              <>
+              <li><Link to="/profil">Profil</Link></li>
               <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
+              </>
             )}
           </ul>
         </nav>
@@ -72,6 +76,7 @@ function App() {
           <Route path="/exemple" element={<Exemple />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profil" element={<Profil/>} />
         </Routes>
       </div>
     </Router>
