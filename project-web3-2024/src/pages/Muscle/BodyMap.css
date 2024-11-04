@@ -1,4 +1,4 @@
-/* Conteneur principal pour la carte du corps */
+/* Main container for the body map */
 .body-map {
   display: flex;
   flex-direction: row;
@@ -7,7 +7,7 @@
   margin-top: 200px;
 }
 
-/* Style de base pour le SVG */
+/* Base style for the SVG */
 .svg-body {
   width: 50%;
   max-width: 500px;
@@ -15,28 +15,26 @@
   cursor: pointer;
 }
 
-/* Survol et sélection des parties */
-.svg-body path,
-.svg-body circle {
-  fill: transparent; /* Transparence initiale */
-  stroke: #666; /* Couleur de contour */
-  transition: fill 0.3s ease, stroke 0.3s ease; /* Transition fluide */
+/* Apply styles only to paths with an id attribute */
+.svg-body path[id] {
+  fill: transparent; /* Initial transparency */
+  stroke: #666; /* Border color */
+  transition: fill 0.3s ease, stroke 0.3s ease; /* Smooth transition */
 }
 
-/* Surbrillance au survol */
-.svg-body path:hover,
-.svg-body circle:hover {
-  fill: rgba(100, 149, 237, 0.2); /* Bleu clair semi-transparent */
-  stroke: #333; /* Contour plus foncé au survol */
+/* Highlight on hover only for paths with an id */
+.svg-body path[id]:hover {
+  fill: rgba(255, 85, 0); /* Light blue semi-transparent */
+  stroke: rgb(255, 85, 0); /* Darker border on hover */
 }
 
-/* Style appliqué pour la partie sélectionnée */
+/* Style for the selected part */
 .svg-body .selected {
-  fill: rgba(100, 149, 237, 0.5); /* Bleu plus opaque pour la sélection */
-  stroke: #1e90ff; /* Contour bleu */
+  fill: rgba(100, 149, 237, 0.5); /* More opaque blue for selection */
+  stroke: #1e90ff; /* Blue border */
 }
 
-/* Boîte d'information pour afficher les détails */
+/* Information box to display details */
 .muscle-info {
   margin-top: 20px;
   padding: 15px;
