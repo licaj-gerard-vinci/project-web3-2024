@@ -1,7 +1,7 @@
 import React from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
-import './Test.css'; // Custom CSS for the carousel
+import './CarouselMuscles.css'; // Custom CSS for the carousel
 
 // Sample muscle group images (replace with actual images)
 import chestImage from '../../../assets/image2.jpg';
