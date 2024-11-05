@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
 import BodyMap from '../pages/Muscle/BodyMap';
 import Exemple from '../pages/Exemple';
@@ -10,7 +10,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import Login from '../pages/Auth/Login/login';
 import { signOut } from 'firebase/auth';
 import Register from '../pages/Auth/Register/register';
-import ImageDisplay from '../components/Image/ImageDisplay';
+import Footer from '../pages/Footer/Footer';
+import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 
 function App() {
   const [user, setUser] = useState(null);
@@ -34,27 +35,11 @@ function App() {
   };
 
   return (
+    <>
     <Router>
       <div className="homepage">
-        {/* Navbar with conditional rendering */}
-        <nav className="navbar">
-          <div className="navbar-logo">
-            <ImageDisplay imagePath="HomePage/logoM.png" altText="Logo du site" />
-          </div>
-          <ul className="navbar-links">
-            <li><Link to="/">Home</Link></li>
-            <li><Link to="/bodyMap">BodyMap</Link></li>
-            <li><Link to="/exemple">Exemple</Link></li>
-            {!user ? (
-              <>
-                <li><Link to="/register">S'enregistrer</Link></li>
-                <li><Link to="/login">Connexion</Link></li>
-              </>
-            ) : (
-              <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
-            )}
-          </ul>
-        </nav>
+        {/* Navbar component with props */}
+        <Navbar user={user} handleLogout={handleLogout} />
 
         <Routes>
           <Route path="/" element={<Home />} />
@@ -65,6 +50,8 @@ function App() {
         </Routes>
       </div>
     </Router>
+    <Footer />
+    </>
   );
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import WelcomeBlock from './WelcomeBlock/WelcomeBlock';
-import Test from './Testf/Test';
+import Test from './Testf/CarouselMuscles';
 import Divider from './Divider/Divider';
 
 function Home() {
