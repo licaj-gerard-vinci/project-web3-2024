@@ -37,6 +37,10 @@ const Register = () => {
       await set(ref(db, `users/${user.uid}`), {
         prenom: prenom,
         email: email,
+        isAdmin: false,
+        age: 0,
+        gender: "",
+        favorites: []
       });
 
       
