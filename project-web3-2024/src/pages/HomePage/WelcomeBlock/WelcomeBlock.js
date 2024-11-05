@@ -1,5 +1,7 @@
 // WelcomeBlock.js
 import React, { useState, useEffect } from 'react';
+import AOS from 'aos';
+import 'aos/dist/aos.css';
 import './WelcomeBlock.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { auth, db } from '../../../firebaseConfig';
@@ -12,6 +14,14 @@ const WelcomeBlock = () => {
   const [consecutiveLogins, setConsecutiveLogins] = useState(0);
   const [prenom, setprenom] = useState("");
   const [showIcons, setShowIcons] = useState(true);
+
+  useEffect(() => {
+    AOS.init({
+      duration: 2000, // Animation duration in milliseconds
+      once: false, // Animation happens only once
+      offset: 100, // Offset from the trigger point
+    });
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -112,7 +122,7 @@ const WelcomeBlock = () => {
               )}
             </div>
           </div>
-          <div className="hero-image-container">
+          <div className="hero-image-container" data-aos="fade-left">
             <ImageCarousel folderPath="HomePage/WelcomeBlock" />
           </div>
         </div>
