@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const Register = () => {
   const [user, setUser] = useState(null);
   const [prenom, setPrenom] = useState('');
+  const [nom, setnom] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -36,7 +37,9 @@ const Register = () => {
       // Enregistrer le prénom dans la base de données sous le UID de l'utilisateur
       await set(ref(db, `users/${user.uid}`), {
         prenom: prenom,
+        nom: nom,
         email: email,
+        
       });
 
       
@@ -58,6 +61,16 @@ const Register = () => {
             id="prenom"
             value={prenom}
             onChange={(e) => setPrenom(e.target.value)}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="nom">Nom :</label>
+          <input
+            type="text" 
+            id="nom"
+            value={nom}
+            onChange={(e) => setnom(e.target.value)}
             required
           />
         </div>
