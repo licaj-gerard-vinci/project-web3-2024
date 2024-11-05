@@ -12,6 +12,8 @@ import { signOut } from 'firebase/auth';
 import Register from '../pages/Auth/Register/register';
 import Footer from '../pages/Footer/Footer';
 import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
+import Profil from '../pages/ProfilPage/Profil';
+import { Navigate } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -47,6 +49,7 @@ function App() {
           <Route path="/exemple" element={<Exemple />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
         </Routes>
       </div>
     </Router>
