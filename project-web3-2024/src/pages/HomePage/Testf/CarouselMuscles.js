@@ -57,7 +57,7 @@ const MuscleCarousel = () => {
       >
         {muscleGroups.map((muscle, index) => (
           <div key={index} className="muscle-slide" data-aos="fade-up" data-aos-delay={index * 100}>
-            <img src={muscle.image} alt={muscle.name} className="muscle-image" style={{ maxWidth: '60%' }} />
+            <img src={muscle.image} alt={muscle.name} className="muscle-image" style={{ maxWidth: '80%' }} />
             <div className="muscle-name-overlay">
               <h3>{muscle.name}</h3>
             </div>
