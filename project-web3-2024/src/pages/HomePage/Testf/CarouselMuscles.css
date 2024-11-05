@@ -17,12 +17,22 @@
 
 
 .carousel-title {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    color: white; /* White title to match the dark background */
-    position: relative;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5em;
+    color: #ff8c00; /* Customize color to match your theme */
     text-align: center;
-    font-weight: 600;
+    margin-bottom: 20px;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff8c00, #ff6f61);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.2s ease-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Arrows for carousel */
