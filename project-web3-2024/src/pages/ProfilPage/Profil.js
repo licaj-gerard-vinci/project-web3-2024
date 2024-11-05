@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useState, useEffect } from 'react';
-import { ref, get } from 'firebase/database';
+import { ref, get, set } from 'firebase/database';
 import { db } from '../../firebaseConfig';
 import { Navigate } from 'react-router-dom';
 import './Profil.css';
@@ -9,6 +9,7 @@ const Profil = () => {
     const [user, setUser] = useState(null);
     const [consecutiveLogins, setConsecutiveLogins] = useState(0);
     const [prenom, setPrenom] = useState("");
+    const [nom, setNom] = useState("");
     const [email, setEmail] = useState("");
     const [lastLoginDate, setLastLoginDate] = useState("");
 
@@ -26,18 +27,23 @@ const Profil = () => {
 
                 const logins = userData?.consecutiveLogins || 0;
                 const prenom = userData?.prenom || '';
+                const nom = userData?.nom || '';
                 const email = userData?.email || '';
                 const lastLoginDate = userData?.lastLoginDate || '';
+                
                
 
                 setUser(currentUser);
                 setConsecutiveLogins(logins);
                 setPrenom(prenom);
+                setNom(nom);
+                
                 setEmail(email);
                 setLastLoginDate(lastLoginDate);
             } else {
                 // L'utilisateur est déconnecté, réinitialise l'état
                 setUser(null);
+                setNom("");
                 setConsecutiveLogins(0);
                 setPrenom("");
                 setEmail("");
@@ -55,6 +61,7 @@ const Profil = () => {
             <div className="profile-info">
                 <p><span>Consecutive Logins:</span> {consecutiveLogins}</p>
                 <p><span>Prénom:</span> {prenom}</p>
+                <p><span>Nom:</span> {nom}</p>
                 <p><span>Email:</span> {email}</p>
                 <p><span>Last Login Date:</span> {lastLoginDate}</p>
             </div>

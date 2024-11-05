@@ -20,8 +20,11 @@ function Navbar({ user, handleLogout }) {
             <li><Link to="/login">Connexion</Link></li>
           </>
         ) : (
-          <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
-        )}
+            <>
+              <li><Link to="/profil">Profil</Link></li>
+              <li><button onClick={handleLogout} className="logout-button">Déconnexion</button></li>
+            </>
+          )}
       </ul>
     </nav>
   );
