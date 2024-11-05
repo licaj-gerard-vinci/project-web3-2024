@@ -1,6 +1,6 @@
 /* Espacement pour descendre le conteneur */
 body {
-  background-color: #121212; /* Même fond sombre que la page d'accueil */
+  background-color: #0a0a0c; /* Même fond sombre que la page d'accueil */
   color: #ffffff;
   font-family: 'Arial', sans-serif;
   padding-top: 50px; /* Descendre tout le contenu */

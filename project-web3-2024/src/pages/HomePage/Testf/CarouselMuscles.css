@@ -17,12 +17,22 @@
 
 
 .carousel-title {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
-    color: white; /* White title to match the dark background */
-    position: relative;
+    font-family: 'Poppins', sans-serif;
+    font-size: 2.5em;
+    color: #ff8c00; /* Customize color to match your theme */
     text-align: center;
-    font-weight: 600;
+    margin-bottom: 20px;
+    font-weight: 700;
+    background: linear-gradient(45deg, #ff8c00, #ff6f61);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.2s ease-out;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(-10px); }
+    100% { opacity: 1; transform: translateY(0); }
 }
 
 /* Arrows for carousel */
@@ -62,11 +72,11 @@
 
 /* Set smaller width and height for images */
 .muscle-image {
-    width: 300px; /* Smaller image width */
-    height: 300px; /* Smaller image height */
-    object-fit: cover; /* Ensures the image covers the entire area without distortion */
-    border-radius: 25px; /* More aesthetic border radius for a softer look */
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5); /* Enhanced shadow around the image */
+    width: 400px; /* Increased width */
+    height: 300px; /* Adjust height to maintain aspect ratio */
+    object-fit: cover;
+    border-radius: 25px;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease-in-out;
 }
 
@@ -74,19 +84,22 @@
     transform: scale(1.05); /* Slight zoom effect on hover to make it more interactive */
 }
 
-/* Muscle name overlay */
 .muscle-name-overlay {
     position: absolute;
-    bottom: 20px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
     color: #fff;
-    padding: 10px 20px;
-    border-radius: 10px;
-    font-size: 1.3rem;
+    padding: 3px 10px; /* Smaller padding to reduce the background size */
+    border-radius: 8px; /* Softer rounded corners */
+    font-size: 1.2rem;
     text-align: center;
     font-weight: bold;
+    width: 20%; /* Adjust width to fit the text */
+    line-height: 0.1; /* Tighter line height to reduce vertical space */
+    max-width: 80%; /* Prevents the background from stretching too wide */
+    display: inline-block; /* Ensures the overlay only wraps the text */
 }
 
 /* Responsive Design */

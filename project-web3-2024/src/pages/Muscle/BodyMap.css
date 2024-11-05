@@ -27,6 +27,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  stroke: white;
 }
 
 /* Apply styles only to paths with an id attribute */
