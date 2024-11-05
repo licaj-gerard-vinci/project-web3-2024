@@ -18,7 +18,7 @@ const Register = () => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        navigate('/');  // Redirige vers la page d'accueil si l'utilisateur est connecté
+        navigate('/profil');  // Redirige vers la page d'accueil si l'utilisateur est connecté
       }
     });
     return () => unsubscribe();
