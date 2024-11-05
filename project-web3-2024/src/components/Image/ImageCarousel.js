@@ -41,7 +41,7 @@ const ImageCarousel = ({ folderPath }) => {
         infiniteLoop
         showIndicators={false}
         autoPlay
-        interval={2200}
+        interval={3500}
         showArrows={false}
         showStatus={false}
       >

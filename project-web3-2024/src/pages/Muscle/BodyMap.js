@@ -18,25 +18,18 @@ const BodyMap = () => {
 
   return (
     <div className="main-container">
-      {/* Left Column: Body Map */}
       <div className="body-map-container">
-        {/* SVG for Front View */}
         <div className={`svg-body front-view ${isFrontView ? '' : 'hide-front'}`}>
           <BodyFront onClick={handleMuscleClick} />
         </div>
-
-        {/* SVG for Back View */}
         <div className={`svg-body back-view ${!isFrontView ? 'show-back' : ''}`}>
           <BodyBack onClick={handleMuscleClick} />
         </div>
-
-        {/* Toggle Button below body map */}
         <button className="toggle-button" onClick={toggleView}>
           {isFrontView ? 'Switch to Back View' : 'Switch to Front View'}
         </button>
       </div>
 
-      {/* Right Column: Exercise List and Videos */}
       <div className="exercise-list-container">
         {selectedMuscle ? (
           <>
@@ -58,6 +51,13 @@ const BodyMap = () => {
           <p>Select a muscle to see exercises and videos.</p>
         )}
       </div>
+
+      <style>{`
+        .svg-body path[id="${selectedMuscle}"] {
+          fill: rgba(255, 85, 0.8); /* Light blue semi-transparent */
+          stroke: rgb(255, 85, 0); /* Darker border on hover */
+        }
+      `}</style>
     </div>
   );
 };
