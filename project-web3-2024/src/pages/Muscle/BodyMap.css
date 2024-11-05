@@ -1,0 +1,135 @@
+/* Main container for the body map */
+.main-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  max-width: 100%;
+  margin-top: 150px; /* Adjust this value based on the height of your navbar */
+  padding: 0 20px;
+  gap: 20px;
+}
+
+/* Left column for body map - 40% width */
+.body-map-container {
+  width: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Base style for the SVG, applied to both front and back views */
+.svg-body {
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Apply styles only to paths with an id attribute */
+.svg-body path[id] {
+  fill: transparent; /* Initial transparency */
+  stroke: #666; /* Border color */
+  transition: fill 0.3s ease, stroke 0.3s ease; /* Smooth transition */
+}
+
+/* Highlight on hover only for paths with an id */
+.svg-body path[id]:hover {
+  fill: rgba(255, 85, 0); /* Light blue semi-transparent */
+  stroke: rgb(255, 85, 0); /* Darker border on hover */
+}
+
+/* Style for the selected part */
+.svg-body .selected {
+  fill: rgba(100, 149, 237, 0.5); /* More opaque blue for selection */
+  stroke: #1e90ff; /* Blue border */
+}
+
+/* Smaller aesthetic orange button below body map */
+.toggle-button {
+  margin-top: 20px;
+  padding: 8px 16px;
+  background-color: #ff7f50;
+  color: #ffffff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+  width: 60%; /* Smaller width for a more compact look */
+  text-transform: uppercase;
+  font-weight: bold;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-button:hover {
+  background-color: #ff6347;
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+/* Right column for exercise list and videos - 60% width */
+.exercise-list-container {
+  width: 60%;
+  padding: 20px;
+  background-color: #333333;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+}
+
+/* Style for exercises content */
+.exercise-list-container h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #ff7f50;
+}
+
+.exercise-list-container p,
+.exercise-list-container li {
+  font-size: 1em;
+  color: #cccccc;
+}
+
+/* Toggle visibility for front and back views */
+.hide-front {
+  display: none;
+}
+
+.show-back {
+  display: flex !important; /* Ensures the back view remains centered */
+  align-items: center;
+  justify-content: center;
+}
+
+.back-view {
+  display: none; /* Hide back view by default */
+}
+
+/* Information box to display details */
+.muscle-info {
+  margin-top: 20px;
+  padding: 15px;
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #222222;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  text-align: center;
+}
+
+.muscle-info h2 {
+  margin: 0;
+  font-size: 1.5em;
+  color: #ff7f50;
+}
+
+.muscle-info p {
+  margin: 10px 0 0;
+  font-size: 1em;
+  color: #cccccc;
+}
+

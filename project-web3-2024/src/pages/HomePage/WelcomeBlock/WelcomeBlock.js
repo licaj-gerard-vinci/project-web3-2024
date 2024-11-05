@@ -1,32 +1,41 @@
+// WelcomeBlock.js
 import React, { useState, useEffect } from 'react';
 import './WelcomeBlock.css';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
-import { auth, db } from '../../../firebaseConfig'; // Importez l'authentification et la base de données Firebase
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { auth, db } from '../../../firebaseConfig';
 import { ref, get, set, update } from 'firebase/database';
 import ImageCarousel from '../../../components/Image/ImageCarousel';
+import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
   const [consecutiveLogins, setConsecutiveLogins] = useState(0);
   const [prenom, setprenom] = useState("");
- 
+  const [showIcons, setShowIcons] = useState(true);
 
   useEffect(() => {
-    // Écoute les changements d'état de l'utilisateur
+    const handleScroll = () => {
+      const scrollThreshold = 100; // Scroll distance in pixels before hiding icons
+      setShowIcons(window.scrollY < scrollThreshold);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
       setUser(currentUser);
-      
       if (currentUser) {
-        await handleConsecutiveLogins(currentUser.uid); // Gère les connexions consécutives
+        await handleConsecutiveLogins(currentUser.uid);
       }
     });
     return () => unsubscribe();
   }, []);
 
-  // Fonction pour gérer les connexions consécutives
   const handleConsecutiveLogins = async (uid) => {
     const userRef = ref(db, `users/${uid}`);
-    const today = new Date().toISOString().split('T')[0]; // Date actuelle au format "YYYY-MM-DD"
+    const today = new Date().toISOString().split('T')[0];
 
     try {
       const snapshot = await get(userRef);
@@ -37,93 +46,78 @@ const WelcomeBlock = () => {
         setprenom(prenom);
 
         if (isYesterday(lastLoginDate)) {
-          // Si la dernière connexion est la veille, incrémentez le compteur
           const newConsecutiveLogins = (userData.consecutiveLogins || 0) + 1;
           setConsecutiveLogins(newConsecutiveLogins);
-          await update(userRef, {
-            consecutiveLogins: newConsecutiveLogins,
-            lastLoginDate: today,
-          });
+          await update(userRef, { consecutiveLogins: newConsecutiveLogins, lastLoginDate: today });
         } else if (lastLoginDate !== today) {
-          // Si la connexion n'est pas consécutive, réinitialisez le compteur
           setConsecutiveLogins(1);
-          await update(userRef, {
-            consecutiveLogins: 1,
-            lastLoginDate: today,
-          });
+          await update(userRef, { consecutiveLogins: 1, lastLoginDate: today });
         } else {
-          // Si l'utilisateur s'est connecté le même jour, ne rien faire
           setConsecutiveLogins(userData.consecutiveLogins);
         }
       } else {
-        // Si l'utilisateur n'existe pas dans la base de données, créez un enregistrement initial
         setConsecutiveLogins(1);
-        await set(userRef, {
-          consecutiveLogins: 1,
-          lastLoginDate: today,
-        });
+        await set(userRef, { consecutiveLogins: 1, lastLoginDate: today });
       }
     } catch (error) {
       console.error("Erreur lors de la gestion des connexions consécutives :", error);
     }
   };
 
-  // Fonction pour vérifier si une date est celle d'hier
   const isYesterday = (date) => {
     try {
-      if (!date || typeof date !== 'string') {
-        throw new Error("Date invalide ou absente");
-      }
-  
+      if (!date || typeof date !== 'string') throw new Error("Date invalide ou absente");
+
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
-  
-      // Convertir la date fournie en objet Date
       const providedDate = new Date(date);
-      if (isNaN(providedDate.getTime())) {
-        throw new Error("Date non valide");
-      }
-  
-      // Comparez les dates au format "YYYY-MM-DD"
+
+      if (isNaN(providedDate.getTime())) throw new Error("Date non valide");
+
       return providedDate.toISOString().split('T')[0] === yesterday.toISOString().split('T')[0];
     } catch (error) {
       console.error("Erreur dans la fonction isYesterday:", error.message);
       return false;
     }
   };
+
   return (
-    <div className="hero-container">
-      <div className="hero-content">
-        {/* Texte à gauche */}
-        <div className="hero-text-wrapper">
-          <div className="hero-text-container">
-            {user ? ( // Si l'utilisateur est connecté, afficher un message de bienvenue avec le compteur de connexions consécutives
-              <>
-                <h1 className="hero-heading">De retour parmi nous {prenom}!</h1>
-                <p>Connexions consécutives : {consecutiveLogins}</p>
-              </>
-            ) : (
-              <>
-                <h1 className="hero-heading">
-                  IGNITE <br />
-                  <span className="highlight">TRANSFORMATION</span>
-                </h1>
-                <h2 className="hero-subheading">& UNITE YOUR STRENGTH</h2>
-                <p className="hero-description">
-                  Discover fitness excellence at our premier gym. With top-notch equipment,
-                  expert trainers, and dynamic classes, we're committed to helping you reach
-                  your goals. Join us today and unleash your full potential!
-                </p>
-                <button className="hero-btn">JOIN NOW</button>
-              </>
-            )}
+    <>
+      {/* Social Bar */}
+      <div className={`social-bar ${showIcons ? 'fade-in' : 'fade-out'}`}>
+        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+      </div>
+      <div className="hero-container">
+        <div className="hero-content">
+          <div className="hero-text-wrapper">
+            <div className="hero-text-container">
+              {user ? (
+                <>
+                  <h1 className="hero-heading">De retour parmi nous {prenom}!</h1>
+                  <p>Connexions consécutives : {consecutiveLogins}</p>
+                </>
+              ) : (
+                <>
+                  <h1 className="hero-heading">IGNITE <br /><span className="highlight">TRANSFORMATION</span></h1>
+                  <h2 className="hero-subheading">& UNITE YOUR STRENGTH</h2>
+                  <p className="hero-description">
+                    Discover fitness excellence at our premier gym. With top-notch equipment,
+                    expert trainers, and dynamic classes, we're committed to helping you reach
+                    your goals. Join us today and unleash your full potential!
+                  </p>
+                  <button className="hero-btn">JOIN NOW</button>
+                </>
+              )}
+            </div>
+          </div>
+          <div className="hero-image-container">
+            <ImageCarousel folderPath="HomePage/WelcomeBlock" />
           </div>
         </div>
-        <div className="hero-image-container">
-          <ImageCarousel folderPath="HomePage/WelcomeBlock" />
-        </div>
       </div>
-    </div>
+    </>
   );
 };
 

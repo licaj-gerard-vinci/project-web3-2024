@@ -65,32 +65,3 @@
   .join-now-btn:hover {
     background-color: #d94c1b;
   }
-  
-  /* Social Bar styling */
-  .social-bar {
-    position: fixed;
-    top: 50%;
-    left: 0;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    z-index: 1001; /* Ensure it is above other content */
-  }
-  
-  .social-bar a {
-    text-decoration: none;
-    color: white;
-    padding: 0.5rem;
-    font-size: 1.5rem;
-    transition: color 0.3s;
-  }
-  
-  .social-bar a:hover {
-    color: #ff5c2b;
-  }
-  
-  .social-bar i {
-    margin-bottom: 1rem; /* Space between icons */
-  }
-  
