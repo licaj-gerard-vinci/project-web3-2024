@@ -89,15 +89,18 @@
   align-items: center;
   z-index: 1001;
   opacity: 1;
-  transition: opacity 0.5s ease; /* Smooth transition for opacity */
+  transition: opacity 0.5s ease, pointer-events 0s linear 0.5s; /* Smooth transition for opacity and pointer-events */
+  pointer-events: auto; /* Make it interactive by default */
 }
 
 .social-bar.fade-in {
   opacity: 1; /* Fully visible */
+  pointer-events: auto; /* Enable interactions */
 }
 
 .social-bar.fade-out {
   opacity: 0; /* Fully hidden */
+  pointer-events: none; /* Disable interactions */
 }
 
 .social-bar a {
