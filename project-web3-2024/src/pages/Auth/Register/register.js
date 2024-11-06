@@ -23,7 +23,7 @@ const Register = () => {
           setIsPendingVerification(true);
           startEmailVerificationCheck(currentUser);
         } else {
-          navigate('/profil'); // Redirige l'utilisateur vers le profil si l'email est vérifié
+          navigate('/'); // Redirige l'utilisateur vers le profil si l'email est vérifié
         }
       }
     });
@@ -36,7 +36,7 @@ const Register = () => {
       if (user.emailVerified) {
         clearInterval(interval); // Arrête l'intervalle si l'e-mail est vérifié
         setIsPendingVerification(false);
-        navigate('/profil'); // Redirige vers le profil après vérification
+        navigate('/'); // Redirige vers le profil après vérification
       }
     }, 3000); // Vérifie toutes les 3 secondes
   };
