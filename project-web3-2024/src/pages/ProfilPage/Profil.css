@@ -50,7 +50,7 @@ body {
 }
 
 /* Bouton de déconnexion */
-.logoutt-button {
+.logout-button {
   background-color: #ff7f2a; /* Orange pour correspondre au bouton de la page d'accueil */
   color: #fff;
   border: none;
@@ -62,7 +62,7 @@ body {
   margin-top: 20px;
 }
 
-.logoutt-button:hover {
+.logout-button:hover {
   background-color: #e5661e; /* Teinte plus sombre d'orange au survol */
 }
 
