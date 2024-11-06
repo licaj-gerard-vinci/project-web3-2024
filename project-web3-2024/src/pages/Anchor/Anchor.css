@@ -1,0 +1,29 @@
+/* Styling for the ScrollToTop button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: transparent; /* No background */
+  border-radius: 50%;
+  padding: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Shadow for floating effect */
+  cursor: pointer;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.2s ease;
+}
+
+.scroll-to-top:hover {
+  transform: scale(1.1); /* Slightly increase size on hover */
+}
+
+.scroll-to-top svg {
+  color: white; /* Arrow color */
+  transition: color 0.3s ease;
+}
+
+.scroll-to-top:hover svg {
+  color: #ff5c2b; /* Change the arrow color to orange on hover */
+}
