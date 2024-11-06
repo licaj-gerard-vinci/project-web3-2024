@@ -133,4 +133,58 @@
   font-size: 1em;
   color: #cccccc;
 }
+/* Style pour le fond de la page qui devient flou ou tamisé */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 1); /* Fond semi-transparent */
+  z-index: 999; /* Mettre le fond derrière le formulaire */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style pour le formulaire modale */
+.modal-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Met le formulaire au-dessus du fond */
+  position: relative;
+}
+
+.fixed-button {
+  position: fixed; /* Positionner le bouton au-dessus de tout */
+  top: 20px; /* Espacement du haut de l'écran */
+  right: 20px; /* Espacement du côté droit de l'écran */
+  background-color: #0C1821; /* Couleur de fond du bouton */
+  color: orange; /* Couleur du texte */
+  padding: 10px; /* Espacement intérieur du bouton */
+  border-radius: 5px; /* Coins arrondis */
+  z-index: 10000; /* Assurer que le bouton soit toujours au-dessus de tout */
+}
+
+/* Style pour l'input catégorie (sélecteur de liste) */
+select {
+  background-color: #333; /* Fond foncé pour l'input */
+  color: white; /* Texte en blanc pour contraster avec le fond foncé */
+  padding: 10px;
+  border: 2px solid #444; /* Bordure gris foncé */
+  border-radius: 4px; /* Coins arrondis */
+  width: 100%; /* Prendre toute la largeur du conteneur */
+  font-size: 16px; /* Taille de police pour le texte */
+  transition: background-color 0.3s ease, border-color 0.3s ease; /* Transition douce */
+}
+
+/* Changer la couleur de fond et la bordure au survol (hover) */
+select:hover {
+  background-color: #555; /* Fond plus clair au survol */
+  border-color: #666; /* Bordure plus claire */
+}
 
