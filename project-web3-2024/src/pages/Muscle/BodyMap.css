@@ -140,7 +140,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 1); /* Fond semi-transparent */
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
   z-index: 999; /* Mettre le fond derrière le formulaire */
   display: flex;
   justify-content: center;
@@ -160,31 +160,123 @@
 }
 
 .fixed-button {
-  position: fixed; /* Positionner le bouton au-dessus de tout */
-  top: 20px; /* Espacement du haut de l'écran */
-  right: 20px; /* Espacement du côté droit de l'écran */
-  background-color: #0C1821; /* Couleur de fond du bouton */
-  color: orange; /* Couleur du texte */
-  padding: 10px; /* Espacement intérieur du bouton */
-  border-radius: 5px; /* Coins arrondis */
-  z-index: 10000; /* Assurer que le bouton soit toujours au-dessus de tout */
+  top: 20px;
+  right: 20px;
+  background-color: transparent; /* Fond transparent pour mettre en valeur l'icône */
+  border: none;
+  font-size: 3rem; /* Taille de l'icône */
+  color: #ff5c2b; /* Couleur de l'icône (vert) */
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s ease, color 0.2s ease;
 }
 
-/* Style pour l'input catégorie (sélecteur de liste) */
+.fixed-button:hover {
+  color: #ff5c2b; /* Change la couleur de l'icône au survol */
+  transform: scale(1.1); /* Agrandissement léger au survol */
+}
+
+.fixed-button:active {
+  transform: scale(0.95); /* Rétrécissement léger lors du clic */
+}
+
+
+.exercise-list-container {
+  padding: 20px;
+}
+
+.exercise-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.exercise-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.exercise-card h3 {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+.play-button {
+  background-color: transparent;
+  border: none;
+  font-size: 3rem; /* Taille de l'icône */
+  color: #ff5c2b;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.play-button:hover {
+  color: #ff5c2b;
+  transform: scale(1.1); /* Agrandissement léger au survol */
+}
+
+.play-button:active {
+  transform: scale(0.95); /* Rétrécissement léger lors du clic */
+}
+
+.minus-button {
+  background-color: transparent;
+  border: none;
+  font-size: 2.5rem; /* Taille de l'icône */
+  color: #ff5c2b; /* Couleur rouge pour le bouton "-" */
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.minus-button:hover {
+  color: #ff5c2b; /* Rouge plus foncé au survol */
+  transform: scale(1.1); /* Agrandissement léger au survol */
+}
+
+.minus-button:active {
+  transform: scale(0.95); /* Rétrécissement léger lors du clic */
+}
+
+/* Style pour l'étiquette */
+label {
+  color: orange; /* Couleur similaire à celle des autres étiquettes */
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Style pour le champ select */
 select {
-  background-color: #333; /* Fond foncé pour l'input */
-  color: white; /* Texte en blanc pour contraster avec le fond foncé */
+  width: 100%;
   padding: 10px;
-  border: 2px solid #444; /* Bordure gris foncé */
-  border-radius: 4px; /* Coins arrondis */
-  width: 100%; /* Prendre toute la largeur du conteneur */
-  font-size: 16px; /* Taille de police pour le texte */
-  transition: background-color 0.3s ease, border-color 0.3s ease; /* Transition douce */
+  background-color: #333; /* Couleur de fond similaire aux champs d'entrée */
+  color: #ddd; /* Couleur du texte pour contraster avec le fond */
+  border: 2px solid transparent; /* Bordure similaire aux autres champs */
+  border-radius: 5px;
+  appearance: none; /* Retire le style par défaut du navigateur */
+  font-size: 1rem;
+  outline: none;
 }
 
-/* Changer la couleur de fond et la bordure au survol (hover) */
-select:hover {
-  background-color: #555; /* Fond plus clair au survol */
-  border-color: #666; /* Bordure plus claire */
+/* Style pour afficher un triangle de sélection */
+select::after {
+  content: "▼"; /* Symbole de triangle pour indiquer le menu déroulant */
+  position: absolute;
+  right: 15px;
+  color: #ddd;
+  pointer-events: none;
 }
+
+/* Style au survol */
+select:hover {
+  border-color: #ff5c2b;
+}
+
 
