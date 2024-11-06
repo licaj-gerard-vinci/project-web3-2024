@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { ref, get } from 'firebase/database';
-import '@fortawesome/fontawesome-free/css/all.min.css';  // Import Font Awesome styles
+import { ref, get, set } from 'firebase/database';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
 
 const Login = () => {
@@ -17,7 +17,7 @@ const Login = () => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        navigate('/');  // Redirect to home if logged in
+        navigate('/');  // Redirige vers la page d'accueil si l'utilisateur est connecté
       }
     });
     return () => unsubscribe();
@@ -29,22 +29,26 @@ const Login = () => {
 
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        console.log('User signed in:', userCredential.user);
-        navigate('/');  // Redirect after successful login
+        console.log('Utilisateur connecté:', userCredential.user);
+        navigate('/');  // Redirige après la connexion
       })
       .catch((error) => {
         setError(error.message);
       });
   };
 
-  const checkIfUserExists = async (user) => {
+  const saveUserInfoToDatabase = async (user) => {
     const userRef = ref(db, `users/${user.uid}`);
-    const userSnapshot = await get(userRef);
-    if (userSnapshot.exists()) {
-      return true;  // User exists in the database
-    } else {
-      return false;  // User does not exist
-    }
+    await set(userRef, {
+      uid: user.uid,
+      displayName: user.displayName || '',
+      email: user.email,
+      photoURL: user.photoURL || '',
+      isAdmin: false,
+      age: 0,
+      gender: "",
+      favorites: []
+    });
   };
 
   const handleGoogleSignIn = async () => {
@@ -54,17 +58,16 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Check if the user exists in the database
-      const userExists = await checkIfUserExists(user);
-
-      if (userExists) {
-        console.log('Google sign-in successful:', user);
-        navigate('/');  // Redirect after successful Google login
-      } else {
-        // User does not exist, redirect to register page with message
-        setError('You need to register first!');
-        navigate('/register', { state: { message: 'You need to register first!' } });
+      // Vérifie si l'utilisateur existe dans la base de données
+      const userRef = ref(db, `users/${user.uid}`);
+      const userSnapshot = await get(userRef);
+      if (!userSnapshot.exists()) {
+        await saveUserInfoToDatabase(user);  // Sauvegarde automatique des informations utilisateur
+        console.log('Utilisateur ajouté à la base de données');
       }
+
+      console.log('Connexion avec Google réussie:', user);
+      navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
     }
@@ -77,24 +80,23 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Check if the user exists in the database
-      const userExists = await checkIfUserExists(user);
-
-      if (userExists) {
-        console.log('Microsoft sign-in successful:', user);
-        navigate('/');  // Redirect after successful Microsoft login
-      } else {
-        // User does not exist, redirect to register page with message
-        setError('You need to register first!');
-        navigate('/register', { state: { message: 'You need to register first!' } });
+      // Vérifie si l'utilisateur existe dans la base de données
+      const userRef = ref(db, `users/${user.uid}`);
+      const userSnapshot = await get(userRef);
+      if (!userSnapshot.exists()) {
+        await saveUserInfoToDatabase(user);  // Sauvegarde automatique des informations utilisateur
+        console.log('Utilisateur ajouté à la base de données');
       }
+
+      console.log('Connexion avec Microsoft réussie:', user);
+      navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
     }
   };
 
   if (user) {
-    return null;  // Prevent showing the login form if the user is already logged in
+    return null;  // Empêche l'affichage du formulaire si l'utilisateur est déjà connecté
   }
 
   return (
@@ -125,10 +127,10 @@ const Login = () => {
         <button type="submit">Login</button>
         <div className="social-buttons">
           <button onClick={handleGoogleSignIn} className="social-button google">
-            <i className="fab fa-google"></i> Sign in with Google
+            <i className="fab fa-google"></i> Se connecter avec Google
           </button>
           <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
-            <i className="fab fa-microsoft"></i> Sign in with Microsoft
+            <i className="fab fa-microsoft"></i> Se connecter avec Microsoft
           </button>
         </div>
       </form>

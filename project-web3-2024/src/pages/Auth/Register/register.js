@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { ref, set } from 'firebase/database';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -56,6 +56,22 @@ const Register = () => {
     }
   };
 
+  // Nouvelle fonction pour sauvegarder les informations utilisateur dans la base de données
+  const saveUserInfoToDatabase = async (user, additionalInfo = {}) => {
+    const userRef = ref(db, `users/${user.uid}`);
+    await set(userRef, {
+      uid: user.uid,
+      prenom: additionalInfo.prenom || user.displayName.split(' ')[0] || '',
+      nom: additionalInfo.nom || user.displayName.split(' ')[1] || '',
+      email: user.email,
+      photoURL: user.photoURL || '',
+      isAdmin: false,
+      age: additionalInfo.age || 0,
+      gender: additionalInfo.gender || "",
+      favorites: additionalInfo.favorites || []
+    });
+  };
+
   const handleGoogleSignUp = async () => {
     const provider = new GoogleAuthProvider();
 
@@ -63,21 +79,28 @@ const Register = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Save user details to Firebase Realtime Database if the user signed up with Google
-      await set(ref(db, `users/${user.uid}`), {
-        prenom: user.displayName.split(' ')[0],  // Assuming the first name is in the displayName
-        nom: user.displayName.split(' ')[1],    // Assuming the second name is in the displayName
-        email: user.email,
-        isAdmin: false,
-        age: 0,
-        gender: "",
-        favorites: []
-      });
-
+      // Sauvegarde des informations utilisateur dans la base de données
+      await saveUserInfoToDatabase(user);
       setSuccess('Inscription réussie avec Google!');
-      navigate('/profil');  // Redirect to profile page after successful Google sign-up
+      navigate('/profil');  // Redirige après l'inscription réussie avec Google
     } catch (err) {
       setError('Erreur lors de l\'inscription avec Google : ' + err.message);
+    }
+  };
+
+  const handleMicrosoftSignUp = async () => {
+    const provider = new OAuthProvider('microsoft.com');
+
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Sauvegarde des informations utilisateur dans la base de données
+      await saveUserInfoToDatabase(user);
+      setSuccess('Inscription réussie avec Microsoft!');
+      navigate('/profil');  // Redirige après l'inscription réussie avec Microsoft
+    } catch (err) {
+      setError('Erreur lors de l\'inscription avec Microsoft : ' + err.message);
     }
   };
 
@@ -130,15 +153,15 @@ const Register = () => {
           />
         </div>
         <button type="submit" className="register-btn">S'inscrire</button>
-        {/* Google Sign-Up Button */}
-      <div className="social-buttons">
-        <button onClick={handleGoogleSignUp} className="social-button google">
-          <i className="fab fa-google"></i> Sign in with Google
-        </button>
-        <button onClick={handleGoogleSignUp} className="social-button microsoft">
-          <i className="fab fa-microsoft"></i> Sign in with Microsoft
-        </button>
-      </div>
+        
+        <div className="social-buttons">
+          <button onClick={handleGoogleSignUp} className="social-button google">
+            <i className="fab fa-google"></i> S'inscrire avec Google
+          </button>
+          <button onClick={handleMicrosoftSignUp} className="social-button microsoft">
+            <i className="fab fa-microsoft"></i> S'inscrire avec Microsoft
+          </button>
+        </div>
       </form>
     </div>
   );
