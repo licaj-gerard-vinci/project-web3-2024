@@ -27,12 +27,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  stroke: rgb(255, 0, 0);
+  stroke: white;
 }
 
 /* Apply styles only to paths with an id attribute */
 .svg-body path[id] {
-  fill: #ffc106; /* Initial transparency */
+  fill: transparent; /* Initial transparency */
   stroke: #666; /* Border color */
   transition: fill 0.3s ease, stroke 0.3s ease; /* Smooth transition */
 }
