@@ -75,3 +75,52 @@ form button:hover {
     font-size: 0.9rem;
     margin-bottom: 1rem;
 }
+
+/* Social buttons container */
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* Space between buttons */
+    margin-top: 1.5rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Individual social login buttons */
+.social-button {
+    width: 45%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    border: none;
+}
+
+.social-button i {
+    font-size: 1.2rem;
+}
+
+/* Google button */
+.social-button.google {
+    background-color: #4285F4;
+}
+
+.social-button.google:hover {
+    background-color: #357ae8;
+}
+
+/* Microsoft button */
+.social-button.microsoft {
+    background-color: #0078d4;
+}
+
+.social-button.microsoft:hover {
+    background-color: #0062b2;
+}
