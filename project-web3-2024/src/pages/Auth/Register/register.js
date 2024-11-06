@@ -1,32 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
+import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
-import { ref, set } from 'firebase/database';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { ref, set, get } from 'firebase/database';
+import { useNavigate } from 'react-router-dom';
+import '@fortawesome/fontawesome-free/css/all.min.css';
 import './register.css';
 
 const Register = () => {
-  const [user, setUser] = useState(null);
   const [prenom, setPrenom] = useState('');
   const [nom, setNom] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isPendingVerification, setIsPendingVerification] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();  // Get the location object to access state
-
-  const message = location.state?.message || '';  // Retrieve the message passed from Login.js
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
       if (currentUser) {
-        navigate('/profil');  // Redirect to the profile page if logged in
+        if (!currentUser.emailVerified) {
+          setIsPendingVerification(true);
+          startEmailVerificationCheck(currentUser);
+        } else {
+          navigate('/profil'); // Redirige l'utilisateur vers le profil si l'email est vérifié
+        }
       }
     });
     return () => unsubscribe();
   }, [navigate]);
+
+  const startEmailVerificationCheck = (user) => {
+    const interval = setInterval(async () => {
+      await user.reload();
+      if (user.emailVerified) {
+        clearInterval(interval); // Arrête l'intervalle si l'e-mail est vérifié
+        setIsPendingVerification(false);
+        navigate('/profil'); // Redirige vers le profil après vérification
+      }
+    }, 3000); // Vérifie toutes les 3 secondes
+  };
+
+  // Fonction pour vérifier si l'utilisateur existe déjà dans la base de données
+  const checkIfUserExists = async (user) => {
+    const userRef = ref(db, `users/${user.uid}`);
+    const userSnapshot = await get(userRef);
+    return userSnapshot.exists();
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,11 +54,14 @@ const Register = () => {
     setSuccess('');
 
     try {
-      // Create user with email and password
+      // Créer l'utilisateur avec e-mail et mot de passe
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Save additional user info to Firebase Realtime Database
+      // Envoyer un e-mail de vérification
+      await sendEmailVerification(user);
+
+      // Enregistrer les informations utilisateur dans la base de données
       await set(ref(db, `users/${user.uid}`), {
         prenom: prenom,
         nom: nom,
@@ -49,67 +72,83 @@ const Register = () => {
         favorites: []
       });
 
-      setSuccess('Inscription réussie!');
-      navigate('/profil');  // Redirect to profile page after successful registration
+      setSuccess('Inscription réussie ! Vérifiez votre e-mail pour valider votre compte.');
+      setIsPendingVerification(true);
     } catch (err) {
       setError('Erreur lors de l\'inscription : ' + err.message);
     }
   };
 
-  // Nouvelle fonction pour sauvegarder les informations utilisateur dans la base de données
-  const saveUserInfoToDatabase = async (user, additionalInfo = {}) => {
-    const userRef = ref(db, `users/${user.uid}`);
-    await set(userRef, {
-      uid: user.uid,
-      prenom: additionalInfo.prenom || user.displayName.split(' ')[0] || '',
-      nom: additionalInfo.nom || user.displayName.split(' ')[1] || '',
-      email: user.email,
-      photoURL: user.photoURL || '',
-      isAdmin: false,
-      age: additionalInfo.age || 0,
-      gender: additionalInfo.gender || "",
-      favorites: additionalInfo.favorites || []
-    });
-  };
-
-  const handleGoogleSignUp = async () => {
+  const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
 
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Sauvegarde des informations utilisateur dans la base de données
-      await saveUserInfoToDatabase(user);
-      setSuccess('Inscription réussie avec Google!');
-      navigate('/profil');  // Redirige après l'inscription réussie avec Google
-    } catch (err) {
-      setError('Erreur lors de l\'inscription avec Google : ' + err.message);
+      const userExists = await checkIfUserExists(user);
+
+      if (!userExists) {
+        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          isAdmin: false,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
+      }
+
+      navigate('/');  // Redirige après la connexion
+    } catch (error) {
+      setError(error.message);
     }
   };
 
-  const handleMicrosoftSignUp = async () => {
+  const handleMicrosoftSignIn = async () => {
     const provider = new OAuthProvider('microsoft.com');
 
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Sauvegarde des informations utilisateur dans la base de données
-      await saveUserInfoToDatabase(user);
-      setSuccess('Inscription réussie avec Microsoft!');
-      navigate('/profil');  // Redirige après l'inscription réussie avec Microsoft
-    } catch (err) {
-      setError('Erreur lors de l\'inscription avec Microsoft : ' + err.message);
+      const userExists = await checkIfUserExists(user);
+
+      if (!userExists) {
+        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          isAdmin: false,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
+      }
+
+      navigate('/');  // Redirige après la connexion
+    } catch (error) {
+      setError(error.message);
     }
   };
+
+  if (isPendingVerification) {
+    return (
+      <div className="register-container">
+        <h2>Attente de la validation</h2>
+        <p>Veuillez vérifier votre e-mail pour valider votre compte.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="register-container">
       <h2>Créer un compte</h2>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
-      {message && <p className="message">{message}</p>} {/* Display the message from Login.js */}
 
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -153,12 +192,11 @@ const Register = () => {
           />
         </div>
         <button type="submit" className="register-btn">S'inscrire</button>
-        
         <div className="social-buttons">
-          <button onClick={handleGoogleSignUp} className="social-button google">
+          <button onClick={handleGoogleSignIn} className="social-button google">
             <i className="fab fa-google"></i> S'inscrire avec Google
           </button>
-          <button onClick={handleMicrosoftSignUp} className="social-button microsoft">
+          <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
             <i className="fab fa-microsoft"></i> S'inscrire avec Microsoft
           </button>
         </div>
