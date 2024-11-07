@@ -14,6 +14,7 @@ import Footer from '../pages/Footer/Footer';
 import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 import Profil from '../pages/ProfilPage/Profil';
 import { Navigate } from 'react-router-dom';
+import Classement from '../pages/Classement/Classement';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -50,6 +51,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
+          <Route path="/classement" element={<Classement />} />
         </Routes>
       </div>
     </Router>
