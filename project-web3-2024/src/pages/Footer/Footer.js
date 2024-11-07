@@ -1,6 +1,7 @@
 // Footer.js
 import React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter, FaPhone } from 'react-icons/fa';
 
 const Footer = () => {
@@ -17,7 +18,9 @@ const Footer = () => {
         <Section>
           <Title>Quick Link</Title>
           <List>
-            <ListItem>About</ListItem>
+            <ListItem>
+              <StyledLink to="/terms-of-use">Terms of Use</StyledLink>
+            </ListItem>
             <ListItem>Trainer</ListItem>
             <ListItem>Pricing</ListItem>
             <ListItem>Package</ListItem>
@@ -42,7 +45,7 @@ const Footer = () => {
         </Section>
       </FooterContent>
       <FooterBottom>
-        <Copyright>© Copyright 2024. Developed By Group 13</Copyright>
+        <Copyright><StyledLink to="/terms-of-use">© Copyright 2024. Developed By Group 13</StyledLink></Copyright>
       </FooterBottom>
     </FooterContainer>
   );
@@ -53,8 +56,8 @@ export default Footer;
 // Footer.js (continued)
 
 const FooterContainer = styled.footer`
-background: linear-gradient(to bottom, #0a0a0c, #3f3f3f);
-color: #fff;
+  background: linear-gradient(to bottom, #0a0a0c, #3f3f3f);
+  color: #fff;
   padding: 40px 20px;
   position: relative;
   overflow: hidden;
@@ -103,6 +106,14 @@ const ListItem = styled.li`
   &:hover {
     color: #ff8c00;
     cursor: pointer;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: #ddd; /* Customize the link color */
+  &:hover {
+    color: #ff8c00; /* Change hover color */
   }
 `;
 
