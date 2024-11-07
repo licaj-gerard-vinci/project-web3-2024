@@ -38,10 +38,30 @@ const WelcomeBlock = () => {
       setUser(currentUser);
       if (currentUser) {
         await handleConsecutiveLogins(currentUser.uid);
+        await fetchUserDataWithRetry(currentUser.uid); // Ajout de la fonction de réessai pour récupérer le prénom
       }
     });
     return () => unsubscribe();
   }, []);
+
+  const fetchUserDataWithRetry = async (uid, retries = 5) => {
+    try {
+      const userRef = ref(db, `users/${uid}`);
+      const snapshot = await get(userRef);
+
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        if (userData.prenom) {
+          setPrenom(userData.prenom);
+        } else if (retries > 0) {
+          // Si le prénom n'est pas encore disponible, réessayer après un court délai
+          setTimeout(() => fetchUserDataWithRetry(uid, retries - 1), 500);
+        }
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données utilisateur :", error);
+    }
+  };
 
   const handleConsecutiveLogins = async (uid) => {
     const userRef = ref(db, `users/${uid}`);
@@ -52,8 +72,6 @@ const WelcomeBlock = () => {
 
       if (snapshot.exists()) {
         const userData = snapshot.val();
-        setPrenom(userData.prenom);
-
         const lastLoginDate = userData.lastLoginDate;
 
         if (isYesterday(lastLoginDate)) {
@@ -67,7 +85,6 @@ const WelcomeBlock = () => {
           setConsecutiveLogins(userData.consecutiveLogins);
         }
       } else {
-        // Si l'utilisateur est nouveau, ajouter les champs sans écraser les autres informations
         await update(userRef, { consecutiveLogins: 1, lastLoginDate: today });
         setConsecutiveLogins(1);
       }
