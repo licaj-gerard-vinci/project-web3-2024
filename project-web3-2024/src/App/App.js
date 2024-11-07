@@ -15,7 +15,6 @@ import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 import Profil from '../pages/ProfilPage/Profil';
 import TermsOfUse from '../pages/TermsOfUse/termsOfUse';
 import { Navigate } from 'react-router-dom';
-import Classement from '../pages/Classement/Classement;js';
 function App() {
   const [user, setUser] = useState(null);
 
@@ -51,7 +50,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
           <Route path="/terms-of-use" element={<TermsOfUse />} />
-          <Route path="/classement" element={<Classement />} />
         </Routes>
       </div>
       <Footer />
