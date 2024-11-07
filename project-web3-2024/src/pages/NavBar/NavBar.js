@@ -14,6 +14,7 @@ function Navbar({ user, handleLogout }) {
         <li><Link to="/">Home</Link></li>
         <li><Link to="/bodyMap">BodyMap</Link></li>
         <li><Link to="/exemple">Exemple</Link></li>
+        <li><Link to="/classement">Classement</Link></li>
         {!user ? (
           <>
             <li><Link to="/register">S'enregistrer</Link></li>

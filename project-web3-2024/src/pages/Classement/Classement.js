@@ -8,24 +8,26 @@ const Classement = () => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
+    console.log("useEffect exécuté");
     const db = getDatabase();
     const usersRef = ref(db, 'users');
 
     // Récupérer les données des utilisateurs
     onValue(usersRef, (snapshot) => {
+      console.log("useEffect exécuté");
       const data = snapshot.val();
-      const usersArray = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
+      console.log(data); // Vérifiez ici si les données sont récupérées
+      const usersArray = Object.keys(data || {}).map((key) => ({
+          id: key,
+          ...data[key],
       }));
-
-      // Trier les utilisateurs par le nombre de connexions consécutives
+      console.log("Array des utilisateurs:", usersArray); // Vérifiez la structure des données ici
+  
       const sortedUsers = usersArray.sort(
-        (a, b) => b.consecutiveLogins - a.consecutiveLogins
+          (a, b) => b.consecutiveLogins - a.consecutiveLogins
       );
-
       setUsers(sortedUsers);
-    });
+  });
   }, []);
 
   return (
