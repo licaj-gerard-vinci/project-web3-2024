@@ -27,6 +27,7 @@ body {
 
 /* Informations du profil */
 .profile-info {
+  padding-top: 100px;
   display: flex;
   flex-direction: column;
   gap: 15px;
@@ -83,3 +84,35 @@ body {
   border: 2px solid #ddd;
 }
 
+
+.complete-profile-button {
+  background-color: #ff7f2a;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
+}
+
+.complete-profile-button:hover {
+  background-color: #e5661e;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.97); /* Increase the alpha value for a darker shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
