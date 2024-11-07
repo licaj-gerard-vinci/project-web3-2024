@@ -1,0 +1,120 @@
+/* WelcomeBlock.css */
+
+/* Main Container */
+.hero-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #0a0a0c;
+  color: white;
+  padding: 3rem 0;
+  min-height: 100vh;
+}
+
+.hero-content {
+  display: flex;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.hero-text-wrapper {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-right: 2rem;
+}
+
+.hero-text-container {
+  max-width: 100%;
+}
+
+.hero-heading {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.hero-heading .highlight {
+  color: #ff5c2b;
+}
+
+.hero-subheading {
+  font-size: 2rem;
+  margin: 1rem 0;
+}
+
+.hero-description {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  max-width: 100%;
+}
+
+.hero-btn {
+  background-color: #ff5c2b;
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.hero-btn:hover {
+  background-color: #d94c1b;
+}
+
+.hero-image-container {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Social Bar styling */
+.social-bar {
+  position: fixed;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1001;
+  opacity: 1;
+  transition: opacity 0.5s ease, pointer-events 0s linear 0.5s; /* Smooth transition for opacity and pointer-events */
+  pointer-events: auto; /* Make it interactive by default */
+}
+
+.social-bar.fade-in {
+  opacity: 1; /* Fully visible */
+  pointer-events: auto; /* Enable interactions */
+}
+
+.social-bar.fade-out {
+  opacity: 0; /* Fully hidden */
+  pointer-events: none; /* Disable interactions */
+}
+
+.social-bar a {
+  text-decoration: none;
+  color: white;
+  padding: 0.5rem;
+  font-size: 1.5rem;
+  transition: color 0.3s;
+}
+
+.social-bar a:hover {
+  color: #ff5c2b;
+}
+
+.social-bar i {
+  margin-bottom: 1rem;
+}
