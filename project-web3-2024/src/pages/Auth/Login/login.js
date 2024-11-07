@@ -84,6 +84,7 @@ const Login = () => {
           prenom: user.displayName ? user.displayName.split(' ')[0] : '',
           nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
+          photoURL: user.photoURL,
           isAdmin: false,
           age: 0,
           gender: "",
@@ -112,6 +113,7 @@ const Login = () => {
           nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           isAdmin: false,
+          photoURL: user.photoURL,
           age: 0,
           gender: "",
           favorites: []
