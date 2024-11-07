@@ -1,0 +1,15 @@
+.classement table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.classement table th {
+    border-bottom: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.classement table th {
+    background-color: #f2f2f2;
+}
