@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
-import { ref, get } from 'firebase/database';
+import { ref, get, set } from 'firebase/database';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
 
@@ -10,40 +10,36 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isPendingVerification, setIsPendingVerification] = useState(false);
   const [resetEmailSent, setResetEmailSent] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        if (currentUser.emailVerified) {
-          navigate('/'); // Redirige vers la page d'accueil si l'utilisateur est vérifié
-        } else {
-          setIsPendingVerification(true);
-        }
+      if (currentUser && currentUser.emailVerified) {
+        navigate('/'); // Redirige vers la page d'accueil si l'utilisateur est vérifié
       }
     });
     return () => unsubscribe();
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        const user = userCredential.user;
-        if (!user.emailVerified) {
-          setIsPendingVerification(true);
-          sendEmailVerification(user);
-        } else {
-          navigate('/');
-        }
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const userExists = await checkIfUserExists(user);
+
+      if (userExists) {
+        navigate('/'); // Redirige si l'utilisateur existe
+      } else {
+        navigate('/register', { state: { message: 'Vous devez vous inscrire d\'abord !' } });
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
   const handlePasswordReset = async () => {
@@ -75,12 +71,20 @@ const Login = () => {
 
       const userExists = await checkIfUserExists(user);
 
-      if (userExists) {
-        navigate('/');  // Redirige après la connexion
-      } else {
-        setError('Vous devez vous inscrire d\'abord !');
-        navigate('/register', { state: { message: 'Vous devez vous inscrire d\'abord !' } });
+      if (!userExists) {
+        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          isAdmin: false,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
       }
+
+      navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
     }
@@ -95,25 +99,24 @@ const Login = () => {
 
       const userExists = await checkIfUserExists(user);
 
-      if (userExists) {
-        navigate('/');  // Redirige après la connexion
-      } else {
-        setError('Vous devez vous inscrire d\'abord !');
-        navigate('/register', { state: { message: 'Vous devez vous inscrire d\'abord !' } });
+      if (!userExists) {
+        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          isAdmin: false,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
       }
+
+      navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
     }
   };
-
-  if (isPendingVerification) {
-    return (
-      <div className="login-container">
-        <h2>Attente de la validation</h2>
-        <p>Veuillez vérifier votre e-mail pour valider votre compte.</p>
-      </div>
-    );
-  }
 
   return (
     <div className="login-container">
