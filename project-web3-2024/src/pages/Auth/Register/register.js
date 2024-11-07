@@ -20,11 +20,13 @@ const Register = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
+        setUser(currentUser);
         if (!currentUser.emailVerified) {
           setIsPendingVerification(true);
           startEmailVerificationCheck(currentUser);
         } else {
-          navigate('/'); // Redirige l'utilisateur vers le profil si l'email est vérifié
+          setIsPendingVerification(false);
+          navigate('/'); // Redirige l'utilisateur vers la page d'accueil si l'email est vérifié
         }
       }
     });
@@ -35,9 +37,9 @@ const Register = () => {
     const interval = setInterval(async () => {
       await user.reload();
       if (user.emailVerified) {
-        clearInterval(interval); // Arrête l'intervalle si l'e-mail est vérifié
+        clearInterval(interval);
         setIsPendingVerification(false);
-        navigate('/'); // Redirige vers le profil après vérification
+        navigate('/'); // Redirige vers l'accueil après vérification
       }
     }, 3000); // Vérifie toutes les 3 secondes
   };
@@ -85,7 +87,6 @@ const Register = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
   
-      // Log pour vérifier les informations récupérées
       console.log("User data from Google:", user);
   
       const userExists = await checkIfUserExists(user);
