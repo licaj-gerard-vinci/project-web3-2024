@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
 import BodyMap from '../pages/Muscle/BodyMap';
 import Exemple from '../pages/Exemple';
@@ -13,6 +13,7 @@ import Register from '../pages/Auth/Register/register';
 import Footer from '../pages/Footer/Footer';
 import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 import Profil from '../pages/ProfilPage/Profil';
+import TermsOfUse from '../pages/TermsOfUse/termsOfUse';
 import { Navigate } from 'react-router-dom';
 
 function App() {
@@ -37,7 +38,6 @@ function App() {
   };
 
   return (
-    <>
     <Router>
       <div className="homepage">
         {/* Navbar component with props */}
@@ -50,11 +50,11 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
+          <Route path="/terms-of-use" element={<TermsOfUse />} />
         </Routes>
       </div>
+      <Footer />
     </Router>
-    <Footer />
-    </>
   );
 }
 
