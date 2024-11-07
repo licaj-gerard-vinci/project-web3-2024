@@ -64,15 +64,22 @@ const Login = () => {
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-
+    provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+    provider.addScope('https://www.googleapis.com/auth/userinfo.email');
+  
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
+  
+      // Log pour vérifier les informations récupérées
+      console.log("User data from Google:", user);
+  
       const userExists = await checkIfUserExists(user);
 
+      console.log(user.uid);
+      
+      
       if (!userExists) {
-        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
         await set(ref(db, `users/${user.uid}`), {
           prenom: user.displayName ? user.displayName.split(' ')[0] : '',
           nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
@@ -83,7 +90,7 @@ const Login = () => {
           favorites: []
         });
       }
-
+  
       navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
@@ -100,7 +107,6 @@ const Login = () => {
       const userExists = await checkIfUserExists(user);
 
       if (!userExists) {
-        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
         await set(ref(db, `users/${user.uid}`), {
           prenom: user.displayName ? user.displayName.split(' ')[0] : '',
           nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
