@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider, sendEmailVerification } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider, sendEmailVerification, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { ref, get } from 'firebase/database';
@@ -11,6 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isPendingVerification, setIsPendingVerification] = useState(false);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,7 +20,7 @@ const Login = () => {
         if (currentUser.emailVerified) {
           navigate('/'); // Redirige vers la page d'accueil si l'utilisateur est vérifié
         } else {
-          setIsPendingVerification(true); // Affiche le message de validation en attente
+          setIsPendingVerification(true);
         }
       }
     });
@@ -45,10 +46,24 @@ const Login = () => {
       });
   };
 
+  const handlePasswordReset = async () => {
+    if (!email) {
+      setError("Veuillez entrer votre adresse e-mail pour réinitialiser le mot de passe.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetEmailSent(true);
+      setError('');
+    } catch (error) {
+      setError("Erreur lors de l'envoi de l'email de réinitialisation : " + error.message);
+    }
+  };
+
   const checkIfUserExists = async (user) => {
     const userRef = ref(db, `users/${user.uid}`);
-    const userSnapshot = await get(userRef);
-    return userSnapshot.exists();
+    const snapshot = await get(userRef);
+    return snapshot.exists();
   };
 
   const handleGoogleSignIn = async () => {
@@ -61,7 +76,6 @@ const Login = () => {
       const userExists = await checkIfUserExists(user);
 
       if (userExists) {
-        console.log('Connexion avec Google réussie:', user);
         navigate('/');  // Redirige après la connexion
       } else {
         setError('Vous devez vous inscrire d\'abord !');
@@ -82,7 +96,6 @@ const Login = () => {
       const userExists = await checkIfUserExists(user);
 
       if (userExists) {
-        console.log('Connexion avec Microsoft réussie:', user);
         navigate('/');  // Redirige après la connexion
       } else {
         setError('Vous devez vous inscrire d\'abord !');
@@ -106,6 +119,7 @@ const Login = () => {
     <div className="login-container">
       <h2>Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      {resetEmailSent && <p style={{ color: 'green' }}>E-mail de réinitialisation envoyé. Vérifiez votre boîte de réception.</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
@@ -128,6 +142,9 @@ const Login = () => {
           />
         </div>
         <button type="submit">Login</button>
+        <p className="forgot-password-link" onClick={handlePasswordReset}>
+          Mot de passe oublié ?
+        </p>
         <div className="social-buttons">
           <button onClick={handleGoogleSignIn} className="social-button google">
             <i className="fab fa-google"></i> Se connecter avec Google

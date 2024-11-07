@@ -124,3 +124,14 @@ form button:hover {
 .social-button.microsoft:hover {
     background-color: #0062b2;
 }
+
+.forgot-password-link {
+    color: ff5c2b;
+    cursor: pointer;
+    text-decoration: underline;
+    margin-top: 10px;
+}
+
+.forgot-password-link:hover {
+    color: #e04a1e;
+}
