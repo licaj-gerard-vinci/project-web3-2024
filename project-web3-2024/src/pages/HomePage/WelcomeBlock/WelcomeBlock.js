@@ -5,27 +5,27 @@ import 'aos/dist/aos.css';
 import './WelcomeBlock.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { auth, db } from '../../../firebaseConfig';
-import { ref, get, set, update } from 'firebase/database';
+import { ref, get, update } from 'firebase/database';
 import ImageCarousel from '../../../components/Image/ImageCarousel';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
   const [consecutiveLogins, setConsecutiveLogins] = useState(0);
-  const [prenom, setprenom] = useState("");
+  const [prenom, setPrenom] = useState("");
   const [showIcons, setShowIcons] = useState(true);
 
   useEffect(() => {
     AOS.init({
-      duration: 2000, // Animation duration in milliseconds
-      once: false, // Animation happens only once
-      offset: 100, // Offset from the trigger point
+      duration: 2000,
+      once: false,
+      offset: 100,
     });
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollThreshold = 100; // Scroll distance in pixels before hiding icons
+      const scrollThreshold = 100;
       setShowIcons(window.scrollY < scrollThreshold);
     };
 
@@ -49,11 +49,12 @@ const WelcomeBlock = () => {
 
     try {
       const snapshot = await get(userRef);
+
       if (snapshot.exists()) {
         const userData = snapshot.val();
+        setPrenom(userData.prenom);
+
         const lastLoginDate = userData.lastLoginDate;
-        const prenom = userData.prenom;
-        setprenom(prenom);
 
         if (isYesterday(lastLoginDate)) {
           const newConsecutiveLogins = (userData.consecutiveLogins || 0) + 1;
@@ -66,8 +67,9 @@ const WelcomeBlock = () => {
           setConsecutiveLogins(userData.consecutiveLogins);
         }
       } else {
+        // Si l'utilisateur est nouveau, ajouter les champs sans écraser les autres informations
+        await update(userRef, { consecutiveLogins: 1, lastLoginDate: today });
         setConsecutiveLogins(1);
-        await set(userRef, { consecutiveLogins: 1, lastLoginDate: today });
       }
     } catch (error) {
       console.error("Erreur lors de la gestion des connexions consécutives :", error);

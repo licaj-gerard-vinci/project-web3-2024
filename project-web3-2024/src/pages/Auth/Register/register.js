@@ -89,6 +89,9 @@ const Register = () => {
       console.log("User data from Google:", user);
   
       const userExists = await checkIfUserExists(user);
+
+      console.log(user.uid);
+      
       
       if (!userExists) {
         await set(ref(db, `users/${user.uid}`), {
