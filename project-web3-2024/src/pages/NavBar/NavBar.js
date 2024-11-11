@@ -1,49 +1,15 @@
 // NavBar.js
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import ImageDisplay from '../../components/Image/ImageDisplay';
 import './Navbar.css';
 
 function Navbar({ user, handleLogout }) {
-  const [isEmailVerified, setIsEmailVerified] = useState(user?.emailVerified || false);
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const checkEmailVerification = async () => {
-      if (user && !user.emailVerified) {
-        await user.reload();
-        if (!user.emailVerified) {
-          navigate('/register');
-        } else {
-          setIsEmailVerified(true);
-        }
-      }
-    };
-
-    checkEmailVerification();
-  }, [user, location, navigate]);
-
-  useEffect(() => {
-    if (user && !user.emailVerified) {
-      const interval = setInterval(async () => {
-        await user.reload();
-        if (user.emailVerified) {
-          setIsEmailVerified(true);
-          clearInterval(interval);
-        } else {
-          setIsEmailVerified(false);
-        }
-      }, 1000);
-      return () => clearInterval(interval);
-    } else if (user && user.emailVerified) {
-      setIsEmailVerified(true);
-    }
-  }, [user, navigate]);
-
   const handleLogoutClick = () => {
     handleLogout();
-    setIsEmailVerified(false);
     navigate('/');
   };
 

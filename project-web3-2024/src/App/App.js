@@ -14,7 +14,7 @@ import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 import Profil from '../pages/ProfilPage/Profil';
 import TermsOfUse from '../pages/TermsOfUse/termsOfUse';
 import { Navigate } from 'react-router-dom';
-import BMI from '../pages/HomePage/BMI/Bmi';
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -46,7 +46,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/bodyMap" element={<BodyMap />} />
           <Route path="/authForm" element={<AuthForm />} />
-          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
+          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/authForm" state={{ fromProtected: true }} />}/>
           <Route path="/terms-of-use" element={<TermsOfUse />} />
         </Routes>
       </div>

@@ -6,7 +6,7 @@ import { ref, get, set } from 'firebase/database';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
 
-const Login = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
+const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -90,7 +90,6 @@ const Login = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
           favorites: []
         });
       }
-  
       navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);

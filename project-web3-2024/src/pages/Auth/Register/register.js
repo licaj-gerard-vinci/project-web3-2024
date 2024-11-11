@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
-import { ref, set } from 'firebase/database';
+import { ref, set, get } from 'firebase/database';
 import './register.css';
+import { useNavigate } from 'react-router-dom';
 
 const Register = ({ toggleAuthForm }) => {
   const [firstName, setFirstName] = useState('');
@@ -11,6 +12,7 @@ const Register = ({ toggleAuthForm }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,8 +26,8 @@ const Register = ({ toggleAuthForm }) => {
       await sendEmailVerification(user);
 
       await set(ref(db, `users/${user.uid}`), {
-        firstName: firstName,
-        lastName: lastName,
+        prenom: firstName,
+        nom: lastName,
         email: email,
         isAdmin: false,
         age: 0,
@@ -45,18 +47,19 @@ const Register = ({ toggleAuthForm }) => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await set(ref(db, `users/${user.uid}`), {
-        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
-        lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
-        email: user.email,
-        photoURL: user.photoURL,
-        isAdmin: false,
-        age: 0,
-        gender: "",
-        favorites: []
-      });
-
-      setSuccess('Registration successful with Google!');
+      if (!(await checkIfUserExists(user))) {
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          photoURL: user.photoURL,
+          isAdmin: false,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
+      }
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }
@@ -68,21 +71,28 @@ const Register = ({ toggleAuthForm }) => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await set(ref(db, `users/${user.uid}`), {
-        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
-        lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
-        email: user.email,
-        photoURL: user.photoURL,
-        isAdmin: false,
-        age: 0,
-        gender: "",
-        favorites: []
-      });
-
-      setSuccess('Registration successful with Microsoft!');
+      if (!(await checkIfUserExists(user))) {
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          photoURL: user.photoURL,
+          isAdmin: false,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
+      }
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }
+  };
+
+  const checkIfUserExists = async (user) => {
+    const userRef = ref(db, `users/${user.uid}`);
+    const snapshot = await get(userRef);
+    return snapshot.exists();
   };
 
   return (
@@ -103,19 +113,16 @@ const Register = ({ toggleAuthForm }) => {
           <label htmlFor="password">Password:</label>
           <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           <button type="submit">Register</button>
-          {/* "Or register with" section */}
-        <p className="or-continue-with">or register with</p>
-        <div className="social-buttons">
-          <button onClick={handleGoogleSignIn} className="social-button google">
-            <i className="fab fa-google"></i> Register with Google
-          </button>
-          <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
-            <i className="fab fa-microsoft"></i> Register with Microsoft
-          </button>
-        </div>
+          <p className="or-continue-with">or register with</p>
+          <div className="social-buttons">
+            <button onClick={handleGoogleSignIn} className="social-button google">
+              <i className="fab fa-google"></i> Register with Google
+            </button>
+            <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
+              <i className="fab fa-microsoft"></i> Register with Microsoft
+            </button>
+          </div>
         </form>
-        
-        
       </div>
     </div>
   );
