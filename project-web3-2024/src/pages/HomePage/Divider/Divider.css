@@ -1,31 +1,60 @@
+/* Style for line separator with red accents */
+.divider-line {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin: 1rem 0; /* Réduit la marge pour rapprocher le séparateur du contenu en dessous */
+  position: relative;
+}
+
+.divider-line::before,
+.divider-line::after {
+  content: '';
+  flex: 1;
+  height: 2px; /* Épaisseur de la ligne */
+  background-color: #ff6f00; /* Couleur de la ligne rouge */
+  margin: 0 8px; /* Réduit l'espace entre la ligne et le texte */
+}
+
+.divider-text {
+  padding: 0 0.5rem; /* Réduit le padding autour du texte */
+  font-size: 1.2rem;
+  color: #ff6f00; /* Couleur du texte */
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+}
+
+/* Style for scrolling text */
 .scrolling-line {
   position: relative;
   overflow: hidden;
   background: linear-gradient(90deg, #ff5c2b, #ff704d);
-  padding: 1rem 0;
+  padding: 0.75rem 0; /* Réduit le padding vertical pour un rendu plus compact */
   white-space: nowrap;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .scrolling-content {
   display: inline-flex;
-  animation: scroll-left 20s linear infinite;
+  animation: scroll-left 15s linear infinite; /* Accélère légèrement la vitesse de défilement */
 }
 
 .scrolling-content span {
   font-size: 1.5rem;
   color: white;
   font-weight: bold;
-  padding-right: 2rem;
+  padding-right: 1.5rem; /* Réduit l'espace entre chaque élément de texte */
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.5);
 }
 
 /* Keyframes for continuous scrolling animation */
 @keyframes scroll-left {
   0% {
-    transform: translateX(0);
+      transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+      transform: translateX(-50%);
   }
 }

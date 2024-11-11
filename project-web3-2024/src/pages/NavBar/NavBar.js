@@ -38,7 +38,7 @@ function Navbar({ user, handleLogout }) {
       <ul className="navbar-links">
         <li><Link to="/">Home</Link></li>
         <li><Link to="/bodyMap">BodyMap</Link></li>
-        <li><Link to="/exemple">Exemple</Link></li>
+        <li><Link to="/bmi">BMI</Link></li>
         {!user ? (
           <>
             <li><Link to="/register">S'enregistrer</Link></li>

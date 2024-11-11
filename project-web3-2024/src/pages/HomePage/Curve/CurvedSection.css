@@ -1,0 +1,29 @@
+.section-with-svg-curve {
+    position: relative;
+    background-color: #9696d7; /* Couleur de fond de la section */
+    padding-top: 80px; /* Ajuste la hauteur au-dessus de la courbe */
+    padding-bottom: 2rem; /* Espace en bas */
+    color: white; /* Couleur du texte par défaut */
+    overflow: hidden; /* Assure que le SVG ne dépasse pas la section */
+}
+
+.section-with-svg-curve .curve {
+    position: absolute;
+    top: 20px; /* Ajustez cette valeur pour faire descendre la courbe dans la section suivante */
+    left: 0;
+    width: 100%;
+    height: auto;
+    z-index: 0;
+}
+
+.content {
+    position: relative;
+    z-index: 1; /* Place le contenu au-dessus de la courbe */
+    padding: 2rem;
+    text-align: center;
+}
+
+/* Style pour Anchor pour le faire chevaucher légèrement la courbe */
+.anchor-section {
+    margin-top: -30px; /* Ajuste cette valeur pour faire remonter Anchor sous la courbe */
+}
