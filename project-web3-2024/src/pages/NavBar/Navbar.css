@@ -1,67 +1,109 @@
+/* Common styles for navbar links and buttons */
+.navbar-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.75rem; /* Same padding as the button */
+  font-size: 1.1rem; /* Same font size as the button */
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease; /* Added color transition */
+}
+
+.navbar-item:hover {
+  background-color: rgba(255, 255, 255, 0.1); /* Optional hover effect */
+}
+
+.logout-button {
+  background-color: #ff5c2b;
+}
+
+.logout-button:hover {
+  background-color: #d94c1b;
+}
+
+/* Active link styling */
+.navbar-item.active {
+  color: #ff5c2b; /* Highlight color for active link text */
+}
+
 /* Navbar styling with larger size and center alignment */
 .navbar {
-    position: fixed; /* Keeps the navbar at the top even when scrolling */
-    top: 20px; /* Adjust this value to lower the navbar */
-    left: 50%; /* Start from the middle of the page */
-    transform: translateX(-50%); /* Adjust to fully center it */
-    width: 60%; /* Increase width slightly */
-    z-index: 1000; /* Ensures it stays on top of other content */
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0.6); /* Transparent background with a bit more opacity */
-    color: white;
-    padding: 1rem 2rem; /* Increased padding for larger navbar */
-    font-family: 'Arial', sans-serif;
-    backdrop-filter: blur(10px); /* Adds the blur effect */
-    -webkit-backdrop-filter: blur(10px); /* For Safari support */
-    transition: background-color 0.3s ease; /* Smooth background transition */
-    border: 2px solid #4a4a4a; /* Added dark gray border */
-    border-radius: 10px; /* Rounded corners */
-  
-  }
-  
-  /* Logo styling */
-  .navbar-logo img {
-    width: 60px; /* Increased logo size */
-    height: auto;
-    border-radius: 10%; /* Rounded corners */
-  }
-  
-  /* Navbar links */
-  .navbar-links {
-    list-style: none;
-    display: flex;
-    margin: 0;
-  }
-  
-  .navbar-links li {
-    margin-left: 2.5rem; /* Increase space between links */
-  }
-  
-  .navbar-links a {
-    text-decoration: none;
-    color: #fff;
-    font-size: 1.2rem; /* Increased font size */
-    transition: color 0.3s;
-  }
-  
-  .navbar-links a:hover {
-    color: #ff5c2b;
-  }
-  
-  /* Button styling */
-  .join-now-btn {
-    background-color: #ff5c2b;
-    color: white;
-    padding: 0.75rem 1.75rem; /* Increased padding for larger button */
-    border: none;
-    border-radius: 4px;
-    font-size: 1.1rem; /* Increased button text size */
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .join-now-btn:hover {
-    background-color: #d94c1b;
-  }
+  position: fixed; /* Keeps the navbar at the top even when scrolling */
+  top: 20px; /* Adjust this value to lower the navbar */
+  left: 50%; /* Start from the middle of the page */
+  transform: translateX(-50%); /* Adjust to fully center it */
+  width: 60%; /* Increase width slightly */
+  z-index: 1000; /* Ensures it stays on top of other content */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.6); /* Transparent background with a bit more opacity */
+  color: white;
+  padding: 1rem 2rem; /* Increased padding for larger navbar */
+  font-family: 'Arial', sans-serif;
+  backdrop-filter: blur(10px); /* Adds the blur effect */
+  -webkit-backdrop-filter: blur(10px); /* For Safari support */
+  transition: background-color 0.3s ease; /* Smooth background transition */
+  border: 2px solid #4a4a4a; /* Added dark gray border */
+  border-radius: 10px; /* Rounded corners */
+}
+
+/* Logo styling */
+.navbar-logo img {
+  width: 60px; /* Increased logo size */
+  height: auto;
+  border-radius: 10%; /* Rounded corners */
+}
+
+/* Navbar links */
+.navbar-links {
+  list-style: none;
+  display: flex;
+  margin: 0;
+}
+
+.navbar-links li {
+  margin-left: 2.5rem; /* Increase space between links */
+}
+
+.navbar-links a {
+  text-decoration: none;
+  color: #fff;
+  font-size: 1.2rem; /* Increased font size */
+  transition: color 0.3s;
+}
+
+.navbar-links a:hover {
+  color: #ff5c2b;
+}
+
+/* Button styling */
+.join-now-btn {
+  background-color: #ff5c2b;
+  color: white;
+  padding: 0.75rem 1.75rem; /* Increased padding for larger button */
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem; /* Increased button text size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.join-now-btn:hover {
+  background-color: #d94c1b;
+}
+
+.logout-button {
+  background-color: #ff5c2b;
+  color: white;
+  padding: 0.75rem 1.75rem; /* Increased padding for larger button */
+  border: none;
+  border-radius: 4px;
+  font-size: 1.1rem; /* Increased button text size */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}

@@ -29,7 +29,7 @@
 
 /* Main heading */
 .login-form-container h2 {
-    color: #ffffff; /* White text color for heading */
+    color: #ff5c2b; /* White text color for heading */
     font-size: 1.8rem;
     margin-bottom: 0.5rem;
 }
@@ -59,9 +59,9 @@
 form {
     width: 100%;
     max-width: 400px;
-    background-color: #333333; /* Dark background for form */
+    background-color: #1e1e1e; /* Dark background for form */
     padding: 2rem;
-    border-radius: 8px;
+    border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 

@@ -9,13 +9,12 @@ function Navbar({ user, handleLogout }) {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Vérification immédiate de la vérification de l'email à chaque changement d'URL
   useEffect(() => {
     const checkEmailVerification = async () => {
       if (user && !user.emailVerified) {
         await user.reload();
         if (!user.emailVerified) {
-          navigate('/register'); // Redirection immédiate vers l'inscription
+          navigate('/register');
         } else {
           setIsEmailVerified(true);
         }
@@ -25,18 +24,17 @@ function Navbar({ user, handleLogout }) {
     checkEmailVerification();
   }, [user, location, navigate]);
 
-  // Intervalle de vérification toutes les 1 seconde pour maintenir la réactivité
   useEffect(() => {
     if (user && !user.emailVerified) {
       const interval = setInterval(async () => {
         await user.reload();
         if (user.emailVerified) {
           setIsEmailVerified(true);
-          clearInterval(interval); // Arrête l'intervalle une fois l'email vérifié
+          clearInterval(interval);
         } else {
           setIsEmailVerified(false);
         }
-      }, 1000); // Réduit l'intervalle à 1 seconde pour une réponse plus rapide
+      }, 1000);
       return () => clearInterval(interval);
     } else if (user && user.emailVerified) {
       setIsEmailVerified(true);
@@ -46,7 +44,7 @@ function Navbar({ user, handleLogout }) {
   const handleLogoutClick = () => {
     handleLogout();
     setIsEmailVerified(false);
-    navigate('/login');
+    navigate('/');
   };
 
   return (
@@ -55,16 +53,24 @@ function Navbar({ user, handleLogout }) {
         <ImageDisplay imagePath="HomePage/logoM.png" altText="Logo du site" />
       </div>
       <ul className="navbar-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/bodyMap">BodyMap</Link></li>
+        <li>
+          <Link to="/" className={`navbar-item ${location.pathname === '/' ? 'active' : ''}`}>Home</Link>
+        </li>
+        <li>
+          <Link to="/bodyMap" className={`navbar-item ${location.pathname === '/bodyMap' ? 'active' : ''}`}>BodyMap</Link>
+        </li>
         {!user ? (
-          <>
-            <li><Link to="/authForm">Connexion</Link></li>
-          </>
+          <li>
+            <Link to="/authForm" className={`navbar-item ${location.pathname === '/authForm' ? 'active' : ''}`}>Sign in</Link>
+          </li>
         ) : (
           <>
-            <li><Link to="/profil">Profil</Link></li>
-            <li><button onClick={handleLogoutClick} className="logout-button">Déconnexion</button></li>
+            <li>
+              <Link to="/profil" className={`navbar-item ${location.pathname === '/profil' ? 'active' : ''}`}>Profil</Link>
+            </li>
+            <li>
+              <button onClick={handleLogoutClick} className={`navbar-item logout-button ${location.pathname === '/logout' ? 'active' : ''}`}>Sign out</button>
+            </li>
           </>
         )}
       </ul>

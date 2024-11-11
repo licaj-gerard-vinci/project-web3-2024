@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 import { ref, get, set } from 'firebase/database';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
-import { Link } from 'react-router-dom';
 
 const Login = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
   const [email, setEmail] = useState('');
@@ -131,13 +130,13 @@ const Login = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
       <div className="image-container"></div>
       <div className="login-form-container">
         <h2>Sign in to your account</h2>
-        <p className="subtext">
-          Not a member? <span className="trial-link" onClick={toggleAuthForm}>Register now!</span>
+        <p>
+          Not a member? <span className="trial-link" onClick={toggleAuthForm}>Register now</span>
         </p>
 
         {error && <p style={{ color: 'red' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
-          <label htmlFor="email">Email address</label>
+          <label htmlFor="email">Email address:</label>
           <input
             type="email"
             id="email"
@@ -145,7 +144,7 @@ const Login = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Password:</label>
           <input
             type="password"
             id="password"

@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { ref, set } from 'firebase/database';
 import './register.css';
 
-const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
-  const [prenom, setPrenom] = useState('');
-  const [nom, setNom] = useState('');
+const Register = ({ toggleAuthForm }) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [isPendingVerification, setIsPendingVerification] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,8 +24,8 @@ const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
       await sendEmailVerification(user);
 
       await set(ref(db, `users/${user.uid}`), {
-        prenom: prenom,
-        nom: nom,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         isAdmin: false,
         age: 0,
@@ -34,10 +33,9 @@ const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
         favorites: []
       });
 
-      setSuccess('Inscription réussie ! Vérifiez votre e-mail pour valider votre compte.');
-      setIsPendingVerification(true);
+      setSuccess('Registration successful! Check your email to verify your account.');
     } catch (err) {
-      setError('Erreur lors de l\'inscription : ' + err.message);
+      setError('Error during registration: ' + err.message);
     }
   };
 
@@ -48,8 +46,8 @@ const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
       const user = result.user;
 
       await set(ref(db, `users/${user.uid}`), {
-        prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-        nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+        lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
         email: user.email,
         photoURL: user.photoURL,
         isAdmin: false,
@@ -58,7 +56,7 @@ const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
         favorites: []
       });
 
-      setSuccess('Inscription réussie avec Google !');
+      setSuccess('Registration successful with Google!');
     } catch (error) {
       setError(error.message);
     }
@@ -71,8 +69,8 @@ const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
       const user = result.user;
 
       await set(ref(db, `users/${user.uid}`), {
-        prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-        nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+        firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+        lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
         email: user.email,
         photoURL: user.photoURL,
         isAdmin: false,
@@ -81,80 +79,44 @@ const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
         favorites: []
       });
 
-      setSuccess('Inscription réussie avec Microsoft !');
+      setSuccess('Registration successful with Microsoft!');
     } catch (error) {
       setError(error.message);
     }
   };
 
-  if (isPendingVerification) {
-    return (
-      <div className="register-container">
-        <h2>Attente de la validation</h2>
-        <p>Veuillez vérifier votre e-mail pour valider votre compte.</p>
-      </div>
-    );
-  }
-
   return (
     <div className="register-container">
-      <h2>Créer un compte</h2>
-      <p className="subtext">
-        Already have an account? <span className="trial-link" onClick={toggleAuthForm}>Sign in</span>
-      </p>
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="prenom">Prénom :</label>
-          <input
-            type="text"
-            id="prenom"
-            value={prenom}
-            onChange={(e) => setPrenom(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="nom">Nom :</label>
-          <input
-            type="text" 
-            id="nom"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email :</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Mot de passe :</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="register-btn">S'inscrire</button>
+      <div className="image-container"></div>
+      <div className="register-form-container">
+        <h2>Create an Account</h2>
+        <p>Already have an account? <span className="trial-link" onClick={toggleAuthForm}>Sign in</span></p>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p style={{ color: 'green' }}>{success}</p>}
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="firstName">First Name:</label>
+          <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+          <label htmlFor="lastName">Last Name:</label>
+          <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <button type="submit">Register</button>
+          {/* "Or register with" section */}
+        <p className="or-continue-with">or register with</p>
         <div className="social-buttons">
           <button onClick={handleGoogleSignIn} className="social-button google">
-            <i className="fab fa-google"></i> S'inscrire avec Google
+            <i className="fab fa-google"></i> Register with Google
           </button>
           <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
-            <i className="fab fa-microsoft"></i> S'inscrire avec Microsoft
+            <i className="fab fa-microsoft"></i> Register with Microsoft
           </button>
         </div>
-      </form>
+        </form>
+        
+        
+      </div>
     </div>
   );
 };
