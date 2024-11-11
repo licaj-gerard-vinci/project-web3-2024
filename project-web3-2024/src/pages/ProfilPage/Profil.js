@@ -4,9 +4,109 @@ import { ref, get, update } from 'firebase/database';
 import { db, storage } from '../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, uploadBytes, ref as storageRef } from 'firebase/storage';
-import './Profil.css';
+import styled from 'styled-components';
 
-const Profil = () => {
+const ProfileContainer = styled.div`
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  padding: 40px;
+  border-radius: 15px;
+  max-width: 600px;
+  margin: 40px auto;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ProfilePhotoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+  cursor: pointer;
+
+  img {
+  background-color: #f0f0f0;
+    border-radius: 50%;
+    width: 120px;
+    height: 120px;
+    object-fit: contain; /* Ajuste l'image pour qu'elle soit entièrement visible */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    transform: scale(0.9); /* Optionnel : ajuste la taille pour dézoomer légèrement */
+  }
+`;
+
+
+
+const SectionTitle = styled.h2`
+  font-size: 1.5em;
+  margin-bottom: 15px;
+  color: #ff5722;
+  text-align: center;
+`;
+
+const InfoContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px 30px;
+  background-color: #2c2c2c;
+  border-radius: 10px;
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  width: 100%;
+`;
+
+const InfoRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+const Label = styled.span`
+  font-weight: bold;
+  color: #ff5722;
+  flex: 1;
+`;
+
+const Text = styled.span`
+  color: #e0e0e0;
+  flex: 2;
+  text-align: left;
+`;
+
+const StyledButton = styled.button`
+  background-color: #ff5722;
+  border: none;
+  padding: 12px 25px;
+  color: white;
+  font-size: 1em;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  margin: 10px 0;
+
+  &:hover {
+    background-color: #e64a19;
+  }
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const LogoutButton = styled(StyledButton)`
+  background-color: #333;
+  width: 100%;
+  margin-top: 20px;
+
+  &:hover {
+    background-color: #444;
+  }
+`;
+
+const Profile = () => {
   const [user, setUser] = useState(null);
   const [prenom, setPrenom] = useState('');
   const [nom, setNom] = useState('');
@@ -33,7 +133,6 @@ const Profil = () => {
     return () => unsubscribe();
   }, [navigate]);
 
-  // Fonction pour récupérer le profil de l'utilisateur
   const fetchUserProfile = async (userId) => {
     const userRef = ref(db, `users/${userId}`);
     const snapshot = await get(userRef);
@@ -46,7 +145,6 @@ const Profil = () => {
     setPhotoURL(userData?.photoURL || '');
   };
 
-  // Fonction pour récupérer les exercices favoris de l'utilisateur
   const fetchFavorites = async (userId) => {
     const userRef = ref(db, `users/${userId}/favorites`);
     const snapshot = await get(userRef);
@@ -82,7 +180,6 @@ const Profil = () => {
     fileInputRef.current.click();
   };
 
-  // Gérer l'édition des informations
   const toggleEdit = () => {
     if (isEditing) {
       saveChanges();
@@ -90,7 +187,6 @@ const Profil = () => {
     setIsEditing(!isEditing);
   };
 
-  // Enregistrer les modifications dans la DB
   const saveChanges = async () => {
     const userRef = ref(db, `users/${user.uid}`);
     await update(userRef, {
@@ -99,89 +195,58 @@ const Profil = () => {
       age,
       gender
     });
-    // Recharger les données après la sauvegarde
     await fetchUserProfile(user.uid);
   };
 
   return (
-    <div className="profile-container">
-      <div className="profile-info">
-        <div className="profile-photo-container" onClick={triggerFileInput}>
-          <img
-            src={photoURL || "https://via.placeholder.com/100"}
-            alt="Photo de profil"
-            className="profile-photo"
-          />
-          <input
-            type="file"
-            ref={fileInputRef}
-            style={{ display: 'none' }}
-            onChange={handlePhotoChange}
-          />
-        </div>
-        <h1>Votre Profil</h1>
-        
-        <div className="form-group">
-          <label>Prénom :</label>
-          {isEditing ? (
-            <input type="text" value={prenom} onChange={(e) => setPrenom(e.target.value)} />
-          ) : (
-            <p>{prenom}</p>
-          )}
-        </div>
-        
-        <div className="form-group">
-          <label>Nom :</label>
-          {isEditing ? (
-            <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} />
-          ) : (
-            <p>{nom}</p>
-          )}
-        </div>
-        
-        <div className="form-group">
-          <label>Âge :</label>
-          {isEditing ? (
-            <input type="number" value={age} onChange={(e) => setAge(e.target.value)} />
-          ) : (
-            <p>{age}</p>
-          )}
-        </div>
-        
-        <div className="form-group">
-          <label>Sexe :</label>
-          {isEditing ? (
-            <select value={gender} onChange={(e) => setGender(e.target.value)}>
-              <option value="">Sélectionner</option>
-              <option value="male">Homme</option>
-              <option value="female">Femme</option>
-            </select>
-          ) : (
-            <p>{gender}</p>
-          )}
-        </div>
-
-        <button className="edit-button" onClick={toggleEdit}>
-          {isEditing ? "Enregistrer" : "Modifier information"}
-        </button>
-
-        <h2>Exercices Favoris</h2>
-        <ul>
-          {favorites.length > 0 ? (
-            favorites.map((exercise, index) => (
-              <li key={index}>{exercise}</li>
-            ))
-          ) : (
-            <p>Aucun exercice favori trouvé.</p>
-          )}
-        </ul>
-
-        
-        
-        <button className="logout-button" onClick={() => getAuth().signOut()}>Déconnexion</button>
-      </div>
-    </div>
+    <ProfileContainer>
+      <ProfilePhotoContainer onClick={triggerFileInput}>
+        <img
+          src={photoURL || "https://via.placeholder.com/150"}
+          alt="Photo de profil"
+        />
+        <input
+          type="file"
+          ref={fileInputRef}
+          style={{ display: 'none' }}
+          onChange={handlePhotoChange}
+        />
+      </ProfilePhotoContainer>
+      <SectionTitle>Votre Profil</SectionTitle>
+      <InfoContainer>
+        <InfoRow>
+          <Label>Prénom :</Label>
+          <Text>{isEditing ? <input type="text" value={prenom} onChange={(e) => setPrenom(e.target.value)} /> : prenom}</Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>Nom :</Label>
+          <Text>{isEditing ? <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} /> : nom}</Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>Âge :</Label>
+          <Text>{isEditing ? <input type="number" value={age} onChange={(e) => setAge(e.target.value)} /> : age}</Text>
+        </InfoRow>
+        <InfoRow>
+          <Label>Sexe :</Label>
+          <Text>{isEditing ? <select value={gender} onChange={(e) => setGender(e.target.value)}><option value="">Sélectionner</option><option value="male">Homme</option><option value="female">Femme</option></select> : gender}</Text>
+        </InfoRow>
+      </InfoContainer>
+      <StyledButton onClick={toggleEdit}>
+        {isEditing ? "Enregistrer" : "Modifier information"}
+      </StyledButton>
+      <SectionTitle>Exercices Favoris</SectionTitle>
+      <InfoContainer>
+        {favorites.length > 0 ? (
+          favorites.map((exercise, index) => (
+            <Text key={index}>{exercise}</Text>
+          ))
+        ) : (
+          <Text>Aucun exercice favori trouvé.</Text>
+        )}
+      </InfoContainer>
+      <LogoutButton onClick={() => getAuth().signOut()}>Déconnexion</LogoutButton>
+    </ProfileContainer>
   );
 };
 
-export default Profil;
+export default Profile;

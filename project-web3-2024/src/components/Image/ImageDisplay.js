@@ -29,7 +29,7 @@ const ImageDisplay = ({ imagePath, altText = "Image" }) => {
   };
 
   return (
-    <div className="image-container" style={{ textAlign: 'center' }}>
+    <div className="image-container" style={{ textAlign: 'center', position: 'relative' }}>
       {!isLoaded && !error && <p>Chargement de l'image...</p>}
       {error ? (
         <p>Impossible de charger l'image</p>
@@ -39,7 +39,13 @@ const ImageDisplay = ({ imagePath, altText = "Image" }) => {
             src={imageUrl}
             alt={altText}
             onLoad={handleImageLoad}
-            style={{ display: isLoaded ? 'block' : 'none', maxWidth: '100%' }}
+            style={{
+              display: 'block',
+              opacity: isLoaded ? 1 : 0,
+              transition: 'opacity 0.5s ease',
+              maxWidth: '100%',
+              borderRadius: '8px',
+            }}
           />
         )
       )}

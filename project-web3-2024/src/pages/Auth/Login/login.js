@@ -1,72 +1,98 @@
 import React, { useState, useEffect } from 'react';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthProvider, sendPasswordResetEmail } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { ref, get, set } from 'firebase/database';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [user, setUser] = useState(null);
+  const [resetEmailSent, setResetEmailSent] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        navigate('/');  // Redirige vers la page d'accueil si l'utilisateur est connecté
+      if (currentUser && currentUser.emailVerified) {
+        navigate('/'); // Redirige vers la page d'accueil si l'utilisateur est vérifié
       }
     });
     return () => unsubscribe();
   }, [navigate]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
 
-    signInWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
-        console.log('Utilisateur connecté:', userCredential.user);
-        navigate('/');  // Redirige après la connexion
-      })
-      .catch((error) => {
-        setError(error.message);
-      });
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const userExists = await checkIfUserExists(user);
+
+      if (userExists) {
+        navigate('/'); // Redirige si l'utilisateur existe
+      } else {
+        navigate('/register', { state: { message: 'Vous devez vous inscrire d\'abord !' } });
+      }
+    } catch (error) {
+      setError(error.message);
+    }
   };
 
-  const saveUserInfoToDatabase = async (user) => {
+  const handlePasswordReset = async () => {
+    if (!email) {
+      setError("Veuillez entrer votre adresse e-mail pour réinitialiser le mot de passe.");
+      return;
+    }
+    try {
+      await sendPasswordResetEmail(auth, email);
+      setResetEmailSent(true);
+      setError('');
+    } catch (error) {
+      setError("Erreur lors de l'envoi de l'email de réinitialisation : " + error.message);
+    }
+  };
+
+  const checkIfUserExists = async (user) => {
     const userRef = ref(db, `users/${user.uid}`);
-    await set(userRef, {
-      uid: user.uid,
-      displayName: user.displayName || '',
-      email: user.email,
-      photoURL: user.photoURL || '',
-      isAdmin: false,
-      age: 0,
-      gender: "",
-      favorites: []
-    });
+    const snapshot = await get(userRef);
+    return snapshot.exists();
   };
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-
+    provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+    provider.addScope('https://www.googleapis.com/auth/userinfo.email');
+  
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+  
+      // Log pour vérifier les informations récupérées
+      console.log("User data from Google:", user);
+  
+      const userExists = await checkIfUserExists(user);
 
-      // Vérifie si l'utilisateur existe dans la base de données
-      const userRef = ref(db, `users/${user.uid}`);
-      const userSnapshot = await get(userRef);
-      if (!userSnapshot.exists()) {
-        await saveUserInfoToDatabase(user);  // Sauvegarde automatique des informations utilisateur
-        console.log('Utilisateur ajouté à la base de données');
+      console.log(user.uid);
+      
+      
+      if (!userExists) {
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          photoURL: user.photoURL,
+          isAdmin: false,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
       }
-
-      console.log('Connexion avec Google réussie:', user);
+  
       navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
@@ -80,29 +106,32 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Vérifie si l'utilisateur existe dans la base de données
-      const userRef = ref(db, `users/${user.uid}`);
-      const userSnapshot = await get(userRef);
-      if (!userSnapshot.exists()) {
-        await saveUserInfoToDatabase(user);  // Sauvegarde automatique des informations utilisateur
-        console.log('Utilisateur ajouté à la base de données');
+      const userExists = await checkIfUserExists(user);
+
+      if (!userExists) {
+        await set(ref(db, `users/${user.uid}`), {
+          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          email: user.email,
+          isAdmin: false,
+          photoURL: user.photoURL,
+          age: 0,
+          gender: "",
+          favorites: []
+        });
       }
 
-      console.log('Connexion avec Microsoft réussie:', user);
       navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
     }
   };
 
-  if (user) {
-    return null;  // Empêche l'affichage du formulaire si l'utilisateur est déjà connecté
-  }
-
   return (
     <div className="login-container">
       <h2>Login</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
+      {resetEmailSent && <p style={{ color: 'green' }}>E-mail de réinitialisation envoyé. Vérifiez votre boîte de réception.</p>}
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email:</label>
@@ -125,6 +154,12 @@ const Login = () => {
           />
         </div>
         <button type="submit">Login</button>
+        <p className="forgot-password-link" onClick={handlePasswordReset}>
+          Mot de passe oublié ?
+        </p>
+        <p>
+          Pas encore de compte ? <Link to="/register" className="forgot-password-link">S'inscrire</Link>
+        </p>
         <div className="social-buttons">
           <button onClick={handleGoogleSignIn} className="social-button google">
             <i className="fab fa-google"></i> Se connecter avec Google
