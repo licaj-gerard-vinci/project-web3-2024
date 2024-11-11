@@ -4,20 +4,20 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 70vh; /* Réduit la hauteur minimum pour un affichage plus compact */
+    min-height: 80vh; /* Augmente la hauteur minimum */
     background-color: #0a0a0c;
     color: #ffffff;
     font-family: Arial, sans-serif;
-    margin-top: -4.5rem; /* Monte légèrement le calculateur vers le haut */
+    margin-top: -6rem; /* Ajuste le positionnement */
 }
 
 /* Title styling */
 .BMICalculator-container h2 {
     color: #ff6f00;
-    font-size: 1.8rem; /* Réduit légèrement la taille du titre */
-    margin-bottom: 0.8rem; /* Réduit l'espace sous le titre */
+    font-size: 2.5rem; /* Augmente la taille du titre */
+    margin-bottom: 1.5rem; /* Augmente l'espace sous le titre */
     text-transform: uppercase;
-    letter-spacing: 1px;
+    letter-spacing: 1.2px;
 }
 
 /* Grid container for inputs */
@@ -26,10 +26,10 @@
     grid-template-areas:
         "weight height"
         "age sex";
-    gap: 0.8rem 1rem; /* Réduit l'écart pour un alignement plus serré */
+    gap: 1.2rem 2rem; /* Augmente l'écart pour un alignement plus espacé */
     width: 100%;
-    max-width: 450px; /* Réduit la largeur pour une apparence plus compacte */
-    margin-bottom: 0.8rem; /* Réduit l'espace en bas du formulaire */
+    max-width: 600px; /* Augmente la largeur maximale du calculateur */
+    margin-bottom: 1.5rem; /* Augmente l'espace en bas du formulaire */
 }
 
 /* Specific placement of each input */
@@ -51,22 +51,22 @@
 
 /* Label container styling */
 .label-container {
-    font-size: 0.85rem; /* Réduit la taille de police des labels */
+    font-size: 1rem; /* Augmente la taille de police des labels */
     color: #a0a0a0;
     text-align: center;
-    margin-bottom: 0.2rem; /* Réduit l'espace sous le label */
+    margin-bottom: 0.5rem; /* Augmente l'espace sous le label */
 }
 
 /* Style for input fields and select */
 .input-grid input[type="number"],
 .input-grid select {
     width: 100%;
-    padding: 0.6rem; /* Réduit le padding pour un champ plus compact */
+    padding: 1rem; /* Augmente le padding pour un champ plus grand */
     border: 1px solid #333333;
     background-color: #0a0a0c;
     color: #a0a0a0;
     border-radius: 5px;
-    font-size: 0.95rem; /* Réduit légèrement la taille de police */
+    font-size: 1.1rem; /* Augmente la taille de police */
     transition: border-color 0.3s;
     text-align: center;
     box-sizing: border-box;
@@ -82,9 +82,9 @@
 /* Button styling */
 .BMICalculator-container button {
     width: 100%;
-    max-width: 450px; /* Ajuste la largeur du bouton pour correspondre au formulaire */
-    padding: 0.5rem; /* Réduit le padding pour un bouton plus compact */
-    font-size: 1rem;
+    max-width: 600px; /* Ajuste la largeur du bouton pour correspondre au formulaire */
+    padding: 1rem; /* Augmente le padding pour un bouton plus grand */
+    font-size: 1.2rem; /* Augmente la taille de la police */
     font-weight: bold;
     color: #ffffff;
     background-color: #ff6f00;
@@ -102,8 +102,8 @@
 /* Result display */
 .BMICalculator-container .result {
     text-align: center;
-    margin-top: 0.8rem; /* Réduit l'espace au-dessus du résultat */
-    font-size: 1.1rem; /* Réduit légèrement la taille de la police du résultat */
+    margin-top: 1.5rem; /* Augmente l'espace au-dessus du résultat */
+    font-size: 1.3rem; /* Augmente légèrement la taille de la police du résultat */
     font-weight: bold;
     color: #ff6f00;
 }
