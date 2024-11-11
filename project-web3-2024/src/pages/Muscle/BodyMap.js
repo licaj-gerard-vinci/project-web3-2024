@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './BodyMap.css';
 import { ReactComponent as BodyFront } from '../../assets/body.svg';
 import { ReactComponent as BodyBack } from '../../assets/bodyBack.svg';
-import { ref, get, getDatabase, onValue, set } from "firebase/database";
+import { ref, get, getDatabase, onValue, set, remove } from "firebase/database";
 import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import Select from 'react-select';
@@ -10,6 +10,8 @@ import { AiFillPlusCircle } from "react-icons/ai";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { MdOutlineMoreVert } from "react-icons/md";
 import VideosPlayer from '../VideosPlayer/VideosPlayer';
+import { IoHeartOutline } from "react-icons/io5";
+import { IoHeartSharp } from "react-icons/io5";
 
 const BodyMap = () => {
   const [selectedMuscle, setSelectedMuscle] = useState(null);
@@ -20,6 +22,8 @@ const BodyMap = () => {
   const [user, setUser] = useState(null);
   const [showDescription, setShowDescription] = useState({}); // état pour gérer l'affichage des descriptions
   const [videoFile, setVideoFile] = useState(null); // Nouvel état pour le fichier vidéo
+  const [likes, setLikes] = useState({}); // État pour stocker les likes en temps réel
+
 
   const [formData, setFormData] = useState({
     name: "",
@@ -65,6 +69,15 @@ const BodyMap = () => {
   }, [db, auth]);
   console.log(isAdmin);
   
+  useEffect(() => {
+    if (user) {
+      const likesRef = ref(db, "likes");
+      onValue(likesRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        setLikes(data);
+      });
+    }
+  }, [user, db]);
 
   const handleMuscleClick = (e) => {
     const muscle = e.target.id;
@@ -263,6 +276,25 @@ const BodyMap = () => {
 const handleFileChange = (e) => {
     setVideoFile(e.target.files[0]);
 };
+
+const handleLike = (exerciseId) => {
+  if (!user) {
+    alert("Veuillez vous connecter pour aimer cet exercice.");
+    return;
+  }
+
+  const likeRef = ref(db, `likes/${exerciseId}/${user.uid}`);
+
+  if (likes[exerciseId] && likes[exerciseId][user.uid]) {
+    remove(likeRef); // Supprime le like si l'utilisateur a déjà liké cet exercice
+  } else {
+    set(likeRef, true); // Ajoute un like pour cet exercice
+  }
+};
+
+const isLikedByUser = (exerciseId) => likes[exerciseId] && likes[exerciseId][user?.uid];
+const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerciseId]).length : 0;
+
   
   return (
     <div className="main-container">
@@ -376,6 +408,11 @@ const handleFileChange = (e) => {
                         <p>Difficulté: {exercise.difficulte}</p>
                       </div>
                     )}
+                    {/* Bouton Like */}
+                    <button className="minus-button" onClick={() => handleLike(exercise.id)}>
+                      {isLikedByUser(exercise.id) ? <IoHeartSharp style={{ color: 'red' }} /> : <IoHeartOutline />}
+                    </button>
+                    <p>{getLikeCount(exercise.id)} likes</p> {/* Compteur de likes */}
                   </div>
                 ))
               ) : (
