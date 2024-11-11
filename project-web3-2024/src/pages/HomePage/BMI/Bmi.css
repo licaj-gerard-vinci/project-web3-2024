@@ -4,18 +4,18 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 80vh; /* Augmente la hauteur minimum */
-    background-color: #0a0a0c;
+    min-height: 80vh;
+    background-color: #0a0a0c; /* Couleur de fond sombre pour bien contraster */
     color: #ffffff;
     font-family: Arial, sans-serif;
-    margin-top: -6rem; /* Ajuste le positionnement */
+    margin-top: -6rem;
 }
 
 /* Title styling */
 .BMICalculator-container h2 {
     color: #ff6f00;
-    font-size: 2.5rem; /* Augmente la taille du titre */
-    margin-bottom: 1.5rem; /* Augmente l'espace sous le titre */
+    font-size: 2.5rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 1.2px;
 }
@@ -26,10 +26,10 @@
     grid-template-areas:
         "weight height"
         "age sex";
-    gap: 1.2rem 2rem; /* Augmente l'écart pour un alignement plus espacé */
+    gap: 1.2rem 2rem;
     width: 100%;
-    max-width: 600px; /* Augmente la largeur maximale du calculateur */
-    margin-bottom: 1.5rem; /* Augmente l'espace en bas du formulaire */
+    max-width: 600px;
+    margin-bottom: 1.5rem;
 }
 
 /* Specific placement of each input */
@@ -51,23 +51,23 @@
 
 /* Label container styling */
 .label-container {
-    font-size: 1rem; /* Augmente la taille de police des labels */
+    font-size: 1rem;
     color: #a0a0a0;
     text-align: center;
-    margin-bottom: 0.5rem; /* Augmente l'espace sous le label */
+    margin-bottom: 0.5rem;
 }
 
 /* Style for input fields and select */
 .input-grid input[type="number"],
 .input-grid select {
     width: 100%;
-    padding: 1rem; /* Augmente le padding pour un champ plus grand */
+    padding: 1rem;
     border: 1px solid #333333;
     background-color: #0a0a0c;
     color: #a0a0a0;
     border-radius: 5px;
-    font-size: 1.1rem; /* Augmente la taille de police */
-    transition: border-color 0.3s;
+    font-size: 1.1rem;
+    transition: border-color 0.3s, box-shadow 0.3s; /* Ajout de transition pour focus */
     text-align: center;
     box-sizing: border-box;
 }
@@ -76,34 +76,38 @@
 .input-grid input[type="number"]:focus,
 .input-grid select:focus {
     outline: none;
-    border-color: #ff6f00;
+    border-color: #ff6f00; /* Changement de couleur au focus */
+    box-shadow: 0 0 10px rgba(255, 111, 0, 0.7); /* Ombre douce au focus */
 }
 
 /* Button styling */
 .BMICalculator-container button {
     width: 100%;
-    max-width: 600px; /* Ajuste la largeur du bouton pour correspondre au formulaire */
-    padding: 1rem; /* Augmente le padding pour un bouton plus grand */
-    font-size: 1.2rem; /* Augmente la taille de la police */
+    max-width: 600px;
+    padding: 1.5rem; /* Plus grand padding pour un bouton plus imposant */
+    font-size: 1.5rem; /* Taille de la police agrandie */
     font-weight: bold;
-    color: #ffffff;
-    background-color: #ff6f00;
+    color: #0a0a0c; /* Texte en couleur sombre pour rester sur le thème */
+    background-color: #ff6f00; /* Couleur de fond orange */
     border: none;
-    border-radius: 5px;
+    border-radius: 30px; /* Bordures arrondies pour un effet moderne */
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Transition pour les effets de hover */
     text-transform: uppercase;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3); /* Ombre subtile pour un effet de profondeur */
 }
 
 .BMICalculator-container button:hover {
-    background-color: #e65c00;
+    background-color: #e65c00; /* Couleur de fond plus foncée au survol */
+    transform: translateY(-3px); /* Léger mouvement vers le haut au survol */
 }
 
 /* Result display */
 .BMICalculator-container .result {
     text-align: center;
-    margin-top: 1.5rem; /* Augmente l'espace au-dessus du résultat */
-    font-size: 1.3rem; /* Augmente légèrement la taille de la police du résultat */
+    margin-top: 1.5rem;
+    font-size: 1.3rem;
     font-weight: bold;
     color: #ff6f00;
 }
