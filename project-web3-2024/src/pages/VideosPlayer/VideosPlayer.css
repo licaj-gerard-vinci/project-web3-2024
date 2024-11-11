@@ -1,0 +1,11 @@
+.video-container video {
+    cursor: pointer;
+    width: 100%;
+    max-width: 200px;
+}
+.video-container p {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    margin-top: 5px;
+}

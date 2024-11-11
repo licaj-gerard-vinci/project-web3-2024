@@ -71,14 +71,7 @@
 }
 
 /* Right column for exercise list and videos - 60% width */
-.exercise-list-container {
-  width: 60%;
-  padding: 20px;
-  background-color: #333333;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  color: #ffffff;
-}
+
 
 /* Style for exercises content */
 .exercise-list-container h2 {
@@ -109,18 +102,7 @@
 }
 
 /* Information box to display details */
-.muscle-info {
-  margin-top: 20px;
-  padding: 15px;
-  width: 100%;
-  max-width: 400px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #222222;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  color: #ffffff;
-  text-align: center;
-}
+
 
 .muscle-info h2 {
   margin: 0;
@@ -186,32 +168,40 @@
 }
 
 .exercise-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Espace entre chaque exercice */
+  width: 125%; /* La grille s'étend sur toute la largeur */
 }
 
 .exercise-card {
-  border: 1px solid #ddd;
-  border-radius: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between; /* Étalement vers les bords */
+  width: 100%; /* Prend toute la largeur du conteneur */
   padding: 20px;
-  text-align: center;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid #444; /* Par exemple pour une bordure visible */
+  border-radius: 8px;
+  background-color: #222; /* Couleur de fond pour chaque carte */
 }
 
+
 .exercise-card h3 {
+  margin: 0;
   font-size: 1.2em;
-  margin-bottom: 10px;
+  color: #fff;
 }
 
 .play-button {
-  background-color: transparent;
-  border: none;
-  font-size: 3rem; /* Taille de l'icône */
-  color: #ff5c2b;
+  font-size: 2em;
+  background-color: #ffffff; /* Couleur de fond rouge */
+  color: #FF4000;
   cursor: pointer;
+  background: none;
+  border: none;
   outline: none;
-  transition: transform 0.2s ease, color 0.2s ease;
+  transition: color 0.2s ease, transform 0.2s ease;
 }
 
 .play-button:hover {
@@ -223,22 +213,22 @@
   transform: scale(0.95); /* Rétrécissement léger lors du clic */
 }
 
-.minus-button {
-  background-color: transparent;
+.play-button, .minus-button {
+  font-size: 24px; /* Ajustez si besoin pour l'icône */
+  color: #ff5c2b; /* Couleur de l'icône */
+  margin-left: 10px;
+  background: none;
   border: none;
-  font-size: 2.5rem; /* Taille de l'icône */
-  color: #ff5c2b; /* Couleur rouge pour le bouton "-" */
   cursor: pointer;
   outline: none;
   transition: transform 0.2s ease, color 0.2s ease;
-  margin-top: 20px;
-  text-align: center;
 }
 
 .minus-button:hover {
   color: #ff5c2b; /* Rouge plus foncé au survol */
   transform: scale(1.1); /* Agrandissement léger au survol */
 }
+
 
 .minus-button:active {
   transform: scale(0.95); /* Rétrécissement léger lors du clic */
@@ -279,4 +269,40 @@ select:hover {
   border-color: #ff5c2b;
 }
 
+/* Bouton pour les détails de l'exercice (en bas à droite de chaque carte) */
+.exercise-details-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 1.5em;
+  color: #ff5c2b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.exercise-details-button:hover {
+  color: #ff7f50;
+  transform: scale(1.1); /* Agrandissement léger au survol */
+}
+
+.exercise-details-button:active {
+  transform: scale(0.95); /* Rétrécissement léger lors du clic */
+}
+
+.video-container {
+  width: 300px;
+  height: 200px; /* Ajustez la hauteur selon vos préférences */
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Permet de remplir le conteneur sans déformer la vidéo */
+  border-radius: 8px;
+}
 
