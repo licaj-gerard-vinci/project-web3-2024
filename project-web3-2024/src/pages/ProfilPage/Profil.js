@@ -1,11 +1,11 @@
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import React, { useState, useEffect, useRef } from 'react';
+import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { ref, get, update } from 'firebase/database';
 import { db, storage } from '../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, uploadBytes, ref as storageRef } from 'firebase/storage';
 import styled from 'styled-components';
-import  './Profil.css'
+import './Profil.css';
 
 const ProfileContainer = styled.div`
   background-color: #1e1e1e;
@@ -30,17 +30,14 @@ const ProfilePhotoContainer = styled.div`
   cursor: pointer;
 
   img {
-  background-color: #f0f0f0;
+    background-color: #f0f0f0;
     border-radius: 50%;
     width: 120px;
     height: 120px;
-    object-fit: contain; /* Ajuste l'image pour qu'elle soit entièrement visible */
+    object-fit: contain;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-    transform: scale(0.9); /* Optionnel : ajuste la taille pour dézoomer légèrement */
   }
 `;
-
-
 
 const SectionTitle = styled.h2`
   font-size: 1.5em;
@@ -111,12 +108,8 @@ const LogoutButton = styled(StyledButton)`
 
 const Profile = () => {
   const [user, setUser] = useState(null);
-  const [prenom, setPrenom] = useState('');
-  const [nom, setNom] = useState('');
-  const [age, setAge] = useState('');
-  const [gender, setGender] = useState('');
+  const [formData, setFormData] = useState({ prenom: '', nom: '', email: '', age: '', gender: '' });
   const [photoURL, setPhotoURL] = useState('');
-  const [favorites, setFavorites] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const fileInputRef = useRef(null);
   const navigate = useNavigate();
@@ -126,8 +119,7 @@ const Profile = () => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
         setUser(currentUser);
-        await fetchUserProfile(currentUser.uid);
-        await fetchFavorites(currentUser.uid);
+        fetchUserProfile(currentUser.uid);
       } else {
         navigate('/login');
       }
@@ -141,30 +133,14 @@ const Profile = () => {
     const snapshot = await get(userRef);
     const userData = snapshot.val();
 
-    setPrenom(userData?.prenom || '');
-    setNom(userData?.nom || '');
-    setAge(userData?.age || '');
-    setGender(userData?.gender || '');
+    setFormData({
+      prenom: userData?.prenom || '',
+      nom: userData?.nom || '',
+      email: userData?.email || '',
+      age: userData?.age || '',
+      gender: userData?.gender || '',
+    });
     setPhotoURL(userData?.photoURL || '');
-  };
-
-  const fetchFavorites = async (userId) => {
-    const userRef = ref(db, `users/${userId}/favorites`);
-    const snapshot = await get(userRef);
-
-    if (snapshot.exists()) {
-      const favoriteIds = snapshot.val();
-      const exercisePromises = favoriteIds.map((exerciseId) =>
-        get(ref(db, `exercises/${exerciseId}`))
-      );
-
-      const exerciseSnapshots = await Promise.all(exercisePromises);
-      const favoriteExercises = exerciseSnapshots
-        .filter((snap) => snap.exists())
-        .map((snap) => snap.val().name);
-
-      setFavorites(favoriteExercises);
-    }
   };
 
   const handlePhotoChange = async (e) => {
@@ -179,10 +155,6 @@ const Profile = () => {
     }
   };
 
-  const triggerFileInput = () => {
-    fileInputRef.current.click();
-  };
-
   const toggleEdit = () => {
     if (isEditing) {
       saveChanges();
@@ -193,60 +165,85 @@ const Profile = () => {
   const saveChanges = async () => {
     const userRef = ref(db, `users/${user.uid}`);
     await update(userRef, {
-      prenom,
-      nom,
-      age,
-      gender
+      prenom: formData.prenom,
+      nom: formData.nom,
+      age: formData.age,
+      gender: formData.gender,
     });
-    await fetchUserProfile(user.uid);
+    setIsEditing(false);
   };
 
   return (
     <ProfileContainer>
-      <ProfilePhotoContainer onClick={triggerFileInput}>
-        <img
-          src={photoURL || "https://via.placeholder.com/150"}
-          alt="Photo de profil"
-        />
-        <input
-          type="file"
-          ref={fileInputRef}
-          style={{ display: 'none' }}
-          onChange={handlePhotoChange}
-        />
+      <ProfilePhotoContainer onClick={() => fileInputRef.current.click()}>
+        <img src={photoURL || "https://via.placeholder.com/150"} alt="Profile" />
+        <input type="file" ref={fileInputRef} style={{ display: 'none' }} onChange={handlePhotoChange} />
       </ProfilePhotoContainer>
-      <SectionTitle>Votre Profil</SectionTitle>
+
+      <SectionTitle>Your Profile</SectionTitle>
       <InfoContainer>
         <InfoRow>
           <Label>Prénom :</Label>
-          <Text>{isEditing ? <input type="text" value={prenom} onChange={(e) => setPrenom(e.target.value)} /> : prenom}</Text>
+          <Text>
+            {isEditing ? (
+              <input
+                type="text"
+                value={formData.prenom}
+                onChange={(e) => setFormData({ ...formData, prenom: e.target.value })}
+              />
+            ) : (
+              formData.prenom
+            )}
+          </Text>
         </InfoRow>
         <InfoRow>
           <Label>Nom :</Label>
-          <Text>{isEditing ? <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} /> : nom}</Text>
+          <Text>
+            {isEditing ? (
+              <input
+                type="text"
+                value={formData.nom}
+                onChange={(e) => setFormData({ ...formData, nom: e.target.value })}
+              />
+            ) : (
+              formData.nom
+            )}
+          </Text>
         </InfoRow>
         <InfoRow>
-          <Label>Âge :</Label>
-          <Text>{isEditing ? <input type="number" value={age} onChange={(e) => setAge(e.target.value)} /> : age}</Text>
+          <Label>Email :</Label>
+          <Text>{formData.email}</Text>
         </InfoRow>
-        <InfoRow>
-          <Label>Sexe :</Label>
-          <Text>{isEditing ? <select value={gender} onChange={(e) => setGender(e.target.value)}><option value="">Sélectionner</option><option value="male">Homme</option><option value="female">Femme</option></select> : gender}</Text>
-        </InfoRow>
-      </InfoContainer>
-      <StyledButton onClick={toggleEdit}>
-        {isEditing ? "Enregistrer" : "Modifier information"}
-      </StyledButton>
-      <SectionTitle>Exercices Favoris</SectionTitle>
-      <InfoContainer>
-        {favorites.length > 0 ? (
-          favorites.map((exercise, index) => (
-            <Text key={index}>{exercise}</Text>
-          ))
-        ) : (
-          <Text>Aucun exercice favori trouvé.</Text>
+        {isEditing && (
+          <>
+            <InfoRow>
+              <Label>Âge :</Label>
+              <Text>
+                <input
+                  type="number"
+                  value={formData.age}
+                  onChange={(e) => setFormData({ ...formData, age: e.target.value })}
+                />
+              </Text>
+            </InfoRow>
+            <InfoRow>
+              <Label>Sexe :</Label>
+              <Text>
+                <select
+                  value={formData.gender}
+                  onChange={(e) => setFormData({ ...formData, gender: e.target.value })}
+                >
+                  <option value="">Sélectionner</option>
+                  <option value="male">Homme</option>
+                  <option value="female">Femme</option>
+                </select>
+              </Text>
+            </InfoRow>
+          </>
         )}
       </InfoContainer>
+
+      <StyledButton onClick={toggleEdit}>{isEditing ? "Enregistrer" : "Modifier"}</StyledButton>
       <LogoutButton onClick={() => getAuth().signOut()}>Déconnexion</LogoutButton>
     </ProfileContainer>
   );
