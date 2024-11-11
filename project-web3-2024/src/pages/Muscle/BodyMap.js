@@ -5,13 +5,11 @@ import { ReactComponent as BodyBack } from '../../assets/bodyBack.svg';
 import { ref, get, getDatabase, onValue, set } from "firebase/database";
 import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
 import { AiFillPlusCircle } from "react-icons/ai";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { MdOutlineMoreVert } from "react-icons/md";
-
-
+import VideosPlayer from '../VideosPlayer/VideosPlayer';
 
 const BodyMap = () => {
   const [selectedMuscle, setSelectedMuscle] = useState(null);
@@ -23,7 +21,6 @@ const BodyMap = () => {
   const [showDescription, setShowDescription] = useState({}); // état pour gérer l'affichage des descriptions
   const [videoFile, setVideoFile] = useState(null); // Nouvel état pour le fichier vidéo
 
-
   const [formData, setFormData] = useState({
     name: "",
     url: "",
@@ -33,7 +30,6 @@ const BodyMap = () => {
   });
   const [exercises, setExercises] = useState([]);
   const auth = getAuth();
-  const navigate = useNavigate();
   const db = getDatabase();
   const storage = getStorage();
 
@@ -128,7 +124,7 @@ const BodyMap = () => {
     if (formData.difficulte === ""){
       formData.difficulte = "Facile";
     }
-
+    handleToggleForm();
     // Téléchargement du fichier vidéo sur Firebase Storage
     const place = storageRef(storage, `videos/${formData.name}-${Date.now()}`);
     try {
@@ -151,8 +147,6 @@ const BodyMap = () => {
         difficulte: "",
         muscles: []
       });
-      handleToggleForm();
-      navigate("/bodyMap");
     } catch (error) {
       console.error("Erreur lors du téléchargement de la vidéo :", error);
     }
@@ -366,14 +360,13 @@ const handleFileChange = (e) => {
             {!user &&( 
               <div>Connectez-vous pour voir les exercices</div>
             )}
-            <div className="exercise-grid">
+            {user && (
+              <div className="exercise-grid">
               {exercises.length > 0 ? (
                 exercises.map(exercise => (
                   <div key={exercise.id} className="exercise-card">
                     <h3>{exercise.name}</h3>
-                    <div className="video-container">
-                      <video src={exercise.url} autoPlay loop width="100%" height="100%"/>
-                    </div>
+                    <VideosPlayer videoUrl={exercise.url} videoId={exercise.id}/>
                     <button className="minus-button" onClick={() => toggleDescription(exercise.id)}>
                       {showDescription[exercise.id] ?  <MdOutlineMoreVert/> : <MdOutlineMoreVert />}
                     </button>
@@ -389,6 +382,7 @@ const handleFileChange = (e) => {
                 <p>No exercises found for this muscle.</p>
               )}
             </div>
+            )} 
           </>
         ) : (
           <p>Select a muscle to see exercises and videos.</p>
