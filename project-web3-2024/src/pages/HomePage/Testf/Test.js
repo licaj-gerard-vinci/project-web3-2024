@@ -19,6 +19,7 @@ const MuscleCarousel = () => {
     { name: 'Shoulders', image: shouldersImage },
   ];
 
+  
   return (
     <div className="muscle-carousel-container">
       <h2 className="carousel-title">Different Muscles you can train 💪</h2>
