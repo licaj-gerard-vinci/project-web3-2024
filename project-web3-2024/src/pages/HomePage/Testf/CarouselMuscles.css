@@ -1,25 +1,20 @@
+/* Muscle Carousel Container */
 .muscle-carousel-container {
-    width: 100vw; /* Full viewport width */
-    margin: 0; /* Remove any margins */
-    background-color: #0a0a0c; /* Full black background */
+    width: 100vw;
+    margin: 0;
+    background-color: #0a0a0c;
     padding: 3rem 0;
     position: relative;
     text-align: center;
-    color: white; /* Ensure text is white to contrast the background */
-    overflow-x: hidden; /* Prevent horizontal scroll if the width exceeds viewport */
+    color: white;
+    overflow-x: hidden;
 }
 
-.carousel .slider-wrapper {
-    width: 100%; /* Full width of the container */
-    display: flex;
-    justify-content: center; /* Ensure the carousel content is centered */
-}
-
-
+/* Carousel Title */
 .carousel-title {
     font-family: 'Poppins', sans-serif;
     font-size: 2.5em;
-    color: #ff8c00; /* Customize color to match your theme */
+    color: #ff8c00;
     text-align: center;
     margin-bottom: 20px;
     font-weight: 700;
@@ -27,90 +22,94 @@
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    animation: fadeIn 1.2s ease-out;
 }
 
-@keyframes fadeIn {
-    0% { opacity: 0; transform: translateY(-10px); }
-    100% { opacity: 1; transform: translateY(0); }
-}
-
-/* Arrows for carousel */
+/* Arrow Buttons for Carousel */
 .arrow-prev, .arrow-next {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background-color: rgba(0, 0, 0, 0.6);
-    border: none;
+    background: rgba(255, 111, 0, 0.6); /* Couleur orange semi-transparente */
+    border: 2px solid rgba(255, 111, 0, 0.6); /* Bordure assortie, également semi-transparente */
     color: white;
-    font-size: 2rem;
-    padding: 10px;
-    border-radius: 50%;
+    font-size: 1.2rem;
+    width: 45px; /* Largeur fixe pour cercle parfait */
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Forme circulaire */
     cursor: pointer;
     z-index: 10;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); /* Ombre subtile */
+    transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
 }
 
+/* Hover Effect */
 .arrow-prev:hover, .arrow-next:hover {
-    background-color: rgba(255, 92, 43, 0.8); /* Hover effect for arrows */
+    background: #ff8c00; /* Couleur orange opaque au survol */
+    border-color: #ff8c00; /* Bordure orange opaque */
+    transform: scale(1.15); /* Légère augmentation de taille */
+    box-shadow: 0 6px 20px rgba(255, 140, 0, 0.6); /* Ombre plus prononcée au survol */
 }
 
+/* Positionnement des flèches */
 .arrow-prev {
-    left: 20px; /* Position arrow to the left */
+    left: 20px;
 }
 
 .arrow-next {
-    right: 20px; /* Position arrow to the right */
+    right: 20px;
 }
 
-/* Style the muscle slide */
+/* Muscle Slide */
 .muscle-slide {
     position: relative;
     overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-/* Set smaller width and height for images */
+/* Muscle Image */
 .muscle-image {
-    width: 400px; /* Increased width */
-    height: 300px; /* Adjust height to maintain aspect ratio */
+    width: 300px;
+    height: 300px;
     object-fit: cover;
-    border-radius: 25px;
+    border-radius: 15px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease-in-out;
+    margin: 0 15©px; /* Espace horizontal entre les images */
 }
 
 .muscle-image:hover {
-    transform: scale(1.05); /* Slight zoom effect on hover to make it more interactive */
+    transform: scale(1.05);
 }
 
+/* Muscle Name Overlay */
 .muscle-name-overlay {
     position: absolute;
     bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
-    padding: 3px 10px; /* Smaller padding to reduce the background size */
-    border-radius: 8px; /* Softer rounded corners */
+    padding: 3px 10px;
+    border-radius: 8px;
     font-size: 1.2rem;
     text-align: center;
     font-weight: bold;
-    width: 20%; /* Adjust width to fit the text */
-    line-height: 0.1; /* Tighter line height to reduce vertical space */
-    max-width: 80%; /* Prevents the background from stretching too wide */
-    display: inline-block; /* Ensures the overlay only wraps the text */
 }
 
-/* Responsive Design */
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .muscle-carousel-container {
-        width: 100vw; /* Ensure full width on smaller screens as well */
+        width: 100vw;
     }
 
     .muscle-image {
-        width: 220px; /* Adjust width for smaller screens */
-        height: 270px; /* Adjust height for smaller screens */
+        width: 220px;
+        height: 220px;
     }
 
     .arrow-prev, .arrow-next {
@@ -118,8 +117,3 @@
         padding: 8px;
     }
 }
-
-
-
-
-
