@@ -5,27 +5,28 @@ import 'aos/dist/aos.css';
 import './WelcomeBlock.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { auth, db } from '../../../firebaseConfig';
-import { ref, get, set, update } from 'firebase/database';
+import { ref, get, update } from 'firebase/database';
 import ImageCarousel from '../../../components/Image/ImageCarousel';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
   const [consecutiveLogins, setConsecutiveLogins] = useState(0);
-  const [prenom, setprenom] = useState("");
+  const [prenom, setPrenom] = useState("");
   const [showIcons, setShowIcons] = useState(true);
 
   useEffect(() => {
     AOS.init({
-      duration: 2000, // Animation duration in milliseconds
-      once: false, // Animation happens only once
-      offset: 100, // Offset from the trigger point
+      duration: 2000,
+      once: false,
+      offset: 100,
     });
   }, []);
 
   useEffect(() => {
     const handleScroll = () => {
-      const scrollThreshold = 100; // Scroll distance in pixels before hiding icons
+      const scrollThreshold = 100;
       setShowIcons(window.scrollY < scrollThreshold);
     };
 
@@ -38,10 +39,30 @@ const WelcomeBlock = () => {
       setUser(currentUser);
       if (currentUser) {
         await handleConsecutiveLogins(currentUser.uid);
+        await fetchUserDataWithRetry(currentUser.uid); // Ajout de la fonction de réessai pour récupérer le prénom
       }
     });
     return () => unsubscribe();
   }, []);
+
+  const fetchUserDataWithRetry = async (uid, retries = 5) => {
+    try {
+      const userRef = ref(db, `users/${uid}`);
+      const snapshot = await get(userRef);
+
+      if (snapshot.exists()) {
+        const userData = snapshot.val();
+        if (userData.prenom) {
+          setPrenom(userData.prenom);
+        } else if (retries > 0) {
+          // Si le prénom n'est pas encore disponible, réessayer après un court délai
+          setTimeout(() => fetchUserDataWithRetry(uid, retries - 1), 500);
+        }
+      }
+    } catch (error) {
+      console.error("Erreur lors de la récupération des données utilisateur :", error);
+    }
+  };
 
   const handleConsecutiveLogins = async (uid) => {
     const userRef = ref(db, `users/${uid}`);
@@ -49,11 +70,10 @@ const WelcomeBlock = () => {
 
     try {
       const snapshot = await get(userRef);
+
       if (snapshot.exists()) {
         const userData = snapshot.val();
         const lastLoginDate = userData.lastLoginDate;
-        const prenom = userData.prenom;
-        setprenom(prenom);
 
         if (isYesterday(lastLoginDate)) {
           const newConsecutiveLogins = (userData.consecutiveLogins || 0) + 1;
@@ -66,8 +86,8 @@ const WelcomeBlock = () => {
           setConsecutiveLogins(userData.consecutiveLogins);
         }
       } else {
+        await update(userRef, { consecutiveLogins: 1, lastLoginDate: today });
         setConsecutiveLogins(1);
-        await set(userRef, { consecutiveLogins: 1, lastLoginDate: today });
       }
     } catch (error) {
       console.error("Erreur lors de la gestion des connexions consécutives :", error);
@@ -117,7 +137,7 @@ const WelcomeBlock = () => {
                     expert trainers, and dynamic classes, we're committed to helping you reach
                     your goals. Join us today and unleash your full potential!
                   </p>
-                  <button className="hero-btn">JOIN NOW</button>
+                  <Link to="/bodyMap"><button className="hero-btn">BEGIN</button></Link>
                 </>
               )}
             </div>

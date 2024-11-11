@@ -1,14 +1,31 @@
-// src/components/Navbar/Navbar.js
+// NavBar.js
 import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import ImageDisplay from '../../components/Image/ImageDisplay';
-import { auth } from '../../firebaseConfig';
 import './Navbar.css';
 
 function Navbar({ user, handleLogout }) {
   const [isEmailVerified, setIsEmailVerified] = useState(user?.emailVerified || false);
   const navigate = useNavigate();
+  const location = useLocation();
 
+  // Vérification immédiate de la vérification de l'email à chaque changement d'URL
+  useEffect(() => {
+    const checkEmailVerification = async () => {
+      if (user && !user.emailVerified) {
+        await user.reload();
+        if (!user.emailVerified) {
+          navigate('/register'); // Redirection immédiate vers l'inscription
+        } else {
+          setIsEmailVerified(true);
+        }
+      }
+    };
+
+    checkEmailVerification();
+  }, [user, location, navigate]);
+
+  // Intervalle de vérification toutes les 1 seconde pour maintenir la réactivité
   useEffect(() => {
     if (user && !user.emailVerified) {
       const interval = setInterval(async () => {
@@ -16,13 +33,15 @@ function Navbar({ user, handleLogout }) {
         if (user.emailVerified) {
           setIsEmailVerified(true);
           clearInterval(interval); // Arrête l'intervalle une fois l'email vérifié
+        } else {
+          setIsEmailVerified(false);
         }
-      }, 3000); // Vérifie toutes les 3 secondes
+      }, 1000); // Réduit l'intervalle à 1 seconde pour une réponse plus rapide
       return () => clearInterval(interval);
     } else if (user && user.emailVerified) {
       setIsEmailVerified(true);
     }
-  }, [user]);
+  }, [user, navigate]);
 
   const handleLogoutClick = () => {
     handleLogout();
@@ -38,7 +57,6 @@ function Navbar({ user, handleLogout }) {
       <ul className="navbar-links">
         <li><Link to="/">Home</Link></li>
         <li><Link to="/bodyMap">BodyMap</Link></li>
-        <li><Link to="/bmi">BMI</Link></li>
         {!user ? (
           <>
             <li><Link to="/register">S'enregistrer</Link></li>

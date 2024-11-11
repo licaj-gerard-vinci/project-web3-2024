@@ -20,11 +20,13 @@ const Register = () => {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((currentUser) => {
       if (currentUser) {
+        setUser(currentUser);
         if (!currentUser.emailVerified) {
           setIsPendingVerification(true);
           startEmailVerificationCheck(currentUser);
         } else {
-          navigate('/'); // Redirige l'utilisateur vers le profil si l'email est vérifié
+          setIsPendingVerification(false);
+          navigate('/'); // Redirige l'utilisateur vers la page d'accueil si l'email est vérifié
         }
       }
     });
@@ -35,14 +37,13 @@ const Register = () => {
     const interval = setInterval(async () => {
       await user.reload();
       if (user.emailVerified) {
-        clearInterval(interval); // Arrête l'intervalle si l'e-mail est vérifié
+        clearInterval(interval);
         setIsPendingVerification(false);
-        navigate('/'); // Redirige vers le profil après vérification
+        navigate('/'); // Redirige vers l'accueil après vérification
       }
     }, 3000); // Vérifie toutes les 3 secondes
   };
 
-  // Fonction pour vérifier si l'utilisateur existe déjà dans la base de données
   const checkIfUserExists = async (user) => {
     const userRef = ref(db, `users/${user.uid}`);
     const userSnapshot = await get(userRef);
@@ -55,14 +56,11 @@ const Register = () => {
     setSuccess('');
 
     try {
-      // Créer l'utilisateur avec e-mail et mot de passe
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Envoyer un e-mail de vérification
       await sendEmailVerification(user);
 
-      // Enregistrer les informations utilisateur dans la base de données
       await set(ref(db, `users/${user.uid}`), {
         prenom: prenom,
         nom: nom,
@@ -82,31 +80,39 @@ const Register = () => {
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-
+    provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
+    provider.addScope('https://www.googleapis.com/auth/userinfo.email');
+  
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-
+  
+      console.log("User data from Google:", user);
+  
       const userExists = await checkIfUserExists(user);
 
+      console.log(user.uid);
+      
+      
       if (!userExists) {
-        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
         await set(ref(db, `users/${user.uid}`), {
           prenom: user.displayName ? user.displayName.split(' ')[0] : '',
           nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
+          photoURL: user.photoURL,
           isAdmin: false,
           age: 0,
           gender: "",
           favorites: []
         });
       }
-
+  
       navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
     }
   };
+  
 
   const handleMicrosoftSignIn = async () => {
     const provider = new OAuthProvider('microsoft.com');
@@ -118,11 +124,11 @@ const Register = () => {
       const userExists = await checkIfUserExists(user);
 
       if (!userExists) {
-        // Enregistrer les informations utilisateur dans la base de données si c'est un nouvel utilisateur
         await set(ref(db, `users/${user.uid}`), {
           prenom: user.displayName ? user.displayName.split(' ')[0] : '',
           nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
+          photoURL: user.photoURL,
           isAdmin: false,
           age: 0,
           gender: "",
