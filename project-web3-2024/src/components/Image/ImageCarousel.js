@@ -55,7 +55,7 @@ const ImageCarousel = ({ folderPath }) => {
         showIndicators={false}
         autoPlay
         interval={3500}
-        showArrows={true}
+        showArrows={false}
         showStatus={false}
       >
         {imageUrls.map((url, index) => (
