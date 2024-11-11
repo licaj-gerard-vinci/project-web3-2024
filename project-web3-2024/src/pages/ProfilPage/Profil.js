@@ -5,6 +5,7 @@ import { db, storage } from '../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { getDownloadURL, uploadBytes, ref as storageRef } from 'firebase/storage';
 import styled from 'styled-components';
+import  './Profil.css'
 
 const ProfileContainer = styled.div`
   background-color: #1e1e1e;
@@ -17,6 +18,8 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 20px;
+  margin-top: 10%;
 `;
 
 const ProfilePhotoContainer = styled.div`
