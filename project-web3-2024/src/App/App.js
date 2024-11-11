@@ -46,7 +46,6 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/bodyMap" element={<BodyMap />} />
-          <Route path="/bmi" element={<BMI />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />

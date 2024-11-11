@@ -126,7 +126,7 @@ form button:hover {
 }
 
 .forgot-password-link {
-    color: ff5c2b;
+    color: #ff5c2b;
     cursor: pointer;
     text-decoration: underline;
     margin-top: 10px;
@@ -135,3 +135,4 @@ form button:hover {
 .forgot-password-link:hover {
     color: #e04a1e;
 }
+

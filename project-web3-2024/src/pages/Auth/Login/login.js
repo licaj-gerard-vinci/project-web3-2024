@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { ref, get, set } from 'firebase/database';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
+import { Link } from 'react-router-dom';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -155,6 +156,9 @@ const Login = () => {
         <button type="submit">Login</button>
         <p className="forgot-password-link" onClick={handlePasswordReset}>
           Mot de passe oublié ?
+        </p>
+        <p>
+          Pas encore de compte ? <Link to="/register" className="forgot-password-link">S'inscrire</Link>
         </p>
         <div className="social-buttons">
           <button onClick={handleGoogleSignIn} className="social-button google">

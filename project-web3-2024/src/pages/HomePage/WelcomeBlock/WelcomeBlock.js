@@ -8,6 +8,7 @@ import { auth, db } from '../../../firebaseConfig';
 import { ref, get, update } from 'firebase/database';
 import ImageCarousel from '../../../components/Image/ImageCarousel';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
@@ -136,7 +137,7 @@ const WelcomeBlock = () => {
                     expert trainers, and dynamic classes, we're committed to helping you reach
                     your goals. Join us today and unleash your full potential!
                   </p>
-                  <button className="hero-btn">JOIN NOW</button>
+                  <Link to="/bodyMap"><button className="hero-btn">BEGIN</button></Link>
                 </>
               )}
             </div>
