@@ -193,4 +193,6 @@ form button:hover {
     text-decoration: underline;
     cursor: pointer;
   }
-  
+body {
+    background: #0a0a0c;
+}  
