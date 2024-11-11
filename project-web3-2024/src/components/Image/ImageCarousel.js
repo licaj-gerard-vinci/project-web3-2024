@@ -22,7 +22,7 @@ const ImageCarousel = ({ folderPath }) => {
         setImageUrls(urls);
       } catch (err) {
         console.error("Erreur lors de la récupération des images :", err);
-        setError("Erreur lors de la récupération des images");
+        setError("Erreur lors de la récupération des images. Veuillez vérifier le dossier ou réessayer plus tard.");
       } finally {
         setLoading(false);
       }
@@ -31,8 +31,21 @@ const ImageCarousel = ({ folderPath }) => {
     fetchImages();
   }, [folderPath]);
 
-  if (loading) return <p>Chargement des images...</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <div className="carousel-container">
+        <p>Chargement des images...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="carousel-container">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <div className="carousel-container">
@@ -42,12 +55,12 @@ const ImageCarousel = ({ folderPath }) => {
         showIndicators={false}
         autoPlay
         interval={3500}
-        showArrows={false}
+        showArrows={true}
         showStatus={false}
       >
         {imageUrls.map((url, index) => (
           <div key={index}>
-            <img src={url} alt={`Image ${index + 1}`} style={{ maxWidth: '70%' }} />
+            <img src={url} alt={`Image ${index + 1}`} className="carousel-image" />
           </div>
         ))}
       </Carousel>
