@@ -59,8 +59,7 @@ function Navbar({ user, handleLogout }) {
         <li><Link to="/bodyMap">BodyMap</Link></li>
         {!user ? (
           <>
-            <li><Link to="/register">S'enregistrer</Link></li>
-            <li><Link to="/login">Connexion</Link></li>
+            <li><Link to="/authForm">Connexion</Link></li>
           </>
         ) : (
           <>

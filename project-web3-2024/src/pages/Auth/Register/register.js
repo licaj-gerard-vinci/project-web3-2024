@@ -1,13 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
-import { ref, set, get } from 'firebase/database';
-import { useNavigate } from 'react-router-dom';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { ref, set } from 'firebase/database';
 import './register.css';
 
-const Register = () => {
-  const [user, setUser] = useState(null); 
+const Register = ({ toggleAuthForm }) => { // Ajout de toggleAuthForm en prop
   const [prenom, setPrenom] = useState('');
   const [nom, setNom] = useState('');
   const [email, setEmail] = useState('');
@@ -15,40 +12,6 @@ const Register = () => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [isPendingVerification, setIsPendingVerification] = useState(false);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        if (!currentUser.emailVerified) {
-          setIsPendingVerification(true);
-          startEmailVerificationCheck(currentUser);
-        } else {
-          setIsPendingVerification(false);
-          navigate('/'); // Redirige l'utilisateur vers la page d'accueil si l'email est vérifié
-        }
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
-
-  const startEmailVerificationCheck = (user) => {
-    const interval = setInterval(async () => {
-      await user.reload();
-      if (user.emailVerified) {
-        clearInterval(interval);
-        setIsPendingVerification(false);
-        navigate('/'); // Redirige vers l'accueil après vérification
-      }
-    }, 3000); // Vérifie toutes les 3 secondes
-  };
-
-  const checkIfUserExists = async (user) => {
-    const userRef = ref(db, `users/${user.uid}`);
-    const userSnapshot = await get(userRef);
-    return userSnapshot.exists();
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,63 +43,45 @@ const Register = () => {
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
-    provider.addScope('https://www.googleapis.com/auth/userinfo.email');
-  
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-  
-      console.log("User data from Google:", user);
-  
-      const userExists = await checkIfUserExists(user);
 
-      console.log(user.uid);
-      
-      
-      if (!userExists) {
-        await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
-          email: user.email,
-          photoURL: user.photoURL,
-          isAdmin: false,
-          age: 0,
-          gender: "",
-          favorites: []
-        });
-      }
-  
-      navigate('/');  // Redirige après la connexion
+      await set(ref(db, `users/${user.uid}`), {
+        prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+        nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+        email: user.email,
+        photoURL: user.photoURL,
+        isAdmin: false,
+        age: 0,
+        gender: "",
+        favorites: []
+      });
+
+      setSuccess('Inscription réussie avec Google !');
     } catch (error) {
       setError(error.message);
     }
   };
-  
 
   const handleMicrosoftSignIn = async () => {
     const provider = new OAuthProvider('microsoft.com');
-
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      const userExists = await checkIfUserExists(user);
+      await set(ref(db, `users/${user.uid}`), {
+        prenom: user.displayName ? user.displayName.split(' ')[0] : '',
+        nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+        email: user.email,
+        photoURL: user.photoURL,
+        isAdmin: false,
+        age: 0,
+        gender: "",
+        favorites: []
+      });
 
-      if (!userExists) {
-        await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
-          email: user.email,
-          photoURL: user.photoURL,
-          isAdmin: false,
-          age: 0,
-          gender: "",
-          favorites: []
-        });
-      }
-
-      navigate('/');  // Redirige après la connexion
+      setSuccess('Inscription réussie avec Microsoft !');
     } catch (error) {
       setError(error.message);
     }
@@ -154,9 +99,11 @@ const Register = () => {
   return (
     <div className="register-container">
       <h2>Créer un compte</h2>
+      <p className="subtext">
+        Already have an account? <span className="trial-link" onClick={toggleAuthForm}>Sign in</span>
+      </p>
       {error && <p className="error">{error}</p>}
       {success && <p className="success">{success}</p>}
-
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="prenom">Prénom :</label>
