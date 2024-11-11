@@ -15,6 +15,7 @@ import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 import Profil from '../pages/ProfilPage/Profil';
 import TermsOfUse from '../pages/TermsOfUse/termsOfUse';
 import { Navigate } from 'react-router-dom';
+import BMI from '../pages/HomePage/BMI/Bmi';
 function App() {
   const [user, setUser] = useState(null);
 
@@ -45,7 +46,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/bodyMap" element={<BodyMap />} />
-          <Route path="/exemple" element={<Exemple />} />
+          <Route path="/bmi" element={<BMI />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />

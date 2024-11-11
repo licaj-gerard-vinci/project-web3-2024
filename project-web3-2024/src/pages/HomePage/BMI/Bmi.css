@@ -1,0 +1,109 @@
+/* Container for the calculator */
+.BMICalculator-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh; /* Augmente la hauteur minimum */
+    background-color: #0a0a0c;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin-top: -6rem; /* Ajuste le positionnement */
+}
+
+/* Title styling */
+.BMICalculator-container h2 {
+    color: #ff6f00;
+    font-size: 2.5rem; /* Augmente la taille du titre */
+    margin-bottom: 1.5rem; /* Augmente l'espace sous le titre */
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+}
+
+/* Grid container for inputs */
+.input-grid {
+    display: grid;
+    grid-template-areas:
+        "weight height"
+        "age sex";
+    gap: 1.2rem 2rem; /* Augmente l'écart pour un alignement plus espacé */
+    width: 100%;
+    max-width: 600px; /* Augmente la largeur maximale du calculateur */
+    margin-bottom: 1.5rem; /* Augmente l'espace en bas du formulaire */
+}
+
+/* Specific placement of each input */
+.input-grid .weight {
+    grid-area: weight;
+}
+
+.input-grid .height {
+    grid-area: height;
+}
+
+.input-grid .age {
+    grid-area: age;
+}
+
+.input-grid .sex {
+    grid-area: sex;
+}
+
+/* Label container styling */
+.label-container {
+    font-size: 1rem; /* Augmente la taille de police des labels */
+    color: #a0a0a0;
+    text-align: center;
+    margin-bottom: 0.5rem; /* Augmente l'espace sous le label */
+}
+
+/* Style for input fields and select */
+.input-grid input[type="number"],
+.input-grid select {
+    width: 100%;
+    padding: 1rem; /* Augmente le padding pour un champ plus grand */
+    border: 1px solid #333333;
+    background-color: #0a0a0c;
+    color: #a0a0a0;
+    border-radius: 5px;
+    font-size: 1.1rem; /* Augmente la taille de police */
+    transition: border-color 0.3s;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+/* Focus style for inputs */
+.input-grid input[type="number"]:focus,
+.input-grid select:focus {
+    outline: none;
+    border-color: #ff6f00;
+}
+
+/* Button styling */
+.BMICalculator-container button {
+    width: 100%;
+    max-width: 600px; /* Ajuste la largeur du bouton pour correspondre au formulaire */
+    padding: 1rem; /* Augmente le padding pour un bouton plus grand */
+    font-size: 1.2rem; /* Augmente la taille de la police */
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #ff6f00;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    text-transform: uppercase;
+}
+
+.BMICalculator-container button:hover {
+    background-color: #e65c00;
+}
+
+/* Result display */
+.BMICalculator-container .result {
+    text-align: center;
+    margin-top: 1.5rem; /* Augmente l'espace au-dessus du résultat */
+    font-size: 1.3rem; /* Augmente légèrement la taille de la police du résultat */
+    font-weight: bold;
+    color: #ff6f00;
+}
