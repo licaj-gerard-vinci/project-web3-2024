@@ -1,45 +1,85 @@
-// CarouselMuscles.js
-import React, { useEffect } from 'react';
+// src/components/CarouselMuscles.js
+import React, { useState, useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Carousel } from 'react-responsive-carousel';
-import 'react-responsive-carousel/lib/styles/carousel.min.css'; // Import carousel styles
-import './CarouselMuscles.css'; // Custom CSS for the carousel
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import './CarouselMuscles.css';
 
-// Sample muscle group images (replace with actual images)
-import chestImage from '../../../assets/image2.jpg';
-import backImage from '../../../assets/image2.jpg';
-import armsImage from '../../../assets/image2.jpg';
-import legsImage from '../../../assets/image2.jpg';
-import shouldersImage from '../../../assets/image2.jpg';
+const MuscleCarousel = ({ folderPath = 'HomePage/MuscleCarousel' }) => {
+  const [muscleImages, setMuscleImages] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-const MuscleCarousel = () => {
+  const customNames = {
+    'Chest.webp': 'Chest',
+    'abdos.jpg': 'Abs',
+    'bicep.webp': 'Biceps',
+    'dos.jpg': 'Back',
+    'epaules.jpg': 'Shoulders',
+    'jambes.jpg': 'Legs'
+  };
+
   useEffect(() => {
     AOS.init({
-      duration: 1000, // Animation duration in milliseconds
-      once: false, // Animation happens only once
-      offset: 100, // Offset from the trigger point
+      duration: 1000,
+      once: true,
+      offset: 100,
     });
   }, []);
 
-  const muscleGroups = [
-    { name: 'Chest', image: chestImage },
-    { name: 'Back', image: backImage },
-    { name: 'Arms', image: armsImage },
-    { name: 'Legs', image: legsImage },
-    { name: 'Shoulders', image: shouldersImage },
-  ];
+  useEffect(() => {
+    const fetchImages = async () => {
+      setLoading(true);
+      setError(null);
+      const storage = getStorage();
+      const folderRef = ref(storage, folderPath);
+      const uniqueImages = new Map();
+
+      try {
+        const result = await listAll(folderRef);
+        const imagePromises = result.items.map((itemRef) =>
+          getDownloadURL(itemRef).then((url) => {
+            const fileName = itemRef.name;
+            const displayName = customNames[fileName] || fileName.replace(/\.[^/.]+$/, "");
+
+            if (!uniqueImages.has(displayName)) {
+              uniqueImages.set(displayName, { url, name: displayName });
+            }
+          })
+        );
+
+        await Promise.all(imagePromises);
+        setMuscleImages(Array.from(uniqueImages.values()));
+      } catch (err) {
+        console.error("Erreur lors de la récupération des images :", err);
+        setError("Erreur lors de la récupération des images. Veuillez réessayer plus tard.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchImages();
+  }, [folderPath]);
+
+  if (loading) return <p>Chargement des images...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
-    <div className="muscle-carousel-container">
-      <h2 data-aos="fade-up" className="carousel-title">Focus on Every Muscle for Maximum Gains 💥</h2>
+    <div className="muscle-carousel-container" data-aos="fade-up">
+      <h2 className="carousel-title">Focus on Every Muscle for Maximum Gains 💥</h2>
       <Carousel
         showThumbs={false}
-        showArrows={true}
+        showArrows
         showStatus={false}
-        showIndicators={false}  // Hide dots
-        centerMode={true}
-        centerSlidePercentage={33.33} // Show 3 slides at a time
+        showIndicators={true}
+        centerMode
+        centerSlidePercentage={33.33}
+        infiniteLoop
+        autoPlay
+        interval={3500}
+        stopOnHover={false}
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
             <button type="button" onClick={onClickHandler} title={label} className="arrow-prev">
@@ -55,9 +95,9 @@ const MuscleCarousel = () => {
           )
         }
       >
-        {muscleGroups.map((muscle, index) => (
+        {muscleImages.map((muscle, index) => (
           <div key={index} className="muscle-slide" data-aos="fade-up" data-aos-delay={index * 100}>
-            <img src={muscle.image} alt={muscle.name} className="muscle-image" style={{ maxWidth: '80%' }} />
+            <img src={muscle.url} alt={muscle.name} className="muscle-image" />
             <div className="muscle-name-overlay">
               <h3>{muscle.name}</h3>
             </div>
