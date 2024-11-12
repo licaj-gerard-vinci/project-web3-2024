@@ -78,13 +78,13 @@ function Navbar({ user, handleLogout }) {
                     className="dropdown-item"
                     onClick={() => navigate('/profil')}
                   >
-                    Profil
+                    Profile
                   </DropdownMenu.Item>
                   <DropdownMenu.Item
                     className="dropdown-item"
                     onClick={handleLogoutClick}
                   >
-                    Déconnexion
+                    Sign out
                   </DropdownMenu.Item>
                 </DropdownMenu.Content>
               </DropdownMenu.Root>

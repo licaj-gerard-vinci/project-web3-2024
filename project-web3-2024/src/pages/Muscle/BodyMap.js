@@ -399,6 +399,11 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                   <div key={exercise.id} className="exercise-card">
                     <h3>{exercise.name}</h3>
                     <VideosPlayer videoUrl={exercise.url} videoId={exercise.id}/>
+                    {/* Bouton Like */}
+                    <button className="likes-button" onClick={() => handleLike(exercise.id)}>
+                      {isLikedByUser(exercise.id) ? <IoHeartSharp style={{ color: 'red' }} /> : <IoHeartOutline />}
+                    </button>
+                    <div className='like-count'>{getLikeCount(exercise.id)} </div> {/* Compteur de likes */}
                     <button className="details-button" onClick={() => toggleDescription(exercise.id)}>
                       {showDescription[exercise.id] ?  <MdOutlineMoreVert/> : <MdOutlineMoreVert />}
                     </button>
@@ -408,11 +413,6 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                         <p>Difficulté: {exercise.difficulte}</p>
                       </div>
                     )}
-                    {/* Bouton Like */}
-                    <button className="likes-button" onClick={() => handleLike(exercise.id)}>
-                      {isLikedByUser(exercise.id) ? <IoHeartSharp style={{ color: 'red' }} /> : <IoHeartOutline />}
-                    </button>
-                    <div className='div'>{getLikeCount(exercise.id)} likes</div> {/* Compteur de likes */}
                   </div>
                 ))
               ) : (
