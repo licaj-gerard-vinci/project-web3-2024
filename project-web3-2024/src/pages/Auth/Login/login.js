@@ -34,7 +34,7 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
         const url = await getDownloadURL(backgroundRef);
         setBackgroundImage(url);
       } catch (error) {
-        console.error('Erreur lors de la récupération de l’image de fond :', error);
+        console.error('Error retrieving background image:', error);
       }
     };
 
@@ -99,8 +99,8 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
       
       if (!userExists) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -126,11 +126,11 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
 
       if (!userExists) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
-          isAdmin: false,
           photoURL: user.photoURL,
+          isAdmin: false,
           age: 0,
           gender: "",
           favorites: []

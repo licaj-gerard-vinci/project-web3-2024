@@ -108,8 +108,8 @@ const LogoutButton = styled(StyledButton)`
 
 const Profile = () => {
   const [user, setUser] = useState(null);
-  const [prenom, setPrenom] = useState('');
-  const [nom, setNom] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
   const [photoURL, setPhotoURL] = useState('');
@@ -138,8 +138,8 @@ const Profile = () => {
     const snapshot = await get(userRef);
     const userData = snapshot.val();
 
-    setPrenom(userData?.prenom || '');
-    setNom(userData?.nom || '');
+    setFirstName(userData?.firstName || '');
+    setLastName(userData?.lastName || '');
     setAge(userData?.age || '');
     setGender(userData?.gender || '');
     setPhotoURL(userData?.photoURL || '');
@@ -190,8 +190,8 @@ const Profile = () => {
   const saveChanges = async () => {
     const userRef = ref(db, `users/${user.uid}`);
     await update(userRef, {
-      prenom,
-      nom,
+      firstName: firstName,
+      lastName: lastName,
       age,
       gender
     });
@@ -216,11 +216,11 @@ const Profile = () => {
       <InfoContainer>
         <InfoRow>
           <Label>Prénom :</Label>
-          <Text>{isEditing ? <input type="text" value={prenom} onChange={(e) => setPrenom(e.target.value)} /> : prenom}</Text>
+          <Text>{isEditing ? <input type="text" value={firstName} onChange={(e) => setFirstName(e.target.value)} /> : firstName}</Text>
         </InfoRow>
         <InfoRow>
           <Label>Nom :</Label>
-          <Text>{isEditing ? <input type="text" value={nom} onChange={(e) => setNom(e.target.value)} /> : nom}</Text>
+          <Text>{isEditing ? <input type="text" value={lastName} onChange={(e) => setLastName(e.target.value)} /> : lastName}</Text>
         </InfoRow>
         <InfoRow>
           <Label>Âge :</Label>
@@ -232,19 +232,19 @@ const Profile = () => {
         </InfoRow>
       </InfoContainer>
       <StyledButton onClick={toggleEdit}>
-        {isEditing ? "Enregistrer" : "Modifier information"}
+        {isEditing ? "Save" : "Modify"}
       </StyledButton>
-      <SectionTitle>Exercices Favoris</SectionTitle>
+      <SectionTitle>Favorite Exercises</SectionTitle>
       <InfoContainer>
         {favorites.length > 0 ? (
           favorites.map((exercise, index) => (
             <Text key={index}>{exercise}</Text>
           ))
         ) : (
-          <Text>Aucun exercice favori trouvé.</Text>
+          <Text>No favorite exercises found.</Text>
         )}
       </InfoContainer>
-      <LogoutButton onClick={() => getAuth().signOut()}>Déconnexion</LogoutButton>
+      <LogoutButton onClick={() => getAuth().signOut()}>Logout</LogoutButton>
     </ProfileContainer>
   );
 };

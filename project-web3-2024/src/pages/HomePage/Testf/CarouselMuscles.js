@@ -27,7 +27,7 @@ const MuscleCarousel = ({ folderPath = 'HomePage/MuscleCarousel' }) => {
     });
   }, []);
 
-  if (loading) return <p>Chargement des images...</p>;
+  if (loading) return <p>Loading images...</p>;
   if (error) return <p>{error}</p>;
 
   // Créer un tableau d'images avec noms personnalisés ou nom de fichier sans extension

@@ -29,7 +29,7 @@ const BodyMap = () => {
     name: "",
     url: "",
     description: "",
-    difficulte: "",
+    difficulty: "",
     muscles: []
   });
   const [exercises, setExercises] = useState([]);
@@ -102,7 +102,7 @@ const BodyMap = () => {
               name: exercise.name,
               description: exercise.description,
               url: exercise.url,
-              difficulte: exercise.difficulte
+              difficulty: exercise.difficulty
             });
           }
         });
@@ -148,7 +148,7 @@ const BodyMap = () => {
       set(ref(db, `exercises/${formData.name}`), {
         name: formData.name,
         description: formData.description,
-        difficulte: formData.difficulte,
+        difficulty: formData.difficulte,
         url: videoUrl,   // Enregistrer l'URL de la vidéo
         muscles: formData.muscles
       });
@@ -309,12 +309,12 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                 <h3>Add Exercice</h3>
                 <div>
                   <label>
-                    Nom : <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    Name : <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                   </label>
                 </div>
                 <div>
                   <label>
-                    Vidéo : <input type="file" accept="video/*" onChange={handleFileChange} required />
+                    Video : <input type="file" accept="video/*" onChange={handleFileChange} required />
                   </label>
                 </div>
                 <div>
@@ -324,11 +324,11 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                 </div>
                 <div>
                   <label>
-                    Difficulté :
+                    Difficulty:
                     <select name="difficulte" value={formData.difficulte} onChange={handleChange} required>
-                      <option color="#ff5c2b" value="facile">Facile</option>
-                      <option value="moyen">Moyen</option>
-                      <option value="difficile">Difficile</option>
+                      <option color="#ff5c2b" value="easy">Easy</option>
+                      <option value="average">Average</option>
+                      <option value="difficult">Difficult</option>
                     </select>
                   </label>
                 </div>
@@ -353,7 +353,7 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                   />
                 </div>
                 <div>
-                  <button type="submit">Envoyer</button>
+                  <button type="submit">Save</button>
                 </div>
               </form>
               {/* Bouton "-" sous le formulaire */}
@@ -390,7 +390,7 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
             <h2>{selectedMuscle}</h2>
             <p>List of exercises for {selectedMuscle}:</p>
             {!user &&( 
-              <div>Connectez-vous pour voir les exercices</div>
+              <div>Log in to view exercises</div>
             )}
             {user && (
               <div className="exercise-list">
@@ -410,7 +410,7 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                     {showDescription[exercise.id] && (
                       <div className="details">
                         <p>Description: {exercise.description}</p>
-                        <p>Difficulté: {exercise.difficulte}</p>
+                        <p>Difficulty: {exercise.difficulte}</p>
                       </div>
                     )}
                   </div>

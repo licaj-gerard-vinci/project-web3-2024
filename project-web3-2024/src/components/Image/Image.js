@@ -20,8 +20,8 @@ const Image = ({ path }) => {
         const urls = await Promise.all(urlPromises);
         setImageUrls(urls);
     } catch (err) {
-        console.error("Erreur lors de la récupération des images :", err);
-        setError("Erreur lors de la récupération des images. Veuillez vérifier le dossier ou réessayer plus tard.");
+        console.error("Error retrieving images :", err);
+        setError("Error retrieving images. Please check the folder or try again later.");
     } finally {
         setLoading(false);
     }

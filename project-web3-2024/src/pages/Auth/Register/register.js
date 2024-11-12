@@ -26,7 +26,7 @@ const Register = ({ toggleAuthForm }) => {
         const url = await getDownloadURL(backgroundRef);
         setBackgroundImage(url);
       } catch (error) {
-        console.error('Erreur lors de la récupération de l’image de fond :', error);
+        console.error('Error retrieving the background image:', error);
       }
     };
 
@@ -68,8 +68,8 @@ const Register = ({ toggleAuthForm }) => {
 
       if (!(await checkIfUserExists(user))) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -92,8 +92,8 @@ const Register = ({ toggleAuthForm }) => {
 
       if (!(await checkIfUserExists(user))) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
