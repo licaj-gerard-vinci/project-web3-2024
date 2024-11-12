@@ -14,14 +14,38 @@ import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 import Profil from '../pages/ProfilPage/Profil';
 import TermsOfUse from '../pages/TermsOfUse/termsOfUse';
 import { Navigate } from 'react-router-dom';
+import { getToken } from 'firebase/app-check'; // Import getToken directly
+
 
 function App() {
   const [user, setUser] = useState(null);
+  const [appCheckToken, setAppCheckToken] = useState(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
+    return () => unsubscribe();
+  }, []);
+
+  useEffect(() => {
+
+    const fetchAppCheckToken = async () => {
+      try {
+        // Directly call getToken to fetch the App Check token
+        const tokenResponse = await getToken(true); // Fetch the App Check token
+        setAppCheckToken(tokenResponse.token); // Store the token (optional, depending on your needs)
+      } catch (error) {
+        console.error('Error fetching App Check token:', error);
+      }
+    };
+
+    fetchAppCheckToken();
+
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
     return () => unsubscribe();
   }, []);
 
