@@ -5,6 +5,9 @@
     margin: 0 auto;
     font-family: Arial, sans-serif;
   }
+  .terms-of-use-content::-webkit-scrollbar {
+    display: none; /* Masque la scrollbar dans Chrome, Safari et Edge */
+  }
   
   /* Title styling */
   .terms-of-use-title {
@@ -13,6 +16,7 @@
     font-size: 24px;
     font-weight: bold;
     margin-bottom: 20px;
+    scrollbar-width: none;
   }
   
   /* Content box for terms text */
@@ -24,6 +28,7 @@
     border-radius: 8px;
     line-height: 1.6;
     font-size: 14px;
+    color: #ffffff;
   }
   
   /* Footer text */

@@ -1,25 +1,23 @@
 // src/components/CarouselMuscles.js
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
+import useImages from '../../../components/Image/Image';
 import './CarouselMuscles.css';
 
 const MuscleCarousel = ({ folderPath = 'HomePage/MuscleCarousel' }) => {
-  const [muscleImages, setMuscleImages] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
   const customNames = {
-    'Chest.webp': 'Chest',
-    'abdos.jpg': 'Abs',
-    'bicep.webp': 'Biceps',
-    'dos.jpg': 'Back',
-    'epaules.jpg': 'Shoulders',
-    'jambes.jpg': 'Legs'
+    [`${folderPath}/Chest.webp`]: 'Chest',
+    [`${folderPath}/abdos.jpg`]: 'Abs',
+    [`${folderPath}/bras.webp`]: 'Biceps',
+    [`${folderPath}/dos.jpg`]: 'Back',
+    [`${folderPath}/epaules.jpg`]: 'Shoulders',
+    [`${folderPath}/jambes.png`]: 'Legs'
   };
+  const { imageUrls, loading, error } = useImages({path: folderPath});
 
   useEffect(() => {
     AOS.init({
@@ -29,42 +27,19 @@ const MuscleCarousel = ({ folderPath = 'HomePage/MuscleCarousel' }) => {
     });
   }, []);
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      setLoading(true);
-      setError(null);
-      const storage = getStorage();
-      const folderRef = ref(storage, folderPath);
-      const uniqueImages = new Map();
-
-      try {
-        const result = await listAll(folderRef);
-        const imagePromises = result.items.map((itemRef) =>
-          getDownloadURL(itemRef).then((url) => {
-            const fileName = itemRef.name;
-            const displayName = customNames[fileName] || fileName.replace(/\.[^/.]+$/, "");
-
-            if (!uniqueImages.has(displayName)) {
-              uniqueImages.set(displayName, { url, name: displayName });
-            }
-          })
-        );
-
-        await Promise.all(imagePromises);
-        setMuscleImages(Array.from(uniqueImages.values()));
-      } catch (err) {
-        console.error("Erreur lors de la récupération des images :", err);
-        setError("Erreur lors de la récupération des images. Veuillez réessayer plus tard.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchImages();
-  }, [folderPath]);
-
-  if (loading) return <p>Chargement des images...</p>;
+  if (loading) return <p>Loading images...</p>;
   if (error) return <p>{error}</p>;
+
+  // Créer un tableau d'images avec noms personnalisés ou nom de fichier sans extension
+  const muscleImages = imageUrls.map((url) => {
+    // Extraire uniquement le nom de fichier avec extension avant les paramètres de requête
+    const fileNameWithExtension = decodeURIComponent(url.split('/').pop().slice(0, url.split('/').pop().indexOf('?')));
+    
+    console.log(fileNameWithExtension);
+    
+    const displayName = customNames[fileNameWithExtension] || fileNameWithExtension.replace(/\.[^/.]+$/, ""); // Utiliser customNames si disponible, sinon nom sans extension
+    return { url, name: displayName };
+  });
 
   return (
     <div className="muscle-carousel-container" data-aos="fade-up">

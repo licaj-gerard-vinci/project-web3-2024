@@ -28,7 +28,6 @@
 .arrow-prev, .arrow-next {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
     background: rgba(255, 111, 0, 0.6); /* Couleur orange semi-transparente */
     border: 2px solid rgba(255, 111, 0, 0.6); /* Bordure assortie, également semi-transparente */
     color: white;
@@ -76,10 +75,11 @@
     width: 300px;
     height: 300px;
     object-fit: cover;
-    border-radius: 15px;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease-in-out;
     margin: 0 15©px; /* Espace horizontal entre les images */
+    padding: 0.4rem;
+    border-radius: 4%;
 }
 
 .muscle-image:hover {
