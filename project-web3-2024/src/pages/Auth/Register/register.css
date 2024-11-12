@@ -8,11 +8,19 @@
 }
 
 /* Left-side image container */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
 .image-container {
-    flex: 1;
-    background-image: url('../../../assets/pexels-photo-1229356.jpeg'); /* Replace with your test image path */
-    background-size: cover;
-    background-position: center;
+    animation: slideInFromLeft 1s ease-out forwards;
 }
 
 /* Right-side form container */
