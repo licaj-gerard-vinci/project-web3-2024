@@ -1,74 +1,103 @@
-// NavBar.js
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import ImageDisplay from '../../components/Image/ImageDisplay';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import { getDownloadURL, ref as storageRef } from 'firebase/storage';
+import { storage } from '../../firebaseConfig';
 import './Navbar.css';
+import ImageDisplay from '../../components/Image/ImageDisplay';
 
 function Navbar({ user, handleLogout }) {
-  const [isEmailVerified, setIsEmailVerified] = useState(user?.emailVerified || false);
   const navigate = useNavigate();
   const location = useLocation();
+  const [profileImage, setProfileImage] = useState(null);
 
-  // Vérification immédiate de la vérification de l'email à chaque changement d'URL
   useEffect(() => {
-    const checkEmailVerification = async () => {
-      if (user && !user.emailVerified) {
-        await user.reload();
-        if (!user.emailVerified) {
-          navigate('/register'); // Redirection immédiate vers l'inscription
-        } else {
-          setIsEmailVerified(true);
-        }
+    const loadProfileImage = async () => {
+      if (user && user.photoURL) {
+        setProfileImage(user.photoURL);
+      } else {
+        const defaultImageRef = storageRef(storage, 'HomePage/NavBar/default-pp.png');
+        const url = await getDownloadURL(defaultImageRef);
+        setProfileImage(url);
       }
     };
-
-    checkEmailVerification();
-  }, [user, location, navigate]);
-
-  // Intervalle de vérification toutes les 1 seconde pour maintenir la réactivité
-  useEffect(() => {
-    if (user && !user.emailVerified) {
-      const interval = setInterval(async () => {
-        await user.reload();
-        if (user.emailVerified) {
-          setIsEmailVerified(true);
-          clearInterval(interval); // Arrête l'intervalle une fois l'email vérifié
-        } else {
-          setIsEmailVerified(false);
-        }
-      }, 1000); // Réduit l'intervalle à 1 seconde pour une réponse plus rapide
-      return () => clearInterval(interval);
-    } else if (user && user.emailVerified) {
-      setIsEmailVerified(true);
-    }
-  }, [user, navigate]);
+    loadProfileImage();
+  }, [user]);
 
   const handleLogoutClick = () => {
     handleLogout();
-    setIsEmailVerified(false);
-    navigate('/login');
+    navigate('/');
   };
 
   return (
     <nav className="navbar">
       <div className="navbar-logo">
-        <ImageDisplay imagePath="HomePage/logoM.png" altText="Logo du site" />
+        <Link to="/">
+          <ImageDisplay imagePath="HomePage/logoM.png" />
+        </Link>
       </div>
-      <ul className="navbar-links">
-        <li><Link to="/">Home</Link></li>
-        <li><Link to="/bodyMap">BodyMap</Link></li>
-        {!user ? (
-          <>
-            <li><Link to="/register">S'enregistrer</Link></li>
-            <li><Link to="/login">Connexion</Link></li>
-          </>
-        ) : (
-          <>
-            <li><Link to="/profil">Profil</Link></li>
-            <li><button onClick={handleLogoutClick} className="logout-button">Déconnexion</button></li>
-          </>
-        )}
-      </ul>
+      
+      {/* Section centrée pour les liens Home et BodyMap */}
+      <div className="navbar-center-links">
+        <ul>
+          <li>
+            <Link to="/" className={`navbar-item ${location.pathname === '/' ? 'active' : ''}`}>
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link to="/bodyMap" className={`navbar-item ${location.pathname === '/bodyMap' ? 'active' : ''}`}>
+              BodyMap
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      {/* Section à droite pour les éléments conditionnels */}
+      <div className="navbar-right-links">
+        <ul>
+          {user ? (
+            <li>
+              <DropdownMenu.Root>
+                <DropdownMenu.Trigger asChild>
+                  <div className="profile-photo-container">
+                    <img
+                      src={profileImage || '/path/to/default-image.png'}
+                      alt="Profile"
+                      className="profile-photo"
+                    />
+                  </div>
+                </DropdownMenu.Trigger>
+
+                <DropdownMenu.Content
+                  className="dropdown-content"
+                  align="end"
+                  sideOffset={5}
+                >
+                  <DropdownMenu.Item
+                    className="dropdown-item"
+                    onClick={() => navigate('/profil')}
+                  >
+                    Profil
+                  </DropdownMenu.Item>
+                  <DropdownMenu.Item
+                    className="dropdown-item"
+                    onClick={handleLogoutClick}
+                  >
+                    Déconnexion
+                  </DropdownMenu.Item>
+                </DropdownMenu.Content>
+              </DropdownMenu.Root>
+            </li>
+          ) : (
+            <li>
+              <Link to="/authForm" className={`navbar-item ${location.pathname === '/authForm' ? 'active' : ''}`}>
+                Sign in
+              </Link>
+            </li>
+          )}
+        </ul>
+      </div>
     </nav>
   );
 }

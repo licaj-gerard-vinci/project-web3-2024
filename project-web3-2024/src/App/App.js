@@ -7,15 +7,14 @@ import Exemple from '../pages/Exemple';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { auth } from '../firebaseConfig';
 import { onAuthStateChanged } from 'firebase/auth';
-import Login from '../pages/Auth/Login/login';
+import AuthForm from '../pages/Auth/AuthForm/AuthFrom';
 import { signOut } from 'firebase/auth';
-import Register from '../pages/Auth/Register/register';
 import Footer from '../pages/Footer/Footer';
 import Navbar from '../pages/NavBar/NavBar'; // Import the Navbar component
 import Profil from '../pages/ProfilPage/Profil';
 import TermsOfUse from '../pages/TermsOfUse/termsOfUse';
 import { Navigate } from 'react-router-dom';
-import BMI from '../pages/HomePage/BMI/Bmi';
+
 function App() {
   const [user, setUser] = useState(null);
 
@@ -46,9 +45,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/bodyMap" element={<BodyMap />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/" />} />
+          <Route path="/authForm" element={<AuthForm />} />
+          <Route path="/profil" element={user ? <Profil /> : <Navigate to="/authForm" state={{ fromProtected: true }} />}/>
           <Route path="/terms-of-use" element={<TermsOfUse />} />
         </Routes>
       </div>

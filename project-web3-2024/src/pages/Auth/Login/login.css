@@ -1,87 +1,150 @@
-/* Conteneur de la page de connexion */
+/* Container for the login page */
 .login-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
-    background-color: #0a0a0c; /* Fond sombre similaire à la page d'accueil */
-    color: #ffffff;
     font-family: Arial, sans-serif;
+    background-color: #000000; /* Set the background to black */
+    color: #ffffff; /* Set text color to white for better contrast */
 }
 
-/* Titre de la page de connexion */
-.login-container h2 {
-    color: #ff5c2b; /* Couleur d'accent similaire au bouton de la page d'accueil */
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
-}
-
-/* Formulaire de connexion */
-form {
-    background-color: #1e1e1e; /* Fond du formulaire */
+/* Left-side form container */
+.login-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+    background-color: #0a0a0c; /* Dark background for form container */
+    color: #ffffff; /* White text color */
+}
+
+/* Right-side image container */
+.image-container {
+    flex: 1;
+    background-image: url('../../../assets/pexels-photo-1229356.jpeg'); /* Replace with your test image path */
+    background-size: cover;
+    background-position: center;
+}
+
+/* Main heading */
+.login-form-container h2 {
+    color: #ff5c2b; /* White text color for heading */
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+/* Subtext under the main heading */
+.login-form-container p.subtext {
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+    margin-bottom: 1.5rem;
+    color: #bbbbbb; /* Lighter color for subtext */
+}
+
+/* Start a free trial link */
+.login-form-container a.trial-link {
+    color: #4a90e2;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.login-form-container a.trial-link:hover,
+.login-form-container a.trial-link:active,
+.login-form-container a.trial-link:focus {
+    text-decoration: none;
+}
+
+/* Form container styling */
+form {
     width: 100%;
     max-width: 400px;
+    background-color: #1e1e1e; /* Dark background for form */
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* Labels et champs de saisie */
+/* Labels and input fields */
 form label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    color: #ff5c2b; /* Couleur d'accent */
+    color: #ffffff;
 }
 
 form input {
     width: 100%;
     padding: 0.5rem;
-    margin-bottom: 1.5rem;
-    border: none;
-    border-radius: 5px;
-    background-color: #333333;
+    margin-bottom: 1rem;
+    border: 1px solid #555;
+    border-radius: 4px;
+    background-color: #222;
     color: #ffffff;
     font-size: 1rem;
 }
 
 form input:focus {
     outline: none;
-    border: 2px solid #ff5c2b; /* Bordure accentuée au focus */
+    border-color: #4a90e2;
 }
 
-/* Bouton de connexion */
+/* Sign-in button */
 form button {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
     font-weight: bold;
     color: #ffffff;
-    background-color: #ff5c2b;
+    background-color: #4a90e2;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
 form button:hover {
-    background-color: #e04a1e; /* Couleur légèrement plus foncée au survol */
+    background-color: #357ab8;
 }
 
-/* Message d'erreur */
-.error-message {
-    color: red;
+/* Forgot password link */
+.forgot-password-link {
+    display: block;
+    text-align: right;
+    color: #4a90e2;
     font-size: 0.9rem;
-    margin-bottom: 1rem;
+    margin-top: 0.5rem;
+    text-decoration: none;
+}
+
+.forgot-password-link:hover {
+    text-decoration: underline;
+}
+
+/* Divider container */
+.or-continue-with {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #ffffff;
+    margin: 1.5rem 0;
+}
+
+/* Lines on both sides */
+.or-continue-with::before,
+.or-continue-with::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #555;
+    margin: 0 10px;
 }
 
 /* Social buttons container */
 .social-buttons {
     display: flex;
     justify-content: center;
-    gap: 1rem; /* Space between buttons */
-    margin-top: 1.5rem;
+    gap: 1rem;
     width: 100%;
     max-width: 400px;
 }
@@ -92,8 +155,8 @@ form button:hover {
     padding: 0.75rem;
     font-size: 1rem;
     font-weight: bold;
-    color: #fff;
-    border-radius: 5px;
+    color: #ffffff;
+    border-radius: 4px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -101,10 +164,6 @@ form button:hover {
     cursor: pointer;
     transition: background-color 0.3s ease;
     border: none;
-}
-
-.social-button i {
-    font-size: 1.2rem;
 }
 
 /* Google button */
@@ -125,14 +184,15 @@ form button:hover {
     background-color: #0062b2;
 }
 
-.forgot-password-link {
-    color: #ff5c2b;
-    cursor: pointer;
+.social-button i {
+    font-size: 1.2rem;
+}
+
+.trial-link {
+    color: #4a90e2; /* La couleur de votre choix */
     text-decoration: underline;
-    margin-top: 10px;
-}
-
-.forgot-password-link:hover {
-    color: #e04a1e;
-}
-
+    cursor: pointer;
+  }
+body {
+    background: #0a0a0c;
+}  
