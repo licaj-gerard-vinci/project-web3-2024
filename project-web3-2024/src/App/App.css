@@ -1,0 +1,18 @@
+/* Pour masquer les barres de défilement dans Chrome, Safari et Edge */
+body {
+    overflow: hidden;
+}
+
+/* Option pour ne masquer que les scrollbars sans désactiver le défilement */
+html {
+    overflow-y: scroll; /* Pour éviter les sauts de page si vous voulez masquer verticalement */
+}
+
+::-webkit-scrollbar {
+    display: none; /* Masque les scrollbars sur les navigateurs Webkit */
+}
+
+/* Pour Firefox */
+body {
+    scrollbar-width: none; /* Masque la scrollbar dans Firefox */
+}

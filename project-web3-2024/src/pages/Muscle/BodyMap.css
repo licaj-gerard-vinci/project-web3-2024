@@ -187,7 +187,7 @@
 }
 
 
-.exercise-card {
+.exercise-card  { 
   position: relative;
   display: flex;
   flex-direction: column;
@@ -214,8 +214,8 @@
 
 .exercise-card .likes-button {
   position: absolute;
-  top: 10px;
-  right: -15px;
+  bottom: 1px;
+  left: 30px;
   transform: translateX(-50%);
   background: none;
   border: none;
@@ -246,16 +246,15 @@
 
 
 .exercise-card .details {
-  position: absolute;
-  bottom: 10px;
-  left: 10px;
+  position: relative;
+  margin-bottom: 10px; /* Espace entre le bouton Like et les détails */
   font-size: 0.9em;
   color: #cccccc;
 }
 .exercise-card .like-count {
   position: absolute;
   bottom: 10px;
-  left: 50%;
+  left: 50px;
   transform: translateX(-50%);
   font-size: 0.9em;
   color: #ffffff;
