@@ -125,8 +125,8 @@ const WelcomeBlock = () => {
             <div className="hero-text-container">
               {user ? (
                 <>
-                  <h1 className="hero-heading">De retour parmi nous {prenom}!</h1>
-                  <p>Connexions consécutives : {consecutiveLogins}</p>
+                  <h1 className="hero-heading highlight">Welcome back {prenom}!</h1>
+                  <p>Daily streak : {consecutiveLogins}</p>
                 </>
               ) : (
                 <>
