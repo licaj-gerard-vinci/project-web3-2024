@@ -25,7 +25,6 @@ const VideoPlayer = ({ videoUrl, videoId }) => {
         onClick={handleVideoClick} // Déclencher le clic pour démarrer/arrêter la vidéo
         style={{ cursor: 'pointer', width: '100%', height: '100%' }}
       />
-      <p>Cliquer sur la vidéo pour la lire en boucle</p>
     </div>
   );
 };

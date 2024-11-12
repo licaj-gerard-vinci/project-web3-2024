@@ -1,11 +1,15 @@
-.video-container video {
-    cursor: pointer;
+.video-container {
+    width: 100%; /* Prend la largeur de la carte */
+    height: 200px; /* Permet à la vidéo de s'adapter au conteneur */
+    max-height: 250px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+  
+  .video-container video {
     width: 100%;
-    max-width: 200px;
-}
-.video-container p {
-    font-size: 0.9rem;
-    color: #666;
-    text-align: center;
-    margin-top: 5px;
-}
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+    border-radius: 8px;
+  }
