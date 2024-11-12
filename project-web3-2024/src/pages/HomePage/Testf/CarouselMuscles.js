@@ -18,7 +18,7 @@ const MuscleCarousel = ({ folderPath = 'HomePage/MuscleCarousel' }) => {
     'bicep.webp': 'Biceps',
     'dos.jpg': 'Back',
     'epaules.jpg': 'Shoulders',
-    'jambes.jpg': 'Legs'
+    'jambes.png': 'Legs'
   };
 
   useEffect(() => {
