@@ -6,15 +6,17 @@ import './WelcomeBlock.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { auth, db } from '../../../firebaseConfig';
 import { ref, get, update } from 'firebase/database';
-import ImageCarousel from '../../../components/Image/ImageCarousel';
+import Image from '../../../components/Image/Image';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { Carousel } from 'react-responsive-carousel';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
   const [consecutiveLogins, setConsecutiveLogins] = useState(0);
   const [prenom, setPrenom] = useState("");
   const [showIcons, setShowIcons] = useState(true);
+  const { imageUrls, loading, error } = Image({ path: 'HomePage/WelcomeBlock' });
 
   useEffect(() => {
     AOS.init({
@@ -111,6 +113,22 @@ const WelcomeBlock = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="carousel-container">
+        <p>Chargement des images...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="carousel-container">
+        <p>{error}</p>
+      </div>
+    );
+  }
+
   return (
     <>
       {/* Social Bar */}
@@ -143,7 +161,23 @@ const WelcomeBlock = () => {
             </div>
           </div>
           <div className="hero-image-container" data-aos="fade-left">
-            <ImageCarousel folderPath="HomePage/WelcomeBlock" />
+              <div className="carousel-container">
+                <Carousel
+                  showThumbs={false}
+                  infiniteLoop
+                  showIndicators={false}
+                  autoPlay
+                  interval={3500}
+                  showArrows={false}
+                  showStatus={false}
+                >
+                  {imageUrls.map((url, index) => (
+                    <div key={index}>
+                      <img src={url} alt={`Image ${index + 1}`} className="carousel-image" />
+                    </div>
+                  ))}
+                </Carousel>
+            </div>
           </div>
         </div>
       </div>
