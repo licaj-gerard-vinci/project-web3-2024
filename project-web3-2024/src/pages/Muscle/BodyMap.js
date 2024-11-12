@@ -393,26 +393,26 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
               <div>Connectez-vous pour voir les exercices</div>
             )}
             {user && (
-              <div className="exercise-grid">
+              <div className="exercise-list">
               {exercises.length > 0 ? (
                 exercises.map(exercise => (
                   <div key={exercise.id} className="exercise-card">
                     <h3>{exercise.name}</h3>
                     <VideosPlayer videoUrl={exercise.url} videoId={exercise.id}/>
-                    <button className="minus-button" onClick={() => toggleDescription(exercise.id)}>
+                    <button className="details-button" onClick={() => toggleDescription(exercise.id)}>
                       {showDescription[exercise.id] ?  <MdOutlineMoreVert/> : <MdOutlineMoreVert />}
                     </button>
                     {showDescription[exercise.id] && (
-                      <div className="exercise-details">
+                      <div className="details">
                         <p>Description: {exercise.description}</p>
                         <p>Difficulté: {exercise.difficulte}</p>
                       </div>
                     )}
                     {/* Bouton Like */}
-                    <button className="minus-button" onClick={() => handleLike(exercise.id)}>
+                    <button className="likes-button" onClick={() => handleLike(exercise.id)}>
                       {isLikedByUser(exercise.id) ? <IoHeartSharp style={{ color: 'red' }} /> : <IoHeartOutline />}
                     </button>
-                    <p>{getLikeCount(exercise.id)} likes</p> {/* Compteur de likes */}
+                    <div className='div'>{getLikeCount(exercise.id)} likes</div> {/* Compteur de likes */}
                   </div>
                 ))
               ) : (

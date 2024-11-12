@@ -8,6 +8,9 @@
   padding: 0 20px;
   gap: 20px;
 }
+.div {
+  color : #ffffff
+}
 
 /* Left column for body map - 40% width */
 .body-map-container {
@@ -167,31 +170,88 @@
   padding: 20px;
 }
 
-.exercise-grid {
-  display: flex;
-  flex-direction: column;
-  gap: 10px; /* Espace entre chaque exercice */
-  width: 125%; /* La grille s'étend sur toute la largeur */
+.exercise-list {
+  flex: 1;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  background-color: #222222;
+  border-radius: 8px;
+  scroll-behavior: smooth; /* Défilement fluide */
 }
 
 .exercise-card {
+  position: relative;
   display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between; /* Étalement vers les bords */
-  width: 100%; /* Prend toute la largeur du conteneur */
-  padding: 20px;
-  border: 1px solid #444; /* Par exemple pour une bordure visible */
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #222222;
   border-radius: 8px;
-  background-color: #222; /* Couleur de fond pour chaque carte */
+  padding: 20px;
+  scroll-snap-align: start; /* Aligne chaque exercice pour le snap */
+  color: #ffffff;
+  width: 100%;
+  max-width: 500px; /* Ajustez en fonction des besoins */
+  margin: 10px;
+  margin-bottom: 10px;
 }
-
 
 .exercise-card h3 {
-  margin: 0;
+  position: absolute;
+  top: 10px;
+  left: 20px;
   font-size: 1.2em;
-  color: #fff;
+  color: #ff7f50;
+  margin: 0;
 }
+
+.exercise-card .likes-button {
+  position: absolute;
+  top: 10px;
+  right: -15px;
+  transform: translateX(-50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.5em;
+  color: red;
+}
+
+.exercise-card .video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin: 20px 0;
+}
+
+.exercise-card .details-button {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2em;
+  color: #ff7f50;
+}
+
+
+.exercise-card .details {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 0.9em;
+  color: #cccccc;
+}
+.exercise-card .like-count {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9em;
+  color: #ffffff;
+}
+
 
 .play-button {
   font-size: 2em;
@@ -213,20 +273,19 @@
   transform: scale(0.95); /* Rétrécissement léger lors du clic */
 }
 
+/* Styles des boutons */
 .play-button, .minus-button {
-  font-size: 24px; /* Ajustez si besoin pour l'icône */
-  color: #ff5c2b; /* Couleur de l'icône */
-  margin-left: 10px;
+  font-size: 1.5em;
+  color: #ff5c2b;
   background: none;
   border: none;
   cursor: pointer;
-  outline: none;
   transition: transform 0.2s ease, color 0.2s ease;
 }
 
-.minus-button:hover {
-  color: #ff5c2b; /* Rouge plus foncé au survol */
-  transform: scale(1.1); /* Agrandissement léger au survol */
+.play-button:hover, .minus-button:hover {
+  color: #ff7f50;
+  transform: scale(1.1);
 }
 
 
@@ -293,16 +352,17 @@ select:hover {
 }
 
 .video-container {
-  width: 300px;
-  height: 200px; /* Ajustez la hauteur selon vos préférences */
+  width: 100%; /* Prend la largeur de la carte */
+  height: 100%; /* Permet à la vidéo de s'adapter au conteneur */
   overflow: hidden;
   border-radius: 8px;
 }
 
-video {
+.video-container video {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Permet de remplir le conteneur sans déformer la vidéo */
+  object-fit: contain;
+  cursor: pointer;
   border-radius: 8px;
 }
 
