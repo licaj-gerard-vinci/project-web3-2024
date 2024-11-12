@@ -2,15 +2,19 @@ import React, { useState } from 'react';
 import Form from '@rjsf/core';
 import AJV8Validator from '@rjsf/validator-ajv8';
 import { motion } from 'framer-motion';
+import { getAuth } from 'firebase/auth';
+import { ref, update } from 'firebase/database';
+import { db } from '../../firebaseConfig';
 import './Survery.css';
 
 const CompleteProfileForm = ({ onClose, initialData }) => {
   const [currentStep, setCurrentStep] = useState(0);
-
   const [formData, setFormData] = useState({
     prenom: initialData.prenom || '',
     nom: initialData.nom || '',
-    email: initialData.email || '',  // Add email from initial data if available
+    age: initialData.age || '',
+    gender: initialData.gender || '',
+    notifications: initialData.notifications || false,
   });
 
   const steps = [
@@ -26,17 +30,6 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
       },
     },
     {
-      title: 'Contact Information',
-      schema: {
-        title: "Contact Information",
-        type: "object",
-        properties: {
-          email: { type: "string", title: "Email", readOnly: true },
-          phone: { type: "string", title: "Phone Number *" },
-        },
-      },
-    },
-    {
       title: 'Additional Details',
       schema: {
         title: "Additional Details",
@@ -47,7 +40,6 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
             type: "string",
             title: "Gender *",
             enum: ["male", "female"],
-            enumNames: ["Male", "Female"],
           },
         },
       },
@@ -68,6 +60,11 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
     "ui:submitButtonOptions": {
       norender: true, // Disable rendering of the default submit button
     },
+    additionalDetails: {
+      gender: {
+        "ui:enumNames": ["Male", "Female"], // Use ui:enumNames instead of enumNames
+      },
+    },
   };
 
   const handleNext = () => {
@@ -78,8 +75,35 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
     if (currentStep > 0) setCurrentStep(currentStep - 1);
   };
 
-  const handleSubmit = ({ formData }) => {
-    console.log("Submitted data:", formData);
+  const handleSubmit = async ({ formData: submittedData }) => {
+    console.log("Submitted data:", submittedData);
+
+    if (!submittedData || Object.keys(submittedData).length === 0) {
+      console.error("No data to submit.");
+      return;
+    }
+
+    const auth = getAuth();
+    const user = auth.currentUser;
+
+    if (user) {
+      const userRef = ref(db, `users/${user.uid}`);
+      try {
+        await update(userRef, {
+          prenom: submittedData.prenom,
+          nom: submittedData.nom,
+          age: submittedData.age,
+          gender: submittedData.gender,
+          notifications: submittedData.notifications,
+        });
+        console.log("Data saved successfully in Firebase!");
+      } catch (error) {
+        console.error("Error saving data to Firebase:", error);
+      }
+    } else {
+      console.error("No authenticated user found.");
+    }
+
     onClose(); // Close modal on final submit
   };
 
@@ -101,19 +125,32 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
         </div>
       </div>
 
+      
       <h2>{steps[currentStep].title}</h2>
       <Form
         schema={steps[currentStep].schema}
-        uiSchema={uiSchema} // Apply the custom uiSchema to hide the submit button
+        uiSchema={uiSchema}
         formData={formData}
         validator={AJV8Validator}
         onChange={(e) => setFormData(e.formData)}
-        onSubmit={currentStep === steps.length - 1 ? handleSubmit : handleNext}
+        onSubmit={(e) => {
+          if (currentStep === steps.length - 1) {
+            handleSubmit(e);
+          } else {
+            handleNext();
+          }
+        }}
       />
 
       <div className="form-navigation">
         {currentStep > 0 && <button onClick={handlePrevious}>Previous</button>}
-        <button onClick={currentStep === steps.length - 1 ? handleSubmit : handleNext}>
+        <button onClick={() => {
+          if (currentStep === steps.length - 1) {
+            handleSubmit({ formData });
+          } else {
+            handleNext();
+          }
+        }}>
           {currentStep === steps.length - 1 ? "Submit" : "Next"}
         </button>
       </div>
