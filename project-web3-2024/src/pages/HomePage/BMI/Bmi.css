@@ -9,12 +9,13 @@
     color: #ffffff;
     font-family: Arial, sans-serif;
     margin-top: -6rem;
+    margin-bottom: -6rem;
 }
 
 /* Title styling */
 .BMICalculator-container h2 {
     color: #ff6f00;
-    font-size: 2.5rem;
+    font-size: 2.0rem;
     margin-bottom: 1.5rem;
     text-transform: uppercase;
     letter-spacing: 1.2px;
@@ -83,11 +84,11 @@
 /* Button styling */
 .BMICalculator-container button {
     width: 100%;
-    max-width: 600px;
-    padding: 1.5rem; /* Plus grand padding pour un bouton plus imposant */
-    font-size: 1.5rem; /* Taille de la police agrandie */
+    max-width: 300px; /* Réduit la largeur du bouton */
+    padding: 1rem; /* Moins de padding pour un bouton plus petit */
+    font-size: 1.0rem; /* Réduit la taille de la police */
     font-weight: bold;
-    color: #0a0a0c; /* Texte en couleur sombre pour rester sur le thème */
+    color: #ffffff; /* Texte en couleur sombre pour rester sur le thème */
     background-color: #ff6f00; /* Couleur de fond orange */
     border: none;
     border-radius: 30px; /* Bordures arrondies pour un effet moderne */
