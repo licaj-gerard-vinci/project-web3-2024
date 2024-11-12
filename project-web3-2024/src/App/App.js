@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import Home from '../pages/HomePage/Home';
 import BodyMap from '../pages/Muscle/BodyMap';
 import Exemple from '../pages/Exemple';
@@ -35,9 +35,19 @@ function App() {
         console.error("Error signing out:", error);
       });
   };
+  const ScrollWrapper = ({ children }) => {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        window.scrollTo(0, 0);
+    }, [pathname]); // Scroll when the route changes
+
+    return children;
+  };
 
   return (
     <Router>
+      <ScrollWrapper>
       <div className="homepage">
         {/* Navbar component with props */}
         <Navbar user={user} handleLogout={handleLogout} />
@@ -51,6 +61,7 @@ function App() {
         </Routes>
       </div>
       <Footer />
+      </ScrollWrapper>
     </Router>
   );
 }
