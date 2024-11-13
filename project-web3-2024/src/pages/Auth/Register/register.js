@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { ref, set, get } from 'firebase/database';
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import './register.css';
 import { useNavigate } from 'react-router-dom';
 
@@ -12,7 +13,25 @@ const Register = ({ toggleAuthForm }) => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [backgroundImage, setBackgroundImage] = useState(null); // État pour l'URL de l'image de fond
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Récupération de l'image de fond depuis Firebase Storage
+    const fetchBackgroundImage = async () => {
+      const storage = getStorage();
+      const backgroundRef = storageRef(storage, 'AuthPage/authImage.jpeg');
+
+      try {
+        const url = await getDownloadURL(backgroundRef);
+        setBackgroundImage(url);
+      } catch (error) {
+        console.error('Error retrieving the background image:', error);
+      }
+    };
+
+    fetchBackgroundImage();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -49,8 +68,8 @@ const Register = ({ toggleAuthForm }) => {
 
       if (!(await checkIfUserExists(user))) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -73,8 +92,8 @@ const Register = ({ toggleAuthForm }) => {
 
       if (!(await checkIfUserExists(user))) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -97,7 +116,12 @@ const Register = ({ toggleAuthForm }) => {
 
   return (
     <div className="register-container">
-      <div className="image-container"></div>
+      <div className="image-container" style={{
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        flex: 1
+      }}></div>
       <div className="register-form-container">
         <h2>Create an Account</h2>
         <p>Already have an account? <span className="trial-link" onClick={toggleAuthForm}>Sign in</span></p>

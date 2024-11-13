@@ -6,15 +6,17 @@ import './WelcomeBlock.css';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { auth, db } from '../../../firebaseConfig';
 import { ref, get, update } from 'firebase/database';
-import ImageCarousel from '../../../components/Image/ImageCarousel';
+import Image from '../../../components/Image/Image';
 import { FaFacebookF, FaLinkedinIn, FaInstagram } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { Carousel } from 'react-responsive-carousel';
 
 const WelcomeBlock = () => {
   const [user, setUser] = useState(null);
   const [consecutiveLogins, setConsecutiveLogins] = useState(0);
-  const [prenom, setPrenom] = useState("");
+  const [firstName, setFirstName] = useState("");
   const [showIcons, setShowIcons] = useState(true);
+  const { imageUrls, loading, error } = Image({ path: 'HomePage/WelcomeBlock' });
 
   useEffect(() => {
     AOS.init({
@@ -52,15 +54,15 @@ const WelcomeBlock = () => {
 
       if (snapshot.exists()) {
         const userData = snapshot.val();
-        if (userData.prenom) {
-          setPrenom(userData.prenom);
+        if (userData.firstName) {
+          setFirstName(userData.firstName);
         } else if (retries > 0) {
           // Si le prénom n'est pas encore disponible, réessayer après un court délai
           setTimeout(() => fetchUserDataWithRetry(uid, retries - 1), 500);
         }
       }
     } catch (error) {
-      console.error("Erreur lors de la récupération des données utilisateur :", error);
+      console.error("Error retrieving user data:", error);
     }
   };
 
@@ -90,26 +92,42 @@ const WelcomeBlock = () => {
         setConsecutiveLogins(1);
       }
     } catch (error) {
-      console.error("Erreur lors de la gestion des connexions consécutives :", error);
+      console.error("Error handling consecutive logins:", error);
     }
   };
 
   const isYesterday = (date) => {
     try {
-      if (!date || typeof date !== 'string') throw new Error("Date invalide ou absente");
+      if (!date || typeof date !== 'string') throw new Error("Invalid or missing date");
 
       const yesterday = new Date();
       yesterday.setDate(yesterday.getDate() - 1);
       const providedDate = new Date(date);
 
-      if (isNaN(providedDate.getTime())) throw new Error("Date non valide");
+      if (isNaN(providedDate.getTime())) throw new Error("Invalid date");
 
       return providedDate.toISOString().split('T')[0] === yesterday.toISOString().split('T')[0];
     } catch (error) {
-      console.error("Erreur dans la fonction isYesterday:", error.message);
+      console.error("Error in isYesterday function:", error.message);
       return false;
     }
   };
+
+  if (loading) {
+    return (
+      <div className="carousel-container">
+        <p>Loading images...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="carousel-container">
+        <p>{error}</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -125,8 +143,8 @@ const WelcomeBlock = () => {
             <div className="hero-text-container">
               {user ? (
                 <>
-                  <h1 className="hero-heading">De retour parmi nous {prenom}!</h1>
-                  <p>Connexions consécutives : {consecutiveLogins}</p>
+                  <h1 className="hero-heading highlight">Welcome back {firstName}!</h1>
+                  <p>Daily streak : {consecutiveLogins}</p>
                 </>
               ) : (
                 <>
@@ -143,7 +161,23 @@ const WelcomeBlock = () => {
             </div>
           </div>
           <div className="hero-image-container" data-aos="fade-left">
-            <ImageCarousel folderPath="HomePage/WelcomeBlock" />
+              <div className="carousel-container">
+                <Carousel
+                  showThumbs={false}
+                  infiniteLoop
+                  showIndicators={false}
+                  autoPlay
+                  interval={3500}
+                  showArrows={false}
+                  showStatus={false}
+                >
+                  {imageUrls.map((url, index) => (
+                    <div key={index}>
+                      <img src={url} alt={`Image ${index + 1}`} className="carousel-image" />
+                    </div>
+                  ))}
+                </Carousel>
+            </div>
           </div>
         </div>
       </div>
