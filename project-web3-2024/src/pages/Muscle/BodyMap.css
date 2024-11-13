@@ -171,6 +171,7 @@
 }
 
 .exercise-list {
+  margin-left: 200px;
   flex: 1;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
@@ -235,12 +236,12 @@
 
 .exercise-card .details-button {
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
   right: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: #ff7f50;
 }
 
