@@ -10,8 +10,8 @@ import './Survery.css';
 const CompleteProfileForm = ({ onClose, initialData }) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState({
-    prenom: initialData.prenom || '',
-    nom: initialData.nom || '',
+    firstName: initialData.firstName || '',
+    lastName: initialData.lastName || '',
     age: initialData.age || '',
     gender: initialData.gender || '',
     notifications: initialData.notifications || false,
@@ -24,8 +24,8 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
         title: "Personal Information",
         type: "object",
         properties: {
-          prenom: { type: "string", title: "First Name", readOnly: true },
-          nom: { type: "string", title: "Last Name", readOnly: true },
+          firstName: { type: "string", title: "First Name", readOnly: true },
+          lastName: { type: "string", title: "Last Name", readOnly: true },
         },
       },
     },
@@ -90,8 +90,8 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
       const userRef = ref(db, `users/${user.uid}`);
       try {
         await update(userRef, {
-          prenom: submittedData.prenom,
-          nom: submittedData.nom,
+          firstName: submittedData.firstName,
+          lastName: submittedData.lastName,
           age: submittedData.age,
           gender: submittedData.gender,
           notifications: submittedData.notifications,
