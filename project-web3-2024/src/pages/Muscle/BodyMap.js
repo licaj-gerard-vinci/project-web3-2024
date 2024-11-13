@@ -2,14 +2,16 @@ import React, { useState, useEffect } from 'react';
 import './BodyMap.css';
 import { ReactComponent as BodyFront } from '../../assets/body.svg';
 import { ReactComponent as BodyBack } from '../../assets/bodyBack.svg';
-import { ref, get, getDatabase, onValue, set } from "firebase/database";
+import { ref, get, getDatabase, onValue, set, remove } from "firebase/database";
+import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import { useNavigate } from 'react-router-dom';
 import Select from 'react-select';
-import { AiFillPlayCircle } from "react-icons/ai";
 import { AiFillPlusCircle } from "react-icons/ai";
 import { AiFillMinusCircle } from "react-icons/ai";
-
+import { MdOutlineMoreVert } from "react-icons/md";
+import VideosPlayer from '../VideosPlayer/VideosPlayer';
+import { IoHeartOutline } from "react-icons/io5";
+import { IoHeartSharp } from "react-icons/io5";
 
 const BodyMap = () => {
   const [selectedMuscle, setSelectedMuscle] = useState(null);
@@ -17,22 +19,29 @@ const BodyMap = () => {
   const [isAdmin, setIsAdmin] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [muscles, setCategories] = useState([]);
+  const [user, setUser] = useState(null);
+  const [showDescription, setShowDescription] = useState({}); // état pour gérer l'affichage des descriptions
+  const [videoFile, setVideoFile] = useState(null); // Nouvel état pour le fichier vidéo
+  const [likes, setLikes] = useState({}); // État pour stocker les likes en temps réel
+
+
   const [formData, setFormData] = useState({
     name: "",
     url: "",
     description: "",
-    difficulte: "",
+    difficulty: "",
     muscles: []
   });
   const [exercises, setExercises] = useState([]);
   const auth = getAuth();
-  const navigate = useNavigate();
   const db = getDatabase();
+  const storage = getStorage();
 
   useEffect(() => {
     // Charger les catégories depuis Firebase
     onAuthStateChanged(auth, (user) => {
       if (user) {
+        setUser(user);
         // Chemin vers le rôle de l'utilisateur dans la base de données
         const userRef = ref(db, `users/${user.uid}/isAdmin`);
 
@@ -60,6 +69,15 @@ const BodyMap = () => {
   }, [db, auth]);
   console.log(isAdmin);
   
+  useEffect(() => {
+    if (user) {
+      const likesRef = ref(db, "likes");
+      onValue(likesRef, (snapshot) => {
+        const data = snapshot.val() || {};
+        setLikes(data);
+      });
+    }
+  }, [user, db]);
 
   const handleMuscleClick = (e) => {
     const muscle = e.target.id;
@@ -82,7 +100,9 @@ const BodyMap = () => {
             filteredExercises.push({
               id: exerciseId,
               name: exercise.name,
-              url: exercise.url
+              description: exercise.description,
+              url: exercise.url,
+              difficulty: exercise.difficulty
             });
           }
         });
@@ -106,36 +126,44 @@ const BodyMap = () => {
   const handleToggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
-  const reset = () => {
-    formData.name = "";
-    formData.url = "";
-    formData.muscles = [];
-    formData.description = "";
-    formData.difficulte = "";
-  }
-  const handleSubmit = (e) => {
-    if (!formData.name || !formData.url || !formData.muscles) {
-      console.log("Veuillez remplir tous les champs");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log(formData.difficulte);
+    if (!formData.name || !formData.description || !formData.muscles || !videoFile) {
+      console.log("Veuillez remplir tous les champs et ajouter un fichier vidéo");
       return;
     }
-    e.preventDefault();
-    set(ref(db, 'exercises/'+ formData.name),{
-      name: formData.name,
-      description:formData.description,
-      difficulte: formData.difficulte,
-      url: formData.url,
-      muscles: formData.muscles
-    })
-    .then(() => {
-      console.log("ok");
-    })
-    .catch((error) => {
-      console.error(error);
-    })
-    navigate("/bodyMap");
+    if (formData.difficulte === ""){
+      formData.difficulte = "Facile";
+    }
     handleToggleForm();
-    reset();
-  }
+    // Téléchargement du fichier vidéo sur Firebase Storage
+    const place = storageRef(storage, `videos/${formData.name}-${Date.now()}`);
+    try {
+      await uploadBytes(place, videoFile);
+      const videoUrl = await getDownloadURL(place);
+
+      // Sauvegarde des informations de l'exercice dans Firebase Database
+      set(ref(db, `exercises/${formData.name}`), {
+        name: formData.name,
+        description: formData.description,
+        difficulty: formData.difficulte,
+        url: videoUrl,   // Enregistrer l'URL de la vidéo
+        muscles: formData.muscles
+      });
+      console.log("Exercice ajouté avec succès");
+      setVideoFile(null);
+      setFormData({
+        name: "",
+        description: "",
+        difficulte: "",
+        muscles: []
+      });
+    } catch (error) {
+      console.error("Erreur lors du téléchargement de la vidéo :", error);
+    }
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevData) => ({
@@ -238,9 +266,36 @@ const BodyMap = () => {
     }),
   };
   
+  const toggleDescription = (id) => {
+    setShowDescription((prevState) => ({
+      ...prevState,
+      [id]: !prevState[id]
+    }));
+  };
+
+const handleFileChange = (e) => {
+    setVideoFile(e.target.files[0]);
+};
+
+const handleLike = (exerciseId) => {
+  if (!user) {
+    alert("Veuillez vous connecter pour aimer cet exercice.");
+    return;
+  }
+
+  const likeRef = ref(db, `likes/${exerciseId}/${user.uid}`);
+
+  if (likes[exerciseId] && likes[exerciseId][user.uid]) {
+    remove(likeRef); // Supprime le like si l'utilisateur a déjà liké cet exercice
+  } else {
+    set(likeRef, true); // Ajoute un like pour cet exercice
+  }
+};
+
+const isLikedByUser = (exerciseId) => likes[exerciseId] && likes[exerciseId][user?.uid];
+const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerciseId]).length : 0;
+
   
-  
-  console.log(exercises)
   return (
     <div className="main-container">
       <div className="body-map-container">
@@ -254,12 +309,12 @@ const BodyMap = () => {
                 <h3>Add Exercice</h3>
                 <div>
                   <label>
-                    Nom : <input type="text" name="name" value={formData.name} onChange={handleChange} required />
+                    Name : <input type="text" name="name" value={formData.name} onChange={handleChange} required />
                   </label>
                 </div>
                 <div>
                   <label>
-                    URL : <input type="url" name="url" value={formData.url} onChange={handleChange} required />
+                    Video : <input type="file" accept="video/*" onChange={handleFileChange} required />
                   </label>
                 </div>
                 <div>
@@ -269,11 +324,11 @@ const BodyMap = () => {
                 </div>
                 <div>
                   <label>
-                    Difficulté :
-                    <select name="difficulty" value={formData.difficulte} onChange={handleChange} required>
-                      <option color="#ff5c2b" value="easy">Facile</option>
-                      <option value="medium">Moyen</option>
-                      <option value="hard">Difficile</option>
+                    Difficulty:
+                    <select name="difficulte" value={formData.difficulte} onChange={handleChange} required>
+                      <option color="#ff5c2b" value="easy">Easy</option>
+                      <option value="average">Average</option>
+                      <option value="difficult">Difficult</option>
                     </select>
                   </label>
                 </div>
@@ -298,7 +353,7 @@ const BodyMap = () => {
                   />
                 </div>
                 <div>
-                  <button type="submit">Envoyer</button>
+                  <button type="submit">Save</button>
                 </div>
               </form>
               {/* Bouton "-" sous le formulaire */}
@@ -323,51 +378,62 @@ const BodyMap = () => {
       </div>
 
       <div className="exercise-list-container">
-      <div>
-        {isAdmin && !showForm && (
-        <button className="fixed-button" onClick={handleToggleForm}>
-          <AiFillPlusCircle />
-        </button>
-        )}
-        </div>
-      {selectedMuscle ? (
-        <>
-          <h2>{selectedMuscle}</h2>
-          <p>List of exercises for {selectedMuscle}:</p>
-          {!isAdmin &&( 
-            <div>Connectez-vous pour voir les exercices</div>
+        <div>
+          {isAdmin && !showForm && (
+            <button className="fixed-button" onClick={handleToggleForm}>
+              <AiFillPlusCircle />
+            </button>
           )}
-          <div className="exercise-grid">
-            {exercises.length > 0 ? (
-              exercises.map(exercise => (
-                <div key={exercise.id} className="exercise-card">
-                  <h3>{exercise.name}</h3>
-                  <h2>{exercise.description}</h2>
-                  <button
-                    onClick={() => window.open(exercise.url, '_blank')}
-                    className="play-button"
-                  >
-                    <AiFillPlayCircle />
-                  </button>
-                </div>
-              ))
-            ) : (
-              <p>No exercises found for this muscle.</p>
+        </div>
+        {selectedMuscle ? (
+          <>
+            <h2>{selectedMuscle}</h2>
+            <p>List of exercises for {selectedMuscle}:</p>
+            {!user &&( 
+              <div>Log in to view exercises</div>
             )}
-          </div>
-        </>
-      ) : (
-        <p>Select a muscle to see exercises and videos.</p>
-      )}
-    </div>
+            {user && (
+              <div className="exercise-list">
+              {exercises.length > 0 ? (
+                exercises.map(exercise => (
+                  <div key={exercise.id} className="exercise-card">
+                    <h3>{exercise.name}</h3>
+                    <VideosPlayer videoUrl={exercise.url} videoId={exercise.id}/>
+                    {/* Bouton Like */}
+                    <button className="likes-button" onClick={() => handleLike(exercise.id)}>
+                      {isLikedByUser(exercise.id) ? <IoHeartSharp style={{ color: 'red' }} /> : <IoHeartOutline />}
+                    </button>
+                    <div className='like-count'>{getLikeCount(exercise.id)} </div> {/* Compteur de likes */}
+                    <button className="details-button" onClick={() => toggleDescription(exercise.id)}>
+                      {showDescription[exercise.id] ?  <MdOutlineMoreVert/> : <MdOutlineMoreVert />}
+                    </button>
+                    {showDescription[exercise.id] && (
+                      <div className="details">
+                        <p>Description: {exercise.description}</p>
+                        <p>Difficulty: {exercise.difficulte}</p>
+                      </div>
+                    )}
+                  </div>
+                ))
+              ) : (
+                <p>No exercises found for this muscle.</p>
+              )}
+            </div>
+            )} 
+          </>
+        ) : (
+          <p>Select a muscle to see exercises and videos.</p>
+        )}
+      </div>
 
       <style>{`
         .svg-body path[id="${selectedMuscle}"] {
-          fill: rgba(255, 85, 0.8); /* Light blue semi-transparent */
-          stroke: rgb(255, 85, 0); /* Darker border on hover */
+          fill: rgba(255, 85, 0.8);
+          stroke: rgb(255, 85, 0);
         }
       `}</style>
     </div>
+    
   );
 };
 

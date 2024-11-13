@@ -1,23 +1,46 @@
-/* Conteneur de la page d'inscription */
+/* Container for the register page */
 .register-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
-    background-color: #0a0a0c; /* Fond sombre similaire à la page d'accueil */
-    color: #ffffff;
     font-family: Arial, sans-serif;
+    background-color: #000000; /* Black background for consistency */
+    color: #ffffff; /* White text color for contrast */
 }
 
-/* Titre de la page d'inscription */
-.register-container h2 {
-    color: #ff5c2b; /* Couleur d'accent similaire au bouton de la page d'accueil */
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+/* Left-side image container */
+@keyframes slideInFromLeft {
+    0% {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
-/* Formulaire d'inscription */
+.image-container {
+    animation: slideInFromLeft 1s ease-out forwards;
+}
+
+/* Right-side form container */
+.register-form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 2rem;
+    background-color: #0a0a0c; /* Dark background for form container */
+    color: #ffffff;
+}
+
+.register-form-container h2 {
+    color: #ff5c2b; /* Accent color similar to login button */
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
 form {
     background-color: #1e1e1e; /* Fond du formulaire */
     padding: 2rem;
@@ -27,35 +50,29 @@ form {
     max-width: 400px;
 }
 
-/* Groupes de champs du formulaire */
-.form-group {
-    margin-bottom: 1.5rem;
-}
-
 form label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
-    color: #ff5c2b; /* Couleur d'accent */
+    color: #ff5c2b;
 }
 
 form input {
     width: 100%;
     padding: 0.5rem;
-    border: none;
-    border-radius: 5px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #555;
+    border-radius: 4px;
     background-color: #333333;
     color: #ffffff;
-    font-size: 1rem;
 }
 
 form input:focus {
     outline: none;
-    border: 2px solid #ff5c2b; /* Bordure accentuée au focus */
+    border-color: #ff5c2b;
 }
 
-/* Bouton d'inscription */
-.register-btn {
+form button {
     width: 100%;
     padding: 0.75rem;
     font-size: 1rem;
@@ -63,37 +80,47 @@ form input:focus {
     color: #ffffff;
     background-color: #ff5c2b;
     border: none;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-.register-btn:hover {
-    background-color: #e04a1e; /* Couleur légèrement plus foncée au survol */
+form button:hover {
+    background-color: #e04a1e;
 }
 
-/* Messages d'erreur et de succès */
-.error {
-    color: red;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+.trial-link {
+    color: #4a90e2;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
-.success {
-    color: green;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
 }
 
-/* Pour mobile : s'assurer que le formulaire s'adapte */
-@media (max-width: 600px) {
-    .register-container {
-        padding: 1rem;
-    }
+.social-button {
+    width: 45%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #ffffff;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    border: none;
+}
 
-    form {
-        padding: 1.5rem;
-        width: 100%;
-        max-width: 90%;
-    }
+.social-button.google {
+    background-color: #4285F4;
+}
+
+.social-button.microsoft {
+    background-color: #0078d4;
 }

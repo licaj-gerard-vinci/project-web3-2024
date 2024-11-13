@@ -2,53 +2,36 @@ import React, { useState, useEffect } from 'react';
 import { createUserWithEmailAndPassword, sendEmailVerification, signInWithPopup, GoogleAuthProvider, OAuthProvider } from 'firebase/auth';
 import { auth, db } from '../../../firebaseConfig';
 import { ref, set, get } from 'firebase/database';
-import { useNavigate } from 'react-router-dom';
-import '@fortawesome/fontawesome-free/css/all.min.css';
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import './register.css';
+import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
-  const [user, setUser] = useState(null); 
-  const [prenom, setPrenom] = useState('');
-  const [nom, setNom] = useState('');
+const Register = ({ toggleAuthForm }) => {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
-  const [isPendingVerification, setIsPendingVerification] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState(null); // État pour l'URL de l'image de fond
   const navigate = useNavigate();
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        if (!currentUser.emailVerified) {
-          setIsPendingVerification(true);
-          startEmailVerificationCheck(currentUser);
-        } else {
-          setIsPendingVerification(false);
-          navigate('/'); // Redirige l'utilisateur vers la page d'accueil si l'email est vérifié
-        }
-      }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
+    // Récupération de l'image de fond depuis Firebase Storage
+    const fetchBackgroundImage = async () => {
+      const storage = getStorage();
+      const backgroundRef = storageRef(storage, 'AuthPage/authImage.jpeg');
 
-  const startEmailVerificationCheck = (user) => {
-    const interval = setInterval(async () => {
-      await user.reload();
-      if (user.emailVerified) {
-        clearInterval(interval);
-        setIsPendingVerification(false);
-        navigate('/'); // Redirige vers l'accueil après vérification
+      try {
+        const url = await getDownloadURL(backgroundRef);
+        setBackgroundImage(url);
+      } catch (error) {
+        console.error('Error retrieving the background image:', error);
       }
-    }, 3000); // Vérifie toutes les 3 secondes
-  };
+    };
 
-  const checkIfUserExists = async (user) => {
-    const userRef = ref(db, `users/${user.uid}`);
-    const userSnapshot = await get(userRef);
-    return userSnapshot.exists();
-  };
+    fetchBackgroundImage();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,8 +45,8 @@ const Register = () => {
       await sendEmailVerification(user);
 
       await set(ref(db, `users/${user.uid}`), {
-        prenom: prenom,
-        nom: nom,
+        prenom: firstName,
+        nom: lastName,
         email: email,
         isAdmin: false,
         age: 0,
@@ -71,33 +54,22 @@ const Register = () => {
         favorites: []
       });
 
-      setSuccess('Inscription réussie ! Vérifiez votre e-mail pour valider votre compte.');
-      setIsPendingVerification(true);
+      setSuccess('Registration successful! Check your email to verify your account.');
     } catch (err) {
-      setError('Erreur lors de l\'inscription : ' + err.message);
+      setError('Error during registration: ' + err.message);
     }
   };
 
   const handleGoogleSignIn = async () => {
     const provider = new GoogleAuthProvider();
-    provider.addScope('https://www.googleapis.com/auth/userinfo.profile');
-    provider.addScope('https://www.googleapis.com/auth/userinfo.email');
-  
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-  
-      console.log("User data from Google:", user);
-  
-      const userExists = await checkIfUserExists(user);
 
-      console.log(user.uid);
-      
-      
-      if (!userExists) {
+      if (!(await checkIfUserExists(user))) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -106,27 +78,22 @@ const Register = () => {
           favorites: []
         });
       }
-  
-      navigate('/');  // Redirige après la connexion
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }
   };
-  
 
   const handleMicrosoftSignIn = async () => {
     const provider = new OAuthProvider('microsoft.com');
-
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      const userExists = await checkIfUserExists(user);
-
-      if (!userExists) {
+      if (!(await checkIfUserExists(user))) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -135,79 +102,52 @@ const Register = () => {
           favorites: []
         });
       }
-
-      navigate('/');  // Redirige après la connexion
+      navigate('/');
     } catch (error) {
       setError(error.message);
     }
   };
 
-  if (isPendingVerification) {
-    return (
-      <div className="register-container">
-        <h2>Attente de la validation</h2>
-        <p>Veuillez vérifier votre e-mail pour valider votre compte.</p>
-      </div>
-    );
-  }
+  const checkIfUserExists = async (user) => {
+    const userRef = ref(db, `users/${user.uid}`);
+    const snapshot = await get(userRef);
+    return snapshot.exists();
+  };
 
   return (
     <div className="register-container">
-      <h2>Créer un compte</h2>
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
-
-      <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="prenom">Prénom :</label>
-          <input
-            type="text"
-            id="prenom"
-            value={prenom}
-            onChange={(e) => setPrenom(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="nom">Nom :</label>
-          <input
-            type="text" 
-            id="nom"
-            value={nom}
-            onChange={(e) => setNom(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="email">Email :</label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Mot de passe :</label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit" className="register-btn">S'inscrire</button>
-        <div className="social-buttons">
-          <button onClick={handleGoogleSignIn} className="social-button google">
-            <i className="fab fa-google"></i> S'inscrire avec Google
-          </button>
-          <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
-            <i className="fab fa-microsoft"></i> S'inscrire avec Microsoft
-          </button>
-        </div>
-      </form>
+      <div className="image-container" style={{
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        flex: 1
+      }}></div>
+      <div className="register-form-container">
+        <h2>Create an Account</h2>
+        <p>Already have an account? <span className="trial-link" onClick={toggleAuthForm}>Sign in</span></p>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {success && <p style={{ color: 'green' }}>{success}</p>}
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="firstName">First Name:</label>
+          <input type="text" id="firstName" value={firstName} onChange={(e) => setFirstName(e.target.value)} required />
+          <label htmlFor="lastName">Last Name:</label>
+          <input type="text" id="lastName" value={lastName} onChange={(e) => setLastName(e.target.value)} required />
+          <label htmlFor="email">Email:</label>
+          <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+          <label htmlFor="password">Password:</label>
+          <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <button type="submit">Register</button>
+          <p className="or-continue-with">or register with</p>
+          <div className="social-buttons">
+            <button onClick={handleGoogleSignIn} className="social-button google">
+              <i className="fab fa-google"></i> Register with Google
+            </button>
+            <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
+              <i className="fab fa-microsoft"></i> Register with Microsoft
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };

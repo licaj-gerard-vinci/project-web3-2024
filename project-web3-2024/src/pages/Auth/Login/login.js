@@ -3,15 +3,16 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthP
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { ref, get, set } from 'firebase/database';
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
-import { Link } from 'react-router-dom';
 
-const Login = () => {
+const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState(null); // État pour l'URL de l'image de fond
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,6 +23,23 @@ const Login = () => {
     });
     return () => unsubscribe();
   }, [navigate]);
+
+  useEffect(() => {
+    // Récupération de l'image de fond depuis Firebase Storage
+    const fetchBackgroundImage = async () => {
+      const storage = getStorage();
+      const backgroundRef = storageRef(storage, 'AuthPage/authImage.jpeg');
+
+      try {
+        const url = await getDownloadURL(backgroundRef);
+        setBackgroundImage(url);
+      } catch (error) {
+        console.error('Error retrieving background image:', error);
+      }
+    };
+
+    fetchBackgroundImage();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -36,7 +54,7 @@ const Login = () => {
       if (userExists) {
         navigate('/'); // Redirige si l'utilisateur existe
       } else {
-        navigate('/register', { state: { message: 'Vous devez vous inscrire d\'abord !' } });
+        toggleAuthForm(); // Appelle toggleAuthForm pour passer à l'inscription
       }
     } catch (error) {
       setError(error.message);
@@ -45,15 +63,16 @@ const Login = () => {
 
   const handlePasswordReset = async () => {
     if (!email) {
-      setError("Veuillez entrer votre adresse e-mail pour réinitialiser le mot de passe.");
+      setError("Please enter your email to reset your password.");      
       return;
     }
     try {
       await sendPasswordResetEmail(auth, email);
       setResetEmailSent(true);
       setError('');
+      alert('Password reset email sent. Check your inbox.');
     } catch (error) {
-      setError("Erreur lors de l'envoi de l'email de réinitialisation : " + error.message);
+      setError("Error sending reset email: " + error.message);    
     }
   };
 
@@ -72,18 +91,16 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
   
-      // Log pour vérifier les informations récupérées
       console.log("User data from Google:", user);
   
       const userExists = await checkIfUserExists(user);
 
       console.log(user.uid);
       
-      
       if (!userExists) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -92,7 +109,6 @@ const Login = () => {
           favorites: []
         });
       }
-  
       navigate('/');  // Redirige après la connexion
     } catch (error) {
       setError(error.message);
@@ -110,11 +126,11 @@ const Login = () => {
 
       if (!userExists) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
-          isAdmin: false,
           photoURL: user.photoURL,
+          isAdmin: false,
           age: 0,
           gender: "",
           favorites: []
@@ -129,12 +145,21 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {resetEmailSent && <p style={{ color: 'green' }}>E-mail de réinitialisation envoyé. Vérifiez votre boîte de réception.</p>}
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email:</label>
+      <div className="image-container" style={{
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        flex: 1
+      }}></div>
+      <div className="login-form-container">
+        <h2>Sign in to your account</h2>
+        <p>
+          Not a member? <span className="trial-link" onClick={toggleAuthForm}>Register now</span>
+        </p>
+
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <label htmlFor="email">Email address:</label>
           <input
             type="email"
             id="email"
@@ -142,8 +167,6 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
             required
           />
-        </div>
-        <div>
           <label htmlFor="password">Password:</label>
           <input
             type="password"
@@ -152,23 +175,21 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-        </div>
-        <button type="submit">Login</button>
-        <p className="forgot-password-link" onClick={handlePasswordReset}>
-          Mot de passe oublié ?
-        </p>
-        <p>
-          Pas encore de compte ? <Link to="/register" className="forgot-password-link">S'inscrire</Link>
-        </p>
-        <div className="social-buttons">
-          <button onClick={handleGoogleSignIn} className="social-button google">
-            <i className="fab fa-google"></i> Se connecter avec Google
-          </button>
-          <button onClick={handleMicrosoftSignIn} className="social-button microsoft">
-            <i className="fab fa-microsoft"></i> Se connecter avec Microsoft
-          </button>
-        </div>
-      </form>
+          <button type="submit">Sign in</button>
+          <a href="#" className="forgot-password-link" onClick={handlePasswordReset}>
+            Forgot password?
+          </a>
+          <p className="or-continue-with">or continue with</p>
+          <div className="social-buttons">
+            <button className="social-button google" onClick={handleGoogleSignIn}>
+              <i className="fab fa-google"></i> Google
+            </button>
+            <button className="social-button microsoft" onClick={handleMicrosoftSignIn}>
+              <i className="fab fa-microsoft"></i> Microsoft
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
   );
 };
