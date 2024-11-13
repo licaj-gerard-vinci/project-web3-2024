@@ -388,9 +388,11 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
         {selectedMuscle ? (
           <>
             <h2>{selectedMuscle}</h2>
-            <p>List of exercises for {selectedMuscle}:</p>
             {!user &&( 
-              <div>Log in to view exercises</div>
+              <div className='div'>Log in to view exercises</div>
+            )}
+            {user && (
+              <p>List of exercises for {selectedMuscle}:</p>
             )}
             {user && (
               <div className="exercise-list">
@@ -414,6 +416,7 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                       </div>
                     )}
                   </div>
+                  
                 ))
               ) : (
                 <p>No exercises found for this muscle.</p>
