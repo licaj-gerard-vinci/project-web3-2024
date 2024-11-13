@@ -86,8 +86,8 @@ const Profil = () => {
         <h2>Your profil</h2>
       </div>
       <div className="profile-info">
-        <p><strong>Firstname :</strong> {profileData?.firstName || 'N/A'}</p>
-        <p><strong>Lastname :</strong> {profileData?.lastName || 'N/A'}</p>
+        <p><strong>First Name :</strong> {profileData?.firstName || 'N/A'}</p>
+        <p><strong>Last Name :</strong> {profileData?.lastName || 'N/A'}</p>
         <p><strong>Age :</strong> {profileData?.age || 'N/A'}</p>
         <p><strong>Gender :</strong> {profileData?.gender || 'N/A'}</p>
       </div>
@@ -102,6 +102,7 @@ const Profil = () => {
       </div>
       
       <button className="logout-button" onClick={() => getAuth().signOut()}>
+        Logout
         Logout
       </button>
 
