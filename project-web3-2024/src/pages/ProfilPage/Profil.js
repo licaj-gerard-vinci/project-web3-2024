@@ -35,8 +35,8 @@ const Profil = () => {
     const snapshot = await get(userRef);
     const userData = snapshot.val();
     setProfileData(userData || {});
-    if (userData?.profileImageUrl) {
-      setProfileImage(userData.profileImageUrl);
+    if (userData?.photoURL) {
+      setProfileImage(userData.photoURL);
     }
   };
 
@@ -49,7 +49,7 @@ const Profil = () => {
 
       // Update the profile image URL in Firebase Database
       const userRef = ref(db, `users/${user.uid}`);
-      await update(userRef, { profileImageUrl: downloadURL });
+      await update(userRef, { photoURL: downloadURL });
 
       // Set the profile image in state
       setProfileImage(downloadURL);
@@ -83,26 +83,26 @@ const Profil = () => {
         <label htmlFor="profile-image-upload" className="upload-button">
           Change Photo
         </label>
-        <h2>Votre Profil</h2>
+        <h2>Your profil</h2>
       </div>
       <div className="profile-info">
-        <p><strong>Prénom :</strong> {profileData?.prenom || 'N/A'}</p>
-        <p><strong>Nom :</strong> {profileData?.nom || 'N/A'}</p>
-        <p><strong>Âge :</strong> {profileData?.age || 'N/A'}</p>
-        <p><strong>Sexe :</strong> {profileData?.gender || 'N/A'}</p>
+        <p><strong>Firstname :</strong> {profileData?.firstName || 'N/A'}</p>
+        <p><strong>Lastname :</strong> {profileData?.lastName || 'N/A'}</p>
+        <p><strong>Age :</strong> {profileData?.age || 'N/A'}</p>
+        <p><strong>Gender :</strong> {profileData?.gender || 'N/A'}</p>
       </div>
 
       <button className="complete-profile-button" onClick={() => setShowFormModal(true)}>
-        Modifier information
+        Modify information
       </button>
 
       <div className="favorites-section">
-        <h3>Exercices Favoris</h3>
-        <p>Aucun exercice favori trouvé.</p>
+        <h3>Favorite exercices</h3>
+        <p>No exercices found</p>
       </div>
       
       <button className="logout-button" onClick={() => getAuth().signOut()}>
-        Déconnexion
+        Logout
       </button>
 
       <ReactModal
@@ -114,7 +114,7 @@ const Profil = () => {
       >
         <ProfileForm
           onClose={() => setShowFormModal(false)}
-          initialData={{ prenom: profileData.prenom, nom: profileData.nom, age: profileData.age, gender: profileData.gender }}
+          initialData={{ firstName: profileData.firstName, lastName: profileData.lastName, age: profileData.age, gender: profileData.gender }}
         />
       </ReactModal>
     </div>

@@ -14,7 +14,9 @@ function Navbar({ user, handleLogout }) {
   useEffect(() => {
     const loadProfileImage = async () => {
       if (user && user.photoURL) {
-        setProfileImage(user.photoURL);
+        const defaultImageRef = storageRef(storage, `users/${user.uid}/pp`);
+        const url = await getDownloadURL(defaultImageRef);
+        setProfileImage(url);
       } else {
         const defaultImageRef = storageRef(storage, 'HomePage/NavBar/default-pp.png');
         const url = await getDownloadURL(defaultImageRef);
