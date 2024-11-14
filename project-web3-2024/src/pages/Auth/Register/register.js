@@ -45,8 +45,8 @@ const Register = ({ toggleAuthForm }) => {
       await sendEmailVerification(user);
 
       await set(ref(db, `users/${user.uid}`), {
-        prenom: firstName,
-        nom: lastName,
+        firstName: firstName,
+        lastName: lastName,
         email: email,
         isAdmin: false,
         age: 0,
