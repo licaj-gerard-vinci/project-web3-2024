@@ -3,6 +3,7 @@ import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, OAuthP
 import { auth, db } from '../../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import { ref, get, set } from 'firebase/database';
+import { getStorage, ref as storageRef, getDownloadURL } from 'firebase/storage';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import './login.css';
 
@@ -11,6 +12,7 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [resetEmailSent, setResetEmailSent] = useState(false);
+  const [backgroundImage, setBackgroundImage] = useState(null); // État pour l'URL de l'image de fond
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +23,23 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
     });
     return () => unsubscribe();
   }, [navigate]);
+
+  useEffect(() => {
+    // Récupération de l'image de fond depuis Firebase Storage
+    const fetchBackgroundImage = async () => {
+      const storage = getStorage();
+      const backgroundRef = storageRef(storage, 'AuthPage/authImage.jpeg');
+
+      try {
+        const url = await getDownloadURL(backgroundRef);
+        setBackgroundImage(url);
+      } catch (error) {
+        console.error('Error retrieving background image:', error);
+      }
+    };
+
+    fetchBackgroundImage();
+  }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,8 +99,8 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
       
       if (!userExists) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
           photoURL: user.photoURL,
           isAdmin: false,
@@ -107,11 +126,11 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
 
       if (!userExists) {
         await set(ref(db, `users/${user.uid}`), {
-          prenom: user.displayName ? user.displayName.split(' ')[0] : '',
-          nom: user.displayName ? user.displayName.split(' ')[1] || '' : '',
+          firstName: user.displayName ? user.displayName.split(' ')[0] : '',
+          lastName: user.displayName ? user.displayName.split(' ')[1] || '' : '',
           email: user.email,
-          isAdmin: false,
           photoURL: user.photoURL,
+          isAdmin: false,
           age: 0,
           gender: "",
           favorites: []
@@ -126,7 +145,12 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
 
   return (
     <div className="login-container">
-      <div className="image-container"></div>
+      <div className="image-container" style={{
+        backgroundImage: backgroundImage ? `url(${backgroundImage})` : 'none',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        flex: 1
+      }}></div>
       <div className="login-form-container">
         <h2>Sign in to your account</h2>
         <p>

@@ -16,7 +16,7 @@ const ImageDisplay = ({ imagePath, altText = "Image" }) => {
         const url = await getDownloadURL(imageRef);
         setImageUrl(url);
       } catch (err) {
-        console.error("Erreur lors de la récupération de l'image :", err);
+        console.error("Error retrieving the image:", err);
         setError(true);
       }
     };
@@ -30,9 +30,9 @@ const ImageDisplay = ({ imagePath, altText = "Image" }) => {
 
   return (
     <div className="image-container" style={{ textAlign: 'center', position: 'relative' }}>
-      {!isLoaded && !error && <p>Chargement de l'image...</p>}
+      {!isLoaded && !error && <p>Loading image...</p>}
       {error ? (
-        <p>Impossible de charger l'image</p>
+        <p>Unable to load image</p>
       ) : (
         imageUrl && (
           <img

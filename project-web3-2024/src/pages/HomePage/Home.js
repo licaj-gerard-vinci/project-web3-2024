@@ -1,6 +1,6 @@
 import React from 'react';
 import WelcomeBlock from './WelcomeBlock/WelcomeBlock';
-import Test from './Testf/CarouselMuscles';
+import Test from './CarouselMuscle/CarouselMuscles';
 import Divider from './Divider/Divider';
 import Anchor from '../Anchor/Anchor';
 import BMICalculator from './BMI/Bmi';
