@@ -112,3 +112,14 @@
     font-weight: bold;
     color: #ff6f00;
 }
+
+/* Remove spinners from number input fields */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
