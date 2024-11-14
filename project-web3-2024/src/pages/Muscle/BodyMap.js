@@ -326,9 +326,9 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                   <label>
                     Difficulté :
                     <select name="difficulte" value={formData.difficulte} onChange={handleChange} required>
-                      <option color="#ff5c2b" value="facile">Facile</option>
-                      <option value="moyen">Moyen</option>
-                      <option value="difficile">Difficile</option>
+                      <option color="#ff5c2b" value="facile">Easy</option>
+                      <option value="moyen">Medium</option>
+                      <option value="difficile">Hard</option>
                     </select>
                   </label>
                 </div>
