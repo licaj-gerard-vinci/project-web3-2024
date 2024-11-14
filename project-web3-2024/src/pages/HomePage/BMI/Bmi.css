@@ -9,7 +9,7 @@
     color: #ffffff;
     font-family: Arial, sans-serif;
     margin-top: -6rem;
-    margin-bottom: -6rem;
+    margin-bottom: -4rem;
 }
 
 /* Title styling */
@@ -84,11 +84,11 @@
 /* Button styling */
 .BMICalculator-container button {
     width: 100%;
-    max-width: 300px; /* Réduit la largeur du bouton */
+    max-width: 300px; /* RÃ©duit la largeur du bouton */
     padding: 1rem; /* Moins de padding pour un bouton plus petit */
-    font-size: 1.0rem; /* Réduit la taille de la police */
+    font-size: 1.0rem; /* RÃ©duit la taille de la police */
     font-weight: bold;
-    color: #ffffff; /* Texte en couleur sombre pour rester sur le thème */
+    color: #ffffff; /* Texte en couleur sombre pour rester sur le thÃ¨me */
     background-color: #ff6f00; /* Couleur de fond orange */
     border: none;
     border-radius: 30px; /* Bordures arrondies pour un effet moderne */
@@ -100,8 +100,8 @@
 }
 
 .BMICalculator-container button:hover {
-    background-color: #e65c00; /* Couleur de fond plus foncée au survol */
-    transform: translateY(-3px); /* Léger mouvement vers le haut au survol */
+    background-color: #e65c00; /* Couleur de fond plus foncÃ©e au survol */
+    transform: translateY(-3px); /* LÃ©ger mouvement vers le haut au survol */
 }
 
 /* Result display */
@@ -122,4 +122,12 @@ input[type="number"]::-webkit-inner-spin-button {
 
 input[type="number"] {
     -moz-appearance: textfield;
+}
+/* Error message styling */
+.error-message {
+    color: #ff4d4d; /* Rouge vif pour le message d'erreur */
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 1rem;
 }

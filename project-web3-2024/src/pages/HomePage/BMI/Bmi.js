@@ -10,28 +10,30 @@ function BMICalculator() {
   const [message, setMessage] = useState('');
 
   const calculateBMI = () => {
-    if (weight && height && age && sex) {
-      const heightInMeters = height / 100;
-      const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
-      setBmi(bmiValue);
+    if (!weight || !height || !age || !sex) {
+      setMessage("Veuillez remplir tous les champs pour calculer votre BMI.");
+      setBmi(null); // Réinitialise le BMI pour éviter d'afficher un résultat incorrect
+      return;
+    }
 
-      let category;
-      if (bmiValue < 18.5) category = "Underweight";
-      else if (bmiValue >= 18.5 && bmiValue < 24.9) category = "Normal weight";
-      else if (bmiValue >= 25 && bmiValue < 29.9) category = "Overweight";
-      else category = "Obesity";
+    const heightInMeters = height / 100;
+    const bmiValue = (weight / (heightInMeters * heightInMeters)).toFixed(2);
+    setBmi(bmiValue);
 
-      if (sex === 'female' && age < 18) {
-        setMessage(`For a young female, your BMI indicates: ${category}`);
-      } else if (sex === 'male' && age < 18) {
-        setMessage(`For a young male, your BMI indicates: ${category}`);
-      } else if (sex === 'female') {
-        setMessage(`For an adult female, your BMI indicates: ${category}`);
-      } else {
-        setMessage(`For an adult male, your BMI indicates: ${category}`);
-      }
+    let category;
+    if (bmiValue < 18.5) category = "Sous-poids";
+    else if (bmiValue >= 18.5 && bmiValue < 24.9) category = "Poids normal";
+    else if (bmiValue >= 25 && bmiValue < 29.9) category = "Surpoids";
+    else category = "Obésité";
+
+    if (sex === 'female' && age < 18) {
+      setMessage(`Pour une jeune femme, votre BMI indique : ${category}`);
+    } else if (sex === 'male' && age < 18) {
+      setMessage(`Pour un jeune homme, votre BMI indique : ${category}`);
+    } else if (sex === 'female') {
+      setMessage(`Pour une femme adulte, votre BMI indique : ${category}`);
     } else {
-      setMessage("Please enter your weight, height, age, and sex.");
+      setMessage(`Pour un homme adulte, votre BMI indique : ${category}`);
     }
   };
 
@@ -69,6 +71,11 @@ function BMICalculator() {
       {bmi && (
         <div>
           <p>Your BMI is: {bmi}</p>
+          <p>{message}</p>
+        </div>
+      )}
+      {!bmi && message && (
+        <div className="error-message">
           <p>{message}</p>
         </div>
       )}
