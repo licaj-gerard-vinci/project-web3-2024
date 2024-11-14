@@ -52,13 +52,16 @@ const AuthForm = () => {
 
   if (isPendingVerification) {
     return (
-      <div className="auth-form-container">
-        <CgDanger className="danger-icon" />
-        <h2>Email verification pending</h2>
-        <p>Please verify your email address to activate your account.</p>
+      <div className="verification-container">
+        <div className="verification-message">
+          <CgDanger className="danger-icon" />
+          <h2>Email Verification Pending</h2>
+          <p>Please verify your email address to activate your account.</p>
+        </div>
       </div>
     );
   }
+  
 
   return (
     <div className="auth-form-container">

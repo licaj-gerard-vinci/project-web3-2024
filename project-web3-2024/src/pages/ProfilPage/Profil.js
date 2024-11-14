@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { getAuth, onAuthStateChanged } from 'firebase/auth';
-import { ref, get, update } from 'firebase/database';
+import { getAuth } from 'firebase/auth';
+import { ref, update } from 'firebase/database';
 import { db, storage } from '../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import ReactModal from 'react-modal';
@@ -10,60 +10,45 @@ import './Profil.css';
 
 ReactModal.setAppElement('#root');
 
-const Profil = () => {
-  const [user, setUser] = useState(null);
-  const [profileData, setProfileData] = useState({});
+const Profil = ({ user, onUserUpdate }) => {
+  const [profileData, setProfileData] = useState(user || {});
   const [showFormModal, setShowFormModal] = useState(false);
-  const [profileImage, setProfileImage] = useState(null);
+  const [profileImage, setProfileImage] = useState(user?.photoURL || null);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const auth = getAuth();
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      if (currentUser) {
-        setUser(currentUser);
-        await fetchUserProfile(currentUser.uid);
+    if (user) {
+      setProfileData(user);
+      if(user.photoURL) {
+        setProfileImage(user.photoURL);
       } else {
-        navigate('/login');
+        const defaultImageRef = storageRef(storage, 'HomePage/NavBar/default-pp.png');
+        getDownloadURL(defaultImageRef).then((url) => setProfileImage(url));
       }
-    });
-    return () => unsubscribe();
-  }, [navigate]);
-
-  const fetchUserProfile = async (userId) => {
-    const userRef = ref(db, `users/${userId}`);
-    const snapshot = await get(userRef);
-    const userData = snapshot.val();
-    setProfileData(userData || {});
-    if (userData?.photoURL) {
-      setProfileImage(userData.photoURL);
     }
-  };
+  }, [user]);
+
+  if(!user) {
+    navigate('/');
+    return null;
+  }
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
     if (file) {
-      const imageRef = storageRef(storage, `profilePictures/${user.uid}`);
+      const imageRef = storageRef(storage, `users/${user.uid}/pp`);
       await uploadBytes(imageRef, file);
       const downloadURL = await getDownloadURL(imageRef);
 
-      // Update the profile image URL in Firebase Database
+      // Met à jour l'URL de la photo de profil dans Firebase Database
       const userRef = ref(db, `users/${user.uid}`);
       await update(userRef, { photoURL: downloadURL });
 
-      // Set the profile image in state
+      // Met à jour l'image de profil dans le composant et déclenche une mise à jour dans App.js
       setProfileImage(downloadURL);
+      onUserUpdate(); // Appelle la fonction pour mettre à jour les données utilisateur dans App.js
     }
   };
-
-  useEffect(() => {
-    if (showFormModal) {
-      document.body.classList.add('no-scroll');
-    } else {
-      document.body.classList.remove('no-scroll');
-    }
-    return () => document.body.classList.remove('no-scroll');
-  }, [showFormModal]);
 
   return (
     <div className="profile-container">
@@ -83,7 +68,7 @@ const Profil = () => {
         <label htmlFor="profile-image-upload" className="upload-button">
           Change Photo
         </label>
-        <h2>Your profil</h2>
+        <h2>Your profile</h2>
       </div>
       <div className="profile-info">
         <p><strong>First Name :</strong> {profileData?.firstName || 'N/A'}</p>
@@ -97,12 +82,11 @@ const Profil = () => {
       </button>
 
       <div className="favorites-section">
-        <h3>Favorite exercices</h3>
-        <p>No exercices found</p>
+        <h3>Favorite exercises</h3>
+        <p>No exercises found</p>
       </div>
       
       <button className="logout-button" onClick={() => getAuth().signOut()}>
-        Logout
         Logout
       </button>
 
