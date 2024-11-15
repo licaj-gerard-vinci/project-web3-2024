@@ -23,6 +23,9 @@ const BodyMap = () => {
   const [showDescription, setShowDescription] = useState({}); // état pour gérer l'affichage des descriptions
   const [videoFile, setVideoFile] = useState(null); // Nouvel état pour le fichier vidéo
   const [likes, setLikes] = useState({}); // État pour stocker les likes en temps réel
+  const [showAllExercises, setShowAllExercises] = useState(false);
+  const [allExercises, setAllExercises] = useState([]);
+
 
 
   const [formData, setFormData] = useState({
@@ -84,6 +87,39 @@ const BodyMap = () => {
     setSelectedMuscle(muscle);
     toggleExercises(muscle);
   };
+
+  const deleteExercise = async (exerciseId) => {
+    try {
+        await remove(ref(db, `exercises/${exerciseId}`));
+        setAllExercises((prevExercises) =>
+            prevExercises.filter((exercise) => exercise.id !== exerciseId)
+        );
+        console.log(`Exercice ${exerciseId} supprimé.`);
+    } catch (error) {
+        console.error("Erreur lors de la suppression de l'exercice :", error);
+    }
+};
+
+
+  const fetchAllExercises = async () => {
+    const exercisesRef = ref(db, 'exercises');
+    try {
+        const snapshot = await get(exercisesRef);
+        if (snapshot.exists()) {
+            const data = snapshot.val();
+            const exercisesList = Object.keys(data).map((key) => ({
+                id: key,
+                ...data[key],
+            }));
+            setAllExercises(exercisesList);
+        } else {
+            setAllExercises([]);
+        }
+    } catch (error) {
+        console.error("Erreur lors de la récupération des exercices :", error);
+    }
+};
+
 
   const toggleExercises = async (selectedMuscle) => {
     const exercisesRef = ref(db, 'exercises');
@@ -384,6 +420,37 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
               <AiFillPlusCircle />
             </button>
           )}
+          {isAdmin && (
+            <button className="fixed-button" onClick={() => {
+                setShowAllExercises((prev) => !prev);
+                if (!showAllExercises) fetchAllExercises();
+            }}>
+                <AiFillMinusCircle />
+            </button>
+          )}
+          {showAllExercises && (
+            <div className="exercise-list">
+                <h2>Tous les Exercices</h2>
+                {allExercises.length > 0 ? (
+                    allExercises.map((exercise) => (
+                        <div key={exercise.id} className="exercise-card">
+                            <h3>{exercise.name}</h3>
+                            <p>Description: {exercise.description}</p>
+                            <p>Difficulty: {exercise.difficulty}</p>
+                            <button
+                                onClick={() => deleteExercise(exercise.id)}
+                                className="delete-button"
+                            >
+                                Supprimer
+                            </button>
+                        </div>
+                    ))
+                ) : (
+                    <p>Aucun exercice trouvé.</p>
+                )}
+            </div>
+          )}
+
         </div>
         {selectedMuscle ? (
           <>
