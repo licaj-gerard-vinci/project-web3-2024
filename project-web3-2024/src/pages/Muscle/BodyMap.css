@@ -171,6 +171,8 @@
 }
 
 .exercise-list {
+  margin-left: 300px;
+  margin-bottom: 50px;
   flex: 1;
   overflow-y: auto;
   scroll-snap-type: y mandatory;
@@ -235,12 +237,12 @@
 
 .exercise-card .details-button {
   position: absolute;
-  bottom: 10px;
+  bottom: 5px;
   right: 10px;
   background: none;
   border: none;
   cursor: pointer;
-  font-size: 1.2em;
+  font-size: 1.3em;
   color: #ff7f50;
 }
 
@@ -372,4 +374,28 @@ select:hover {
   object-fit: contain;
   cursor: pointer;
   border-radius: 8px;
+}
+
+.delete-button {
+  background-color: #ff5c2b;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.9em;
+}
+
+.delete-button:hover {
+  background-color: #ff6347;
+}
+
+.exercise-list {
+  margin-top: 20px;
+  background-color: #222222;
+  padding: 20px;
+  border-radius: 8px;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding-right: 200px;
 }
