@@ -170,8 +170,8 @@ const BodyMap = () => {
       console.log("Veuillez remplir tous les champs et ajouter un fichier vidéo");
       return;
     }
-    if (formData.difficulte === ""){
-      formData.difficulte = "Facile";
+    if (formData.difficulte === undefined){
+      formData.difficulte = "easy";
     }
     handleToggleForm();
     // Téléchargement du fichier vidéo sur Firebase Storage
