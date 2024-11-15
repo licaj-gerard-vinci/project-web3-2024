@@ -1,0 +1,89 @@
+.complete-profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .form-progress {
+    text-align: center;
+    width: 100%;
+    color: #ff7f2a;
+    font-weight: bold;
+  }
+
+  
+
+  .progress-bar {
+    background-color: #333;
+    border-radius: 5px;
+    height: 10px;
+    width: 100%;
+    margin: 10px 0;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    background-color: #ff7f2a;
+    height: 100%;
+    transition: width 0.3s ease-in-out;
+  }
+
+  .complete-profile-form h2 {
+    font-size: 1.5em;
+    color: #ff7f2a;
+    text-align: center;
+  }
+
+  .form-navigation {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .form-navigation button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
+  .form-navigation button:first-child {
+    background-color: #ddd;
+    color: #333;
+  }
+
+  .form-navigation button:last-child {
+    background-color: #ff7f2a;
+    color: white;
+  }
+
+  form .btn-submit {
+    display: none;
+  }
+
+  /* Add padding around the entire form container /
+.complete-profile-form form {
+  padding: 20px;
+}
+
+/ Add padding to each input field to prevent it from touching the edges /
+form .form-control,
+form input[type="text"],
+form input[type="number"],
+form input[type="email"],
+form select {
+  padding: 10px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/ Ensure the labels are styled properly and spaced from inputs */
+form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #ff7f2a;
+}
