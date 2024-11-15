@@ -479,7 +479,7 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                     {showDescription[exercise.id] && (
                       <div className="details">
                         <p>Description: {exercise.description}</p>
-                        <p>Difficulty: {exercise.difficulte}</p>
+                        <p>Difficulty: {exercise.difficulty}</p>
                       </div>
                     )}
                   </div>
