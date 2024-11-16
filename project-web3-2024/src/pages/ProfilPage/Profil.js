@@ -25,13 +25,11 @@ const Profil = ({ user, onUserUpdate }) => {
         const defaultImageRef = storageRef(storage, 'HomePage/NavBar/default-pp.png');
         getDownloadURL(defaultImageRef).then((url) => setProfileImage(url));
       }
+    } else {
+      navigate('/');
     }
   }, [user]);
 
-  if(!user) {
-    navigate('/');
-    return null;
-  }
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
