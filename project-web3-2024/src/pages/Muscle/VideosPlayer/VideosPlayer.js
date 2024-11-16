@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const VideoPlayer = ({ videoUrl, videoId }) => {
+const VideosPlayer = ({ videoUrl, videoId }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   
   const handleVideoClick = () => {
@@ -29,4 +29,4 @@ const VideoPlayer = ({ videoUrl, videoId }) => {
   );
 };
 
-export default VideoPlayer;
+export default VideosPlayer;

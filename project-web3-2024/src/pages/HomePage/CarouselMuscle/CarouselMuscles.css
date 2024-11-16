@@ -77,28 +77,50 @@
     object-fit: cover;
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s ease-in-out;
-    margin: 0 15©px; /* Espace horizontal entre les images */
+    margin: 0 15px; /* Espace horizontal entre les images */
     padding: 0.4rem;
     border-radius: 4%;
+    position: relative; /* Nécessaire pour que le bouton soit positionné par rapport à l'image */
 }
 
 .muscle-image:hover {
     transform: scale(1.05);
 }
 
+/* Muscle Button */
+.muscle-button {
+    position: absolute; /* Positionné par rapport à l'image */
+    bottom: 15px; /* En bas de l'image */
+    left: 50%; /* Centré horizontalement */
+    padding: 10px 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #ff8c00, #ff6f61);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    z-index: 5; /* Assurez-vous que le bouton est au-dessus de l'image */
+    transform: translateX(-50%); /* Centré sans déplacement */
+}
+
+.muscle-button:hover {
+    background: linear-gradient(45deg, #ff6f61, #ff8c00);
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.5);
+}
+
+.muscle-button:active {
+    transform: translateX(-50%) scale(0.95);
+}
+
 /* Muscle Name Overlay */
 .muscle-name-overlay {
-    position: absolute;
-    bottom: 10px;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    padding: 3px 10px;
-    border-radius: 8px;
-    font-size: 1.2rem;
-    text-align: center;
-    font-weight: bold;
+    display: none; /* Désactivé, car les boutons remplacent cet élément */
 }
 
 /* Responsive adjustments */
