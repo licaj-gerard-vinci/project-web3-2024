@@ -3,42 +3,30 @@ import './BodyMap.css';
 import { ReactComponent as BodyFront } from '../../assets/body.svg';
 import { ReactComponent as BodyBack } from '../../assets/bodyBack.svg';
 import { ref, get, getDatabase, onValue, set, remove } from "firebase/database";
-import { getStorage, uploadBytes, getDownloadURL, ref as storageRef } from "firebase/storage";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import Select from 'react-select';
-import { AiFillPlusCircle } from "react-icons/ai";
 import { AiFillMinusCircle } from "react-icons/ai";
 import { MdOutlineMoreVert } from "react-icons/md";
-import VideosPlayer from '../VideosPlayer/VideosPlayer';
+import VideosPlayer from './VideosPlayer/VideosPlayer';
 import { IoHeartOutline } from "react-icons/io5";
 import { IoHeartSharp } from "react-icons/io5";
+import ExerciseForm from './ExerciseForm/ExerciseForm';
+import { AiFillPlusCircle } from "react-icons/ai";
+
 
 const BodyMap = () => {
   const [selectedMuscle, setSelectedMuscle] = useState(null);
   const [isFrontView, setIsFrontView] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [showForm, setShowForm] = useState(false);
-  const [muscles, setCategories] = useState([]);
   const [user, setUser] = useState(null);
   const [showDescription, setShowDescription] = useState({}); // état pour gérer l'affichage des descriptions
-  const [videoFile, setVideoFile] = useState(null); // Nouvel état pour le fichier vidéo
   const [likes, setLikes] = useState({}); // État pour stocker les likes en temps réel
   const [showAllExercises, setShowAllExercises] = useState(false);
   const [allExercises, setAllExercises] = useState([]);
-
-
-
-  const [formData, setFormData] = useState({
-    name: "",
-    url: "",
-    description: "",
-    difficulty: "",
-    muscles: []
-  });
+  const [muscles, setCategories] = useState([]);
   const [exercises, setExercises] = useState([]);
+  const [showForm, setShowForm] = useState(false);
   const auth = getAuth();
   const db = getDatabase();
-  const storage = getStorage();
 
   useEffect(() => {
     // Charger les catégories depuis Firebase
@@ -56,17 +44,6 @@ const BodyMap = () => {
       } else {
         // Si l'utilisateur n'est pas connecté, il n'est pas admin
         setIsAdmin(false);        
-      }
-    });
-    const categoriesRef = ref(db, "muscles/");
-    onValue(categoriesRef, (snapshot) => {
-      const data = snapshot.val();
-      if (data) {
-        const categoriesList = Object.keys(data).map((key) => ({
-          id: key,
-          name: data[key].name // Assurez-vous que chaque catégorie a un champ "categorie"
-        }));
-        setCategories(categoriesList);
       }
     });
   }, [db, auth]);
@@ -158,149 +135,6 @@ const BodyMap = () => {
   const toggleView = () => {
     setIsFrontView((prevView) => !prevView);
   };
-
-  const handleToggleForm = () => {
-    setShowForm((prevShowForm) => !prevShowForm);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    console.log(formData.difficulte);
-    if (!formData.name || !formData.description || !formData.muscles || !videoFile) {
-      console.log("Veuillez remplir tous les champs et ajouter un fichier vidéo");
-      return;
-    }
-    if (formData.difficulte === ""){
-      formData.difficulte = "Facile";
-    }
-    handleToggleForm();
-    // Téléchargement du fichier vidéo sur Firebase Storage
-    const place = storageRef(storage, `videos/${formData.name}-${Date.now()}`);
-    try {
-      await uploadBytes(place, videoFile);
-      const videoUrl = await getDownloadURL(place);
-
-      // Sauvegarde des informations de l'exercice dans Firebase Database
-      set(ref(db, `exercises/${formData.name}`), {
-        name: formData.name,
-        description: formData.description,
-        difficulty: formData.difficulte,
-        url: videoUrl,   // Enregistrer l'URL de la vidéo
-        muscles: formData.muscles
-      });
-      console.log("Exercice ajouté avec succès");
-      setVideoFile(null);
-      setFormData({
-        name: "",
-        description: "",
-        difficulte: "",
-        muscles: []
-      });
-    } catch (error) {
-      console.error("Erreur lors du téléchargement de la vidéo :", error);
-    }
-  };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
-      [name]: value
-    }));
-  };
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      backgroundColor: '#333333',
-      borderRadius: '4px',
-      border: state.isFocused ? '2px solid #ff5c2b' : '2px solid transparent',
-      boxShadow: 'none',
-      padding: '4px',
-      fontSize: '16px',
-      color: '#ff5c2b',
-      transition: 'border-color 0.3s ease, background-color 0.3s ease',
-      ':hover': {
-        border: '2px solid #ff5c2b',
-      },
-    }),
-    option: (provided, state) => ({
-      ...provided,
-      backgroundColor: state.isFocused ? '#222222' : '#333333',
-      color: state.isSelected ? '#ffffff' : '#ff5c2b',
-      padding: '8px',
-      cursor: 'pointer',
-      ':active': {
-        backgroundColor: '#444444',
-      },
-    }),
-    menu: (provided) => ({
-      ...provided,
-      backgroundColor: '#333333',
-      borderRadius: '4px',
-      marginTop: '4px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
-      maxHeight: '200px',
-      overflowY: 'hidden', // Cache la scrollbar, mais garde le défilement
-      /* Cacher la scrollbar pour les navigateurs WebKit */
-      '::-webkit-scrollbar': {
-        display: 'none',
-      },
-      /* Cacher la scrollbar pour Firefox */
-      scrollbarWidth: 'none',
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      maxHeight: '200px', // Limite la hauteur de la liste
-      overflowY: 'scroll', // Permet le défilement, mais sans scrollbar visible
-      paddingRight: '10px', // Espace pour éviter le chevauchement
-      '::-webkit-scrollbar': {
-        display: 'none', // Cache la scrollbar dans Chrome et Safari
-      },
-      scrollbarWidth: 'none', // Cache la scrollbar dans Firefox
-    }),
-    singleValue: (provided) => ({
-      ...provided,
-      color: '#ff5c2b',
-      backgroundColor: '#444444',
-      padding: '4px 8px',
-      borderRadius: '4px',
-    }),
-    multiValue: (provided) => ({
-      ...provided,
-      backgroundColor: '#444444',
-      color: '#ff5c2b',
-      borderRadius: '4px',
-      padding: '2px 4px',
-      marginRight: '4px',
-    }),
-    multiValueLabel: (provided) => ({
-      ...provided,
-      color: '#ff5c2b',
-    }),
-    multiValueRemove: (provided) => ({
-      ...provided,
-      color: '#ff5c2b',
-      cursor: 'pointer',
-      ':hover': {
-        backgroundColor: '#ff5c2b',
-        color: '#ffffff',
-      },
-    }),
-    placeholder: (provided) => ({
-      ...provided,
-      color: '#aaaaaa',
-      fontStyle: 'italic',
-    }),
-    dropdownIndicator: (provided, state) => ({
-      ...provided,
-      color: state.isFocused ? '#ff5c2b' : '#aaaaaa',
-      ':hover': {
-        color: '#ff5c2b',
-      },
-    }),
-    indicatorSeparator: () => ({
-      display: 'none',
-    }),
-  };
   
   const toggleDescription = (id) => {
     setShowDescription((prevState) => ({
@@ -309,15 +143,17 @@ const BodyMap = () => {
     }));
   };
 
-const handleFileChange = (e) => {
-    setVideoFile(e.target.files[0]);
-};
+  const handleToggleForm = () => {
+    setShowForm((prevShowForm) => !prevShowForm);
+  };
 
 const handleLike = (exerciseId) => {
   if (!user) {
     alert("Veuillez vous connecter pour aimer cet exercice.");
     return;
   }
+  
+  
 
   const likeRef = ref(db, `likes/${exerciseId}/${user.uid}`);
 
@@ -336,71 +172,7 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
     <div className="main-container">
       <div className="body-map-container">
       <div>
-      {showForm && (
-        <div>
-        {showForm && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <form onSubmit={handleSubmit}>
-                <h3>Add Exercice</h3>
-                <div>
-                  <label>
-                    Name : <input type="text" name="name" value={formData.name} onChange={handleChange} required />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    Video : <input type="file" accept="video/*" onChange={handleFileChange} required />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    Description : <input type="text" name="description" value={formData.description} onChange={handleChange} required />
-                  </label>
-                </div>
-                <div>
-                  <label>
-                    Difficulty:
-                    <select name="difficulte" value={formData.difficulte} onChange={handleChange} required>
-                      <option color="#ff5c2b" value="easy">Easy</option>
-                      <option value="average">Average</option>
-                      <option value="difficult">Difficult</option>
-                    </select>
-                  </label>
-                </div>
-                <div>
-                  <label>Muscles :</label>
-                  <Select
-                    styles={customStyles}
-                    isMulti
-                    options={muscles.map((category) => ({
-                      value: category.name,
-                      label: category.name
-                    }))}
-                    onChange={(selectedOptions) => {
-                      setFormData((prevData) => ({
-                        ...prevData,
-                        muscles: selectedOptions.map(option => option.value)
-                      }));
-                    }}
-                    value={muscles
-                      .filter(category => formData.muscles.includes(category.name))
-                      .map(cat => ({ value: cat.name, label: cat.name }))}
-                  />
-                </div>
-                <div>
-                  <button type="submit">Save</button>
-                </div>
-              </form>
-              {/* Bouton "-" sous le formulaire */}
-              <button className="minus-button" onClick={handleToggleForm}>
-                <AiFillMinusCircle />
-              </button>
-            </div>
-          </div>
-        )}
-      </div>      
-      )}
+        <ExerciseForm showForm={showForm} handleToggleForm={handleToggleForm}/>
       </div>
         <div className={`svg-body front-view ${isFrontView ? '' : 'hide-front'}`}>
           <BodyFront onClick={handleMuscleClick} />
@@ -479,7 +251,7 @@ const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerc
                     {showDescription[exercise.id] && (
                       <div className="details">
                         <p>Description: {exercise.description}</p>
-                        <p>Difficulty: {exercise.difficulte}</p>
+                        <p>Difficulty: {exercise.difficulty}</p>
                       </div>
                     )}
                   </div>

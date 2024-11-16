@@ -1,0 +1,113 @@
+/* Style pour le fond de la page qui devient flou ou tamisé */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Fond semi-transparent */
+  z-index: 999; /* Mettre le fond derrière le formulaire */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Style pour le formulaire modale */
+.modal-form {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000; /* Met le formulaire au-dessus du fond */
+  position: relative;
+}
+
+.fixed-button {
+  top: 20px;
+  right: 20px;
+  background-color: transparent; /* Fond transparent pour mettre en valeur l'icône */
+  border: none;
+  font-size: 3rem; /* Taille de l'icône */
+  color: #ff5c2b; /* Couleur de l'icône (vert) */
+  cursor: pointer;
+  outline: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.fixed-button:hover {
+  color: #ff5c2b; /* Change la couleur de l'icône au survol */
+  transform: scale(1.1); /* Agrandissement léger au survol */
+}
+
+.fixed-button:active {
+  transform: scale(0.95); /* Rétrécissement léger lors du clic */
+}
+
+.play-button {
+  font-size: 2em;
+  background-color: #ffffff; /* Couleur de fond rouge */
+  color: #FF4000;
+  cursor: pointer;
+  background: none;
+  border: none;
+  outline: none;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.play-button:hover {
+  color: #ff5c2b;
+  transform: scale(1.1); /* Agrandissement léger au survol */
+}
+
+.play-button:active {
+  transform: scale(0.95); /* Rétrécissement léger lors du clic */
+}
+
+/* Styles des boutons */
+.play-button, .minus-button{
+  font-size: 1.5em;
+  color: #ff5c2b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.play-button:hover, .minus-button:hover {
+  color: #ff7f50;
+  transform: scale(1.1);
+}
+
+
+.minus-button:active {
+  transform: scale(0.95); /* Rétrécissement léger lors du clic */
+}
+
+/* Style pour le champ select */
+select {
+  width: 100%;
+  padding: 10px;
+  background-color: #333; /* Couleur de fond similaire aux champs d'entrée */
+  color: #ddd; /* Couleur du texte pour contraster avec le fond */
+  border: 2px solid transparent; /* Bordure similaire aux autres champs */
+  border-radius: 5px;
+  appearance: none; /* Retire le style par défaut du navigateur */
+  font-size: 1rem;
+  outline: none;
+}
+
+/* Style pour afficher un triangle de sélection */
+select::after {
+  content: "▼"; /* Symbole de triangle pour indiquer le menu déroulant */
+  position: absolute;
+  right: 15px;
+  color: #ddd;
+  pointer-events: none;
+}
+
+/* Style au survol */
+select:hover {
+  border-color: #ff5c2b;
+}

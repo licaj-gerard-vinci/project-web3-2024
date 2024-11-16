@@ -1,0 +1,16 @@
+.exercise-list {
+    margin-top: 20px;
+    background-color: #222222;
+    padding: 20px;
+    border-radius: 8px;
+    max-height: 70vh;
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+    appearance: none;
+    scrollbar-width: none;
+  }
+  
+  .exercise-list::-webkit-scrollbar {
+    display: none;
+  }
+  
