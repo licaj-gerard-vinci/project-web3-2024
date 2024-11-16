@@ -8,9 +8,16 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start; /* Aligne les exercices en haut */
-  width: 50%; /* Prend 75% de la largeur */
+  width: 55%; /* Prend toute la largeur disponible */
   flex-wrap: wrap; /* Permet aux cartes d'exercices de passer à la ligne */
   gap: 20px;
+}
+
+.exercise-card {
+  flex: 1 1 calc(50% - 20px); /* Chaque carte prend environ 1/3 de la largeur */
+  max-width: 600px; /* Limite la largeur maximale */
+  min-width: 350px; /* Largeur minimale pour une apparence cohérente */
+  margin: 0 auto; /* Centre la carte si elle est seule */
 }
 
 

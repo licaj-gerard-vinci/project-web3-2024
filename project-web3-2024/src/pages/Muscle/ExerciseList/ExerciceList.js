@@ -4,7 +4,8 @@ import { ref, set, remove, getDatabase, onValue } from "firebase/database";
 import { IoHeartOutline } from "react-icons/io5";
 import { IoHeartSharp } from "react-icons/io5";
 import { MdOutlineMoreVert } from "react-icons/md";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
+
 
 
 
@@ -14,6 +15,10 @@ const ExerciceList = ( {exercises, user} ) => {
   const [sortedExercises, setSortedExercises] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
+  const isLikedByUser = (exerciseId) => likes[exerciseId] && likes[exerciseId][user?.uid];
+  const getLikeCount = useCallback(
+    (exerciseId) => (likes[exerciseId] ? Object.keys(likes[exerciseId]).length : 0),[likes]
+  );
   const db = getDatabase();
 
 
@@ -42,7 +47,7 @@ const ExerciceList = ( {exercises, user} ) => {
     });
 
     setSortedExercises(filteredExercises);
-  }, [exercises, sortOrder, selectedDifficulty, likes]);
+  }, [exercises, sortOrder, selectedDifficulty, likes, getLikeCount]);
 
   const toggleDescription = (id) => {
     setShowDescription((prevState) => ({
@@ -64,10 +69,6 @@ const ExerciceList = ( {exercises, user} ) => {
       set(likeRef, true);
     }
   };
-  
-  const isLikedByUser = (exerciseId) => likes[exerciseId] && likes[exerciseId][user?.uid];
-  const getLikeCount = (exerciseId) => likes[exerciseId] ? Object.keys(likes[exerciseId]).length : 0;
-
 
   return (
     <div className="exercise-container">
