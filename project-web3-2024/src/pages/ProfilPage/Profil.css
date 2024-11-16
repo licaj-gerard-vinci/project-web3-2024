@@ -109,3 +109,16 @@ h2 {
 .upload-button:hover {
   color: #FF571A; /* Darker orange on hover */
 }
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.97); /* Increase the alpha value for a darker shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}

@@ -12,19 +12,24 @@ const Footer = () => {
           <Title>Location & Contact</Title>
           <Text><strong>Address:</strong> Pl. de l'Alma 3, 1200 Woluwe-Saint-Lambert</Text>
           <Text><strong>Email:</strong> support@student.vinci.com</Text>
-          <Text><strong>Open Hour:</strong> Sun – Thu: Open 24/7</Text>
+          <Text><strong>Open Hour:</strong> Sun - Thu: Open 24/7</Text>
         </Section>
         
         <Section>
           <Title>Quick Link</Title>
           <List>
+          <ListItem>
+              <StyledLink to="/">Home page</StyledLink>
+            </ListItem>
+            <ListItem>
+              <StyledLink to="/bodyMap">Body Map</StyledLink>
+            </ListItem>
+            <ListItem>
+              <StyledLink to="/authForm">Sign In</StyledLink>
+            </ListItem>
             <ListItem>
               <StyledLink to="/terms-of-use">Terms of Use</StyledLink>
             </ListItem>
-            <ListItem>Trainer</ListItem>
-            <ListItem>Pricing</ListItem>
-            <ListItem>Package</ListItem>
-            <ListItem>Contact</ListItem>
           </List>
         </Section>
         
