@@ -120,6 +120,7 @@ const BodyMap = () => {
   const handleToggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
+  fetchAllExercises();
 
   
   return (
@@ -178,23 +179,23 @@ const BodyMap = () => {
           )}
 
         </div>
-        {selectedMuscle ? (
-          <>
-            {!user &&( 
-              <div className='div'>Log in to view exercises</div>
-            )}
-            {user && (
+            {user && selectedMuscle !== "" && (
               <div className="exercise-list-container">
                 <h2>{selectedMuscle}</h2>
                 <p>List of exercises for {selectedMuscle}:</p>
                 <ExerciceList exercises={exercises} user={user} />
             </div>
-            
             )}
-          </>
-        ) : (
-          <p>Select a muscle to see exercises and videos.</p>
-        )}
+            {user && selectedMuscle === "" && (
+              <div className="exercise-list-container">
+                <h2>{selectedMuscle}</h2>
+                <p>List of exercises for {selectedMuscle}:</p>
+                <ExerciceList exercises={allExercises} user={user} />
+              </div>
+            )}
+            {!user &&(
+              <p className='div'>Log in to see the exercises</p>
+            )}
       </div>
 
       <style>{`
