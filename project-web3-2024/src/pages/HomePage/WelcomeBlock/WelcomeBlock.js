@@ -133,9 +133,9 @@ const WelcomeBlock = () => {
     <>
       {/* Social Bar */}
       <div className={`social-bar ${showIcons ? 'fade-in' : 'fade-out'}`}>
-        <a href="https://facebook.com" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
-        <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
-        <a href="https://instagram.com" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+        <a href="https://www.facebook.com/HEVINCI/" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+        <a href="https://www.linkedin.com/school/haute-ecole-l-onard-de-vinci" target="_blank" rel="noopener noreferrer"><FaLinkedinIn /></a>
+        <a href="https://www.instagram.com/he_vinci" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
       </div>
       <div className="hero-container">
         <div className="hero-content">
