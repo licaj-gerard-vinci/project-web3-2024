@@ -111,3 +111,7 @@ select::after {
 select:hover {
   border-color: #ff5c2b;
 }
+
+.h3{
+  color: #ffffff;
+}

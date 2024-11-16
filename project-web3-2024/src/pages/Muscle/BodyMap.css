@@ -73,22 +73,6 @@
   transform: scale(1.05); /* Slight zoom effect on hover */
 }
 
-/* Right column for exercise list and videos - 60% width */
-
-
-/* Style for exercises content */
-.exercise-list-container h2 {
-  margin: 0;
-  font-size: 1.5em;
-  color: #ff7f50;
-}
-
-.exercise-list-container p,
-.exercise-list-container li {
-  font-size: 1em;
-  color: #cccccc;
-}
-
 /* Toggle visibility for front and back views */
 .hide-front {
   display: none;
@@ -118,30 +102,6 @@
   font-size: 1em;
   color: #cccccc;
 }
-
-
-.exercise-list-container {
-  padding: 20px;
-}
-
-.exercise-list {
-  margin-left: 300px;
-  margin-bottom: 50px;
-  flex: 1;
-  overflow-y: auto;
-  scroll-snap-type: y mandatory;
-  max-height: 70vh; /* Limite la hauteur pour que seule la liste soit scrollable */
-  background-color: #222222;
-  border-radius: 8px;
-  scroll-behavior: smooth; /* Défilement fluide */
-  appearance: none;
-  scrollbar-width: none; /* Masque la scrollbar dans Firefox */
-}
-
-.exercise-list::-webkit-scrollbar {
-  display: none; /* Masque la scrollbar dans Chrome, Safari et Edge */
-}
-
 
 .exercise-card  { 
   position: relative;
@@ -215,48 +175,6 @@
   font-size: 0.9em;
   color: #ffffff;
 }
-
-
-.play-button {
-  font-size: 2em;
-  background-color: #ffffff; /* Couleur de fond rouge */
-  color: #FF4000;
-  cursor: pointer;
-  background: none;
-  border: none;
-  outline: none;
-  transition: color 0.2s ease, transform 0.2s ease;
-}
-
-.play-button:hover {
-  color: #ff5c2b;
-  transform: scale(1.1); /* Agrandissement léger au survol */
-}
-
-.play-button:active {
-  transform: scale(0.95); /* Rétrécissement léger lors du clic */
-}
-
-/* Styles des boutons */
-.play-button {
-  font-size: 1.5em;
-  color: #ff5c2b;
-  background: none;
-  border: none;
-  cursor: pointer;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.play-button:hover, .minus-button:hover {
-  color: #ff7f50;
-  transform: scale(1.1);
-}
-
-
-.minus-button:active {
-  transform: scale(0.95); /* Rétrécissement léger lors du clic */
-}
-
 /* Style pour l'étiquette */
 label {
   color: orange; /* Couleur similaire à celle des autres étiquettes */
@@ -318,13 +236,15 @@ label {
 .delete-button:hover {
   background-color: #ff6347;
 }
+.title{
+  width: 250px;
+}
 
-.exercise-list {
-  margin-top: 20px;
-  background-color: #222222;
-  padding: 20px;
-  border-radius: 8px;
-  max-height: 70vh;
-  overflow-y: auto;
-  padding-right: 200px;
+.exercise-list-container {
+  margin-top: 0; /* Ajuste l'espace entre le titre et les exercices */
+  padding: 0; /* Supprime tout padding inutile */
+  display: flex;
+  flex-direction: column; /* Dispose les exercices verticalement */
+  align-items: flex-start; /* Garde l'alignement à gauche */
+  width: 100%;
 }

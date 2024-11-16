@@ -185,7 +185,7 @@ const handleSubmit = async (e) => {
         {showForm && (<div className="modal-overlay">
             <div className="modal-content">
               <form onSubmit={handleSubmit}>
-                <h3>Add Exercice</h3>
+                <h3 className='h3'>Add Exercice</h3>
                 <div>
                   <label>
                     Name : <input type="text" name="name" value={formData.name} onChange={handleChange} required />
