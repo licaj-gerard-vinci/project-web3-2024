@@ -71,16 +71,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/bodyMap" element={<BodyMap />} />
             <Route path="/authForm" element={<AuthForm />} />
-            <Route
-              path="/profil"
-              element={
-                user ? (
-                  <Profil user={user} onUserUpdate={() => fetchUserData(user.uid)} />
-                ) : (
-                  <Navigate to="/authForm" state={{ fromProtected: true }} />
-                )
-              }
-            />
+            <Route path="/profil" element={ <Profil user={user} onUserUpdate={() => fetchUserData(user.uid)} />}/>
             <Route path="/terms-of-use" element={<TermsOfUse />} />
           </Routes>
         </div>
