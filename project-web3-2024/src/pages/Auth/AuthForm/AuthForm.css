@@ -1,37 +1,36 @@
 .verification-container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    background-color: #0a0a0c;
-    color: #ffffff;
-  }
-  
-  .verification-message {
-    background-color: #1e1e1e; /* Fond sombre similaire au formulaire */
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
-    text-align: center;
-    max-width: 400px;
-    width: 100%;
-    color: #ffffff;
-  }
-  
-  .verification-message h2 {
-    font-size: 1.5em;
-    margin-bottom: 10px;
-    color: #ff5c2b; /* Même couleur de titre que le login */
-  }
-  
-  .verification-message p {
-    font-size: 1em;
-    color: #bbbbbb; /* Texte gris clair */
-  }
-  
-  .danger-icon {
-    font-size: 2em;
-    color: #ff5c2b; /* Icône d'avertissement en rouge orangé */
-    margin-bottom: 15px;
-  }
-  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #0a0a0c;
+  color: #ffffff;
+}
+
+.verification-message {
+  background-color: #1e1e1e; /* Fond sombre similaire au formulaire */
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  color: #ffffff;
+}
+
+.verification-message h2 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+  color: #ff5c2b; /* Même couleur de titre que le login */
+}
+
+.verification-message p {
+  font-size: 1em;
+  color: #bbbbbb; /* Texte gris clair */
+}
+
+.danger-icon {
+  font-size: 2em;
+  color: #ff5c2b; /* Icône d'avertissement en rouge orangé */
+  margin-bottom: 15px;
+}

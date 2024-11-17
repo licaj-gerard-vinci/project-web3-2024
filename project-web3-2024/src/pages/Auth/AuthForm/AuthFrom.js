@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { CgDanger } from "react-icons/cg";
 import './AuthForm.css';
 import Login from '../Login/login';
 import Register from '../Register/register';
 import { auth } from '../../../firebaseConfig';
-import { CgDanger } from "react-icons/cg";
 
 const AuthForm = () => {
   const [isLogin, setIsLogin] = useState(true);
   const [isPendingVerification, setIsPendingVerification] = useState(false);
   const [user, setUser] = useState(null);
-  const [redirected, setRedirected] = useState(false); // Ajoutez un drapeau pour gérer une seule redirection
+  const [redirected, setRedirected] = useState(false); // Empêche les redirections multiples
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -24,7 +24,7 @@ const AuthForm = () => {
 
         // Si connecté via Google/Microsoft ou si l'email est vérifié
         if ((isGoogleOrMicrosoft || currentUser.emailVerified) && !redirected) {
-          setRedirected(true); // Active le drapeau pour empêcher d'autres redirections
+          setRedirected(true); // Active le drapeau pour éviter les redirections multiples
           navigate('/'); // Redirige vers la page d'accueil
         } else if (!currentUser.emailVerified) {
           setIsPendingVerification(true);
@@ -34,7 +34,7 @@ const AuthForm = () => {
               clearInterval(interval); // Arrête l'intervalle une fois vérifié
               setIsPendingVerification(false);
               if (!redirected) {
-                setRedirected(true); // Active le drapeau pour la redirection unique
+                setRedirected(true); // Active le drapeau pour une seule redirection
                 navigate('/'); // Redirige après la vérification de l'email
               }
             }
@@ -61,7 +61,6 @@ const AuthForm = () => {
       </div>
     );
   }
-  
 
   return (
     <div className="auth-form-container">
