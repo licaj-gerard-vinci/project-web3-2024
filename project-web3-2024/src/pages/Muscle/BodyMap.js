@@ -41,60 +41,33 @@ const BodyMap = () => {
       }
     });
   }, [db, auth]);
-  console.log(isAdmin);
+
+  useEffect(() => {
+    fetchAllExercises();
+  }, []); // [] garantit que l'effet est appelé uniquement lors du montage du composant
+  
 
   const handleMuscleClick = (e) => {
     const muscle = e.target.id;
     setSelectedMuscle(muscle);
-    toggleExercises(muscle);
-  };
-    const toggleExercises = async (selectedMuscle) => {
-    const exercisesRef = ref(db, 'exercises');
-  
-    try {
-      const snapshot = await get(exercisesRef);
-      if (snapshot.exists()) {
-        const allExercises = snapshot.val();
-        const filteredExercises = [];
-  
-        Object.keys(allExercises).forEach((exerciseId) => {
-          const exercise = allExercises[exerciseId];
-          if (exercise.muscles && exercise.muscles.includes(selectedMuscle)) {
-            filteredExercises.push({
-              id: exerciseId,
-              name: exercise.name,
-              description: exercise.description,
-              url: exercise.url,
-              difficulty: exercise.difficulty
-            });
-          }
-        });
-  
-        setExercises(filteredExercises); // Met à jour l'état avec les exercices filtrés
-      } else {
-        console.log("Aucun exercice trouvé");
-        setExercises([]); // Réinitialise la liste si aucun exercice trouvé
-      }
-    } catch (error) {
-      console.error(error);
-      setExercises([]); // Réinitialise la liste en cas d'erreur
-    }
+    filterExercices(muscle);
   };
 
-  const deleteExercise = async (exerciseId) => {
-    try {
-        await remove(ref(db, `exercises/${exerciseId}`));
-        setAllExercises((prevExercises) =>
-            prevExercises.filter((exercise) => exercise.id !== exerciseId)
-        );
-        console.log(`Exercice ${exerciseId} supprimé.`);
-    } catch (error) {
-        console.error("Erreur lors de la suppression de l'exercice :", error);
+  const filterExercices = (selectedMuscle) => {
+    if (!selectedMuscle) {
+      setExercises(allExercises); // Affiche tous les exercices si aucun muscle sélectionné
+      return;
     }
-};
-
+  
+    const filteredExercises = allExercises.filter((exercise) =>
+      exercise.muscles && exercise.muscles.includes(selectedMuscle)
+    );
+  
+    setExercises(filteredExercises); // Met à jour la liste affichée
+  };
 
   const fetchAllExercises = async () => {
+    console.log("test")
     const exercisesRef = ref(db, 'exercises');
     try {
         const snapshot = await get(exercisesRef);
@@ -113,6 +86,18 @@ const BodyMap = () => {
     }
 };  
 
+  const deleteExercise = async (exerciseId) => {
+    try {
+        await remove(ref(db, `exercises/${exerciseId}`));
+        setAllExercises((prevExercises) =>
+            prevExercises.filter((exercise) => exercise.id !== exerciseId)
+        );
+        console.log(`Exercice ${exerciseId} supprimé.`);
+    } catch (error) {
+        console.error("Erreur lors de la suppression de l'exercice :", error);
+    }
+};
+
   const toggleView = () => {
     setIsFrontView((prevView) => !prevView);
   };
@@ -120,8 +105,6 @@ const BodyMap = () => {
   const handleToggleForm = () => {
     setShowForm((prevShowForm) => !prevShowForm);
   };
-  fetchAllExercises();
-
   
   return (
     <div className="main-container">
