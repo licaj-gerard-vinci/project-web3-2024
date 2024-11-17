@@ -75,6 +75,8 @@ const Register = ({ toggleAuthForm }) => {
         isAdmin: false,
         age: 0,
         gender: "",
+        Weight:"",
+        Height:"",
         favorites: []
       });
 
@@ -99,6 +101,8 @@ const Register = ({ toggleAuthForm }) => {
           isAdmin: false,
           age: 0,
           gender: "",
+          Weight:"",
+          Height:"",
           favorites: []
         });
       }
@@ -123,6 +127,8 @@ const Register = ({ toggleAuthForm }) => {
           isAdmin: false,
           age: 0,
           gender: "",
+          Weight:"",
+          Height:"",
           favorites: []
         });
       }

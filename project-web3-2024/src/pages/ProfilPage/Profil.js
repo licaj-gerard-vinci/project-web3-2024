@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { getAuth } from 'firebase/auth';
-import { ref, update } from 'firebase/database';
+import { ref, update, onValue } from 'firebase/database';
 import { db, storage } from '../../firebaseConfig';
 import { useNavigate } from 'react-router-dom';
 import ReactModal from 'react-modal';
@@ -18,18 +18,24 @@ const Profil = ({ user, onUserUpdate }) => {
 
   useEffect(() => {
     if (user) {
-      setProfileData(user);
-      if(user.photoURL) {
-        setProfileImage(user.photoURL);
-      } else {
-        const defaultImageRef = storageRef(storage, 'HomePage/NavBar/default-pp.png');
-        getDownloadURL(defaultImageRef).then((url) => setProfileImage(url));
-      }
+      const userRef = ref(db, `users/${user.uid}`);
+      
+      // Listen for changes in user data
+      const unsubscribe = onValue(userRef, (snapshot) => {
+        const updatedUser = snapshot.val();
+        if (updatedUser) {
+          setProfileData(updatedUser);
+          if (updatedUser.photoURL) {
+            setProfileImage(updatedUser.photoURL);
+          }
+        }
+      });
+
+      return () => unsubscribe(); // Clean up the listener when the component is unmounted or user changes
     } else {
       navigate('/');
     }
-  }, [user]);
-
+  }, [user, navigate]);
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -38,13 +44,13 @@ const Profil = ({ user, onUserUpdate }) => {
       await uploadBytes(imageRef, file);
       const downloadURL = await getDownloadURL(imageRef);
 
-      // Met à jour l'URL de la photo de profil dans Firebase Database
+      // Update the photo URL in Firebase Database
       const userRef = ref(db, `users/${user.uid}`);
       await update(userRef, { photoURL: downloadURL });
 
-      // Met à jour l'image de profil dans le composant et déclenche une mise à jour dans App.js
+      // Update the profile image in the component state
       setProfileImage(downloadURL);
-      onUserUpdate(); // Appelle la fonction pour mettre à jour les données utilisateur dans App.js
+      onUserUpdate(); // Call to trigger a user data update in App.js
     }
   };
 
@@ -73,17 +79,14 @@ const Profil = ({ user, onUserUpdate }) => {
         <p><strong>Last Name :</strong> {profileData?.lastName || 'N/A'}</p>
         <p><strong>Age :</strong> {profileData?.age || 'N/A'}</p>
         <p><strong>Gender :</strong> {profileData?.gender || 'N/A'}</p>
+        <p><strong>Weight  :</strong> {profileData?.Weight || 'N/A'}</p>
+        <p><strong>Height  :</strong> {profileData?.Height || 'N/A'}</p>
       </div>
 
       <button className="complete-profile-button" onClick={() => setShowFormModal(true)}>
         Modify information
       </button>
 
-      <div className="favorites-section">
-        <h3>Favorite exercises</h3>
-        <p>No exercises found</p>
-      </div>
-      
       <button className="logout-button" onClick={() => getAuth().signOut()}>
         Logout
       </button>
