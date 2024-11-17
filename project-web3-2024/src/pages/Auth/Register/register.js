@@ -11,9 +11,10 @@ const Register = ({ toggleAuthForm }) => {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [errorMessages, setErrorMessages] = useState([]);
   const [success, setSuccess] = useState('');
-  const [backgroundImage, setBackgroundImage] = useState(null); // État pour l'URL de l'image de fond
+  const [backgroundImage, setBackgroundImage] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,10 +34,33 @@ const Register = ({ toggleAuthForm }) => {
     fetchBackgroundImage();
   }, []);
 
+  const validatePassword = (password) => {
+    const errors = [];
+    if (!/[A-Z]/.test(password)) errors.push("Password must include at least one uppercase letter.");
+    if (!/[a-z]/.test(password)) errors.push("Password must include at least one lowercase letter.");
+    if (!/[0-9]/.test(password)) errors.push("Password must include at least one numeric character.");
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) errors.push("Password must include at least one special character.");
+    if (password.length < 8) errors.push("Password must be at least 8 characters long.");
+    return errors;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setErrorMessages([]);
     setSuccess('');
+
+    // Validation du mot de passe
+    const passwordErrors = validatePassword(password);
+    if (passwordErrors.length > 0) {
+      setErrorMessages(passwordErrors);
+      return;
+    }
+
+    // Validation de la confirmation du mot de passe
+    if (password !== confirmPassword) {
+      setErrorMessages(["Passwords do not match."]);
+      return;
+    }
 
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
@@ -58,7 +82,7 @@ const Register = ({ toggleAuthForm }) => {
 
       setSuccess('Registration successful! Check your email to verify your account.');
     } catch (err) {
-      setError('Error during registration: ' + err.message);
+      setErrorMessages(['Error during registration: ' + err.message]);
     }
   };
 
@@ -84,7 +108,7 @@ const Register = ({ toggleAuthForm }) => {
       }
       navigate('/');
     } catch (error) {
-      setError(error.message);
+      setErrorMessages([error.message]);
     }
   };
 
@@ -110,7 +134,7 @@ const Register = ({ toggleAuthForm }) => {
       }
       navigate('/');
     } catch (error) {
-      setError(error.message);
+      setErrorMessages([error.message]);
     }
   };
 
@@ -131,7 +155,13 @@ const Register = ({ toggleAuthForm }) => {
       <div className="register-form-container">
         <h2>Create an Account</h2>
         <p>Already have an account? <span className="trial-link" onClick={toggleAuthForm}>Sign in</span></p>
-        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {errorMessages.length > 0 && (
+          <ul style={{ color: 'red' }}>
+            {errorMessages.map((msg, index) => (
+              <li key={index}>{msg}</li>
+            ))}
+          </ul>
+        )}
         {success && <p style={{ color: 'green' }}>{success}</p>}
         <form onSubmit={handleSubmit}>
           <label htmlFor="firstName">First Name:</label>
@@ -142,6 +172,8 @@ const Register = ({ toggleAuthForm }) => {
           <input type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           <label htmlFor="password">Password:</label>
           <input type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <label htmlFor="confirmPassword">Confirm Password:</label>
+          <input type="password" id="confirmPassword" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           <button type="submit">Register</button>
           <p className="or-continue-with">or register with</p>
           <div className="social-buttons">
