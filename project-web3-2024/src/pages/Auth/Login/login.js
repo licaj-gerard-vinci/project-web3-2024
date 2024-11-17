@@ -43,7 +43,7 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError(''); // Réinitialise les erreurs
 
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
@@ -54,10 +54,28 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
       if (userExists) {
         navigate('/'); // Redirige si l'utilisateur existe
       } else {
-        toggleAuthForm(); // Appelle toggleAuthForm pour passer à l'inscription
+        toggleAuthForm(); // Passe à l'inscription si l'utilisateur n'existe pas
       }
     } catch (error) {
-      setError(error.message);
+      console.log('Firebase error code:', error.code); // Log pour les développeurs
+      console.log('Firebase error message:', error.message);
+    
+      switch (error.code) {
+        case 'auth/user-not-found':
+          setError('No account found with this email. Please check or register.');
+          break;
+    
+        case 'auth/wrong-password':
+          setError('Incorrect password. Please try again.');
+          break;
+    
+        case 'auth/invalid-email':
+          setError('Invalid email format. Please enter a valid email address.');
+          break;
+    
+        default:
+          setError('Incorrect password or no account found with this email. Please try again.');
+      }
     }
   };
 
@@ -156,8 +174,9 @@ const Login = ({ toggleAuthForm }) => {// Ajout de toggleAuthForm en prop
         <p>
           Not a member? <span className="trial-link" onClick={toggleAuthForm}>Register now</span>
         </p>
+         {/* Message d'erreur */}
+         {error && <p style={{ color: 'red', fontWeight: 'bold' }}>{error}</p>}
 
-        {error && <p style={{ color: 'red' }}>{error}</p>}
         <form onSubmit={handleSubmit}>
           <label htmlFor="email">Email address:</label>
           <input

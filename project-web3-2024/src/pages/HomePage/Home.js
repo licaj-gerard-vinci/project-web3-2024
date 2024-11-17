@@ -12,21 +12,20 @@ function Home() {
       {/* Bloc de bienvenue */}
       <WelcomeBlock />
 
+       {/* Ligne avec le texte centré */}
+       <Divider type="line" text="BODY MASS INDEX" />
+
+      <BMICalculator />
+
       {/* Ligne défilante avec messages de motivation */}
       <Divider type="scrolling" />
 
       {/* Carousel des muscles */}
       <Test />
     
-        <div className="anchor-section">
-          <Anchor />
-        </div>
-        
-        {/* Ligne avec le texte centré */}
-        <Divider type="line" text="BODY MASS INDEX" />
-
-        <BMICalculator />
-    
+      <div className="anchor-section">
+        <Anchor />
+      </div>
     </>
   );
 }
