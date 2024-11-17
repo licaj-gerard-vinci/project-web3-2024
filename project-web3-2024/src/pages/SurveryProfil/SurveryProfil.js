@@ -14,6 +14,8 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
     lastName: initialData.lastName || '',
     age: initialData.age || '',
     gender: initialData.gender || '',
+    Weight: initialData.Weight || '',
+    Height: initialData.Height || '',
     notifications: initialData.notifications || false,
   });
 
@@ -41,6 +43,18 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
             title: "Gender *",
             enum: ["male", "female"],
           },
+        },
+      },
+    },
+    {
+      title: 'Additional Details',
+      schema: {
+        title: "Additional Details",
+        type: "object",
+        properties: {
+          Weight: { type: "integer", title: "Weight" },
+          Height: { type: "integer", title: "Height" },
+          
         },
       },
     },
@@ -94,6 +108,8 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
           lastName: submittedData.lastName,
           age: submittedData.age,
           gender: submittedData.gender,
+          Weight: submittedData.Weight,
+          Height: submittedData.Height,
           notifications: submittedData.notifications,
         });
         console.log("Data saved successfully in Firebase!");
