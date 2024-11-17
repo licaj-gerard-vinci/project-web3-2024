@@ -11,8 +11,8 @@ function BMICalculator() {
 
   const calculateBMI = () => {
     if (!weight || !height || !age || !sex) {
-      setMessage("Veuillez remplir tous les champs pour calculer votre BMI.");
-      setBmi(null); // Réinitialise le BMI pour éviter d'afficher un résultat incorrect
+      setMessage("Please fill in all fields to calculate your BMI.");
+      setBmi(null); // Reset BMI to avoid displaying an incorrect result
       return;
     }
 
@@ -21,20 +21,20 @@ function BMICalculator() {
     setBmi(bmiValue);
 
     let category;
-    if (bmiValue < 18.5) category = "Sous-poids";
-    else if (bmiValue >= 18.5 && bmiValue < 24.9) category = "Poids normal";
-    else if (bmiValue >= 25 && bmiValue < 29.9) category = "Surpoids";
-    else category = "Obésité";
+if (bmiValue < 18.5) category = "Underweight";
+else if (bmiValue >= 18.5 && bmiValue < 24.9) category = "Normal weight";
+else if (bmiValue >= 25 && bmiValue < 29.9) category = "Overweight";
+else category = "Obesity";
 
-    if (sex === 'female' && age < 18) {
-      setMessage(`Pour une jeune femme, votre BMI indique : ${category}`);
-    } else if (sex === 'male' && age < 18) {
-      setMessage(`Pour un jeune homme, votre BMI indique : ${category}`);
-    } else if (sex === 'female') {
-      setMessage(`Pour une femme adulte, votre BMI indique : ${category}`);
-    } else {
-      setMessage(`Pour un homme adulte, votre BMI indique : ${category}`);
-    }
+if (sex === 'female' && age < 18) {
+  setMessage(`For a young woman, your BMI indicates: ${category}`);
+} else if (sex === 'male' && age < 18) {
+  setMessage(`For a young man, your BMI indicates: ${category}`);
+} else if (sex === 'female') {
+  setMessage(`For an adult woman, your BMI indicates: ${category}`);
+} else {
+  setMessage(`For an adult man, your BMI indicates: ${category}`);
+}
   };
 
   return (
