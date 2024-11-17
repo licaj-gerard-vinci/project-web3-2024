@@ -16,7 +16,6 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
     gender: initialData.gender || '',
     Weight: initialData.Weight || '',
     Height: initialData.Height || '',
-    notifications: initialData.notifications || false,
   });
 
   const steps = [
@@ -55,16 +54,6 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
           Weight: { type: "integer", title: "Weight" },
           Height: { type: "integer", title: "Height" },
           
-        },
-      },
-    },
-    {
-      title: 'Preferences',
-      schema: {
-        title: "Preferences",
-        type: "object",
-        properties: {
-          notifications: { type: "boolean", title: "Receive Notifications" },
         },
       },
     },
@@ -110,7 +99,6 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
           gender: submittedData.gender,
           Weight: submittedData.Weight,
           Height: submittedData.Height,
-          notifications: submittedData.notifications,
         });
         console.log("Data saved successfully in Firebase!");
       } catch (error) {
