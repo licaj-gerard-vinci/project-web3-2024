@@ -20,7 +20,7 @@ const CompleteProfileForm = ({ onClose, initialData }) => {
 
   const steps = [
     {
-      title: 'Personal Information',
+      title: 'Personal Informations',
       schema: {
         title: "Personal Information",
         type: "object",

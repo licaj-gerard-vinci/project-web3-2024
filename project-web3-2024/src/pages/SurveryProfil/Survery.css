@@ -62,26 +62,43 @@
     display: none;
   }
 
-  /* Add padding around the entire form container /
-.complete-profile-form form {
-  padding: 20px;
-}
-
-/ Add padding to each input field to prevent it from touching the edges /
-form .form-control,
-form input[type="text"],
-form input[type="number"],
-form input[type="email"],
-form select {
-  padding: 10px;
-  margin-bottom: 15px;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-/ Ensure the labels are styled properly and spaced from inputs */
 form label {
   margin-bottom: 5px;
   font-weight: bold;
   color: #ff7f2a;
+}
+
+#root__title {
+  color: #ffffff; /* Your desired color */
+  font-weight: bold; /* Optional: make it bold */
+}
+
+#root_Weight {
+  width: 100%; /* Makes the input take the full width of its parent container */
+  max-width: 300px; /* Limits the maximum width */
+  box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
+}
+
+#root_Height {
+  width: 100%; /* Makes the input take the full width of its parent container */
+  max-width: 300px; /* Limits the maximum width */
+  box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
+}
+
+#root_firstName {
+  width: 100%; /* Makes the input take the full width of its parent container */
+  max-width: 300px; /* Limits the maximum width */
+  box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
+}
+
+#root_lastName {
+  width: 100%; /* Makes the input take the full width of its parent container */
+  max-width: 300px; /* Limits the maximum width */
+  box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
+}
+
+#root_age {
+  width: 100%; /* Makes the input take the full width of its parent container */
+  max-width: 300px; /* Limits the maximum width */
+  box-sizing: border-box; /* Ensures padding and border are included in the width calculation */
 }
