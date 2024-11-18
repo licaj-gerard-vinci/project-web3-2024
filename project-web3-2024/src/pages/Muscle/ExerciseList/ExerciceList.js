@@ -80,7 +80,7 @@ const ExerciceList = ( {exercises, user} ) => {
           onChange={(e) => setSelectedDifficulty(e.target.value)}
         >
           <option value="">All</option>
-          <option value="easy">Easy</option>
+          <option value="Easy">Easy</option>
           <option value="average">Average</option>
           <option value="difficult">Difficult</option>
         </select>
