@@ -79,17 +79,19 @@ const Profil = ({ user, onUserUpdate }) => {
         <p><strong>Last Name :</strong> {profileData?.lastName || 'N/A'}</p>
         <p><strong>Age :</strong> {profileData?.age || 'N/A'}</p>
         <p><strong>Gender :</strong> {profileData?.gender || 'N/A'}</p>
-        <p><strong>Weight  :</strong> {profileData?.Weight || 'N/A'}</p>
-        <p><strong>Height  :</strong> {profileData?.Height || 'N/A'}</p>
+        <p><strong>Weight (kg)  :</strong> {profileData?.Weight || 'N/A'}</p>
+        <p><strong>Height (cm) :</strong> {profileData?.Height || 'N/A'}</p>
       </div>
 
+      <div class="button-container">
       <button className="complete-profile-button" onClick={() => setShowFormModal(true)}>
-        Modify information
+        Modify informations
       </button>
 
       <button className="logout-button" onClick={() => getAuth().signOut()}>
         Logout
       </button>
+      </div>
 
       <ReactModal
         isOpen={showFormModal}

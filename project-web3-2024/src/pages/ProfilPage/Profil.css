@@ -1,15 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
 .profile-container {
-  background-color: #1e1e1e; /* Dark background */
+  background: linear-gradient(145deg, #242424, #1a1a1a);
   padding: 30px;
   border-radius: 10px;
   max-width: 400px;
   margin-top: 10%;
   margin-bottom: 10%;
   margin-left: 35%;
-
+  font-family: 'Poppins', sans-serif; /* Font applied only to this container */
+  animation: fadeIn 0.5s ease-in-out;
   color: #f4f4f4;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 4px 12px rgba(16, 16, 16, 0.5), 0px 0px 30px rgba(190, 190, 190, 0.2); /* White shadow added here */
   text-align: center;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 .profile-header {
@@ -52,20 +66,8 @@ h2 {
 }
 
 .complete-profile-button:hover {
-  background-color: #FF571A; /* Darker orange on hover */
-}
-
-.favorites-section {
-  background-color: #333; /* Same dark box color */
-  padding: 10px;
-  border-radius: 5px;
-  margin-top: 20px;
-  color: #f4f4f4; /* Light text */
-}
-
-.favorites-section h3 {
-  color: #FF6A3D; /* Orange color for section title */
-  margin-bottom: 10px;
+  background-color: #FF571A;
+  transform: translateY(-2px);
 }
 
 .logout-button {
@@ -79,14 +81,30 @@ h2 {
 }
 
 .logout-button:hover {
-  background-color: #555; /* Slightly lighter gray on hover */
+  background-color: #555;
+  transform: translateY(-2px);
 }
 
-.profile-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 15px;
+.profile-header img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  border: 4px solid #FF6A3D;
+  box-shadow: 0 5px 15px rgba(255, 106, 61, 0.5);
+  object-fit: cover;
+  margin-bottom: 10px;
+  transition: transform 0.3s ease;
+}
+
+.profile-header img:hover {
+  transform: scale(1.1);
+}
+
+.profile-header h2 {
+  font-size: 26px;
+  font-weight: 600;
+  margin: 15px 0;
+  color: #FF6A3D;
 }
 
 .profile-image {
@@ -121,4 +139,23 @@ h2 {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center; /* Center the buttons horizontally */
+  gap: 15px; /* Add consistent spacing between the buttons */
+  margin-top: 20px; /* Add some margin above the buttons */
+}
+
+.complete-profile-button,
+.logout-button {
+  width: 150px; /* Set a fixed width for both buttons */
+  height: 45px; /* Set a consistent height for both buttons */
+  text-align: center; /* Center text horizontally */
+  padding: 0; /* Remove padding, we'll use flexbox to center the text */
+  font-size: 16px; /* Ensure the font size is consistent */
+  display: flex; /* Use flexbox to center content */
+  justify-content: center; /* Center text horizontally */
+  align-items: center; /* Center text vertically */
 }
