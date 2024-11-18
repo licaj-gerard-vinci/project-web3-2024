@@ -13,7 +13,6 @@ import Navbar from '../pages/NavBar/NavBar';
 import Profil from '../pages/ProfilPage/Profil';
 import AuthForm from '../pages/Auth/AuthForm/AuthFrom';
 import TermsOfUse from '../pages/TermsOfUse/termsOfUse';
-import { Navigate } from 'react-router-dom';
 
 function App() {
   const [user, setUser] = useState(null);
