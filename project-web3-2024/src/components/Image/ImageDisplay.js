@@ -30,7 +30,7 @@ const ImageDisplay = ({ imagePath, altText = "Image" }) => {
 
   return (
     <div className="image-container" style={{ textAlign: 'center', position: 'relative' }}>
-      {!isLoaded && !error && <p>Loading image...</p>}
+      {!isLoaded && !error}
       {error ? (
         <p>Unable to load image</p>
       ) : (
