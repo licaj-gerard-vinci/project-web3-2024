@@ -33,6 +33,55 @@
   stroke: white;
 }
 
+/* Login Section */
+.login-section {
+  margin-top: 10%;
+  margin-left: 25%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #0a0a0c;
+  padding: 2rem;
+  border-radius: 10px;
+  max-width: 400px;
+ 
+  box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+}
+
+.login-message {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.login-message span {
+  color: #ff5c2b;
+  font-weight: bold;
+}
+
+.login-btn {
+  background: linear-gradient(90deg, #ff5c2b, #d94c1b);
+  color: #ffffff;
+  padding: 1rem 2.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.login-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 8px 20px rgba(255, 92, 43, 0.4);
+}
+
+
 /* Apply styles only to paths with an id attribute */
 .svg-body path[id] {
   fill: transparent; /* Initial transparency */
