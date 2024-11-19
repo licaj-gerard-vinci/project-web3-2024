@@ -44,26 +44,26 @@
 4. Copier le code suivant dans le fichier firebaseConfig.js :
 
 <div>
-import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
-import { getStorage } from 'firebase/storage';
+<li>import { initializeApp } from "firebase/app";</li>
+<li>import { getAuth } from 'firebase/auth';</li>
+<li>import { getDatabase } from 'firebase/database';</li>
+<li>import { getStorage } from 'firebase/storage';</li>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBTzjA42vr0Ecz3U9k1NnRltzs9hawRW80",
-  authDomain: "muscles-web3.firebaseapp.com",
-  projectId: "muscles-web3",
-  databaseURL: "https://muscles-web3-default-rtdb.europe-west1.firebasedatabase.app", // Remplacez ici par l'URL correcte
-  storageBucket: "muscles-web3.appspot.com",
-  messagingSenderId: "597277649833",
-  appId: "1:597277649833:web:50ed1ab9e7e0bf65f3b2b8",
-  measurementId: "G-FB4B9XM1D5"
+<li>const firebaseConfig = {</li>
+  <li>apiKey: "AIzaSyBTzjA42vr0Ecz3U9k1NnRltzs9hawRW80",</li>
+  <li>authDomain: "muscles-web3.firebaseapp.com",</li>
+  <li>projectId: "muscles-web3",</li>
+  <li>databaseURL: "https://muscles-web3-default-rtdb.europe-west1.firebasedatabase.app",</li>
+  <li>storageBucket: "muscles-web3.appspot.com",</li>
+  <li>messagingSenderId: "597277649833",</li>
+  <li>appId: "1:597277649833:web:50ed1ab9e7e0bf65f3b2b8",</li>
+  <li>measurementId: "G-FB4B9XM1D5"</li>
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app); // Export auth to use in authentication
-export const db = getDatabase(app); // Export database to use in real-time database
-export const storage = getStorage(app); // Export Firebase Storage
+<li>const app = initializeApp(firebaseConfig);</li>
+<li>export const auth = getAuth(app);</li> 
+<li>export const db = getDatabase(app);</li>
+<li>export const storage = getStorage(app);</li>
 
 </div>
 
