@@ -26,6 +26,7 @@
 <li>Backend : Firebase</li>
 
   <h2>Installation</h2>
+  
 ### Prérequis
 
 1. Node.js et npm installés sur votre machine.
@@ -41,13 +42,12 @@
 3. Créer le fichier nommé firebaseConfig.js dans le dossier src
 
 4. Copier le code suivant dans le fichier firebaseConfig.js :
-  // Import the necessary functions from Firebase SDKs
+
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage'; 
 
-// Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyBTzjA42vr0Ecz3U9k1NnRltzs9hawRW80",
   authDomain: "muscles-web3.firebaseapp.com",
@@ -59,7 +59,6 @@ const firebaseConfig = {
   measurementId: "G-FB4B9XM1D5"
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app); // Export auth to use in authentication
 export const db = getDatabase(app); // Export database to use in real-time database// Export Realtime Database
