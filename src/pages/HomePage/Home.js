@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
-import Navbar from '../NavBar/NavBar';
 import WelcomeBlock from './WelcomeBlock/WelcomeBlock';
 import MuscleCarousel from './CarouselMuscle/CarouselMuscles';
 import Divider from './Divider/Divider';
@@ -24,8 +23,6 @@ function Home() {
 
   return (
     <>
-      {/* La Navbar est masquée tant que le chargement est actif */}
-      <Navbar user={null} handleLogout={() => {}} isReady={isReady} />
       {!isReady ? (
         <div className="loading-screen">
           <img src={fitnessGif} alt="Loading animation" className="loading-gif" />
