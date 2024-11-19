@@ -4,7 +4,7 @@ import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import { getDownloadURL, ref as storageRef } from 'firebase/storage';
 import { storage } from '../../firebaseConfig';
 import './Navbar.css';
-import ImageDisplay from '../../components/Image/ImageDisplay';
+import Image from '../../assets/logoM.png';
 
 function Navbar({ user, handleLogout }) {
   const navigate = useNavigate();
@@ -33,7 +33,7 @@ function Navbar({ user, handleLogout }) {
     <nav className="navbar">
       <div className="navbar-logo">
         <Link to="/">
-          <ImageDisplay imagePath="HomePage/logoM.png" />
+          <img src={Image} alt="Logo" className="logo" />
         </Link>
       </div>
       
