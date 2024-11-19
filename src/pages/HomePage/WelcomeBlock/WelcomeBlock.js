@@ -144,7 +144,13 @@ const WelcomeBlock = () => {
               {user ? (
                 <>
                   <h1 className="hero-heading highlight">Welcome back {firstName}!</h1>
-                  <p>Daily streak : {consecutiveLogins}</p>
+                  
+                  <p className="daily-streak">🔥 Daily Streak: <span>{consecutiveLogins}</span></p>
+
+                  <Link to="/bodymap"><button className="hero-btn learn-more-btn">Learn More</button></Link>
+
+                  
+
                 </>
               ) : (
                 <>
@@ -160,6 +166,8 @@ const WelcomeBlock = () => {
               )}
             </div>
           </div>
+          
+
           <div className="hero-image-container" data-aos="fade-left">
               <div className="carousel-container">
                 <Carousel

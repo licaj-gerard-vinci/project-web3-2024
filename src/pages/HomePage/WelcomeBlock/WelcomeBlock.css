@@ -9,7 +9,86 @@
   color: white;
   padding: 3rem 0;
   min-height: 100vh;
+  margin-top: 5%;
+  
 }
+.loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid #ff5c2b;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(360deg);
+  }
+}
+
+.daily-streak {
+  font-size: 1.5rem;
+  color: #ff5c2b;
+  margin: 1rem 0;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.daily-streak span {
+  color: white;
+  font-weight: 700;
+}
+
+
+.learn-more-btn {
+  border-top: 5%;
+  background: linear-gradient(90deg, #ff5c2b, #d94c1b);
+  color: white;
+  padding: 1rem 2.5rem;
+  border: none;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  text-transform: uppercase;
+}
+
+.learn-more-btn:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 10px 20px rgba(255, 92, 43, 0.4);
+}
+
+
+.social-bar a {
+  transition: transform 0.3s ease, color 0.3s;
+}
+
+.social-bar a:hover {
+  transform: rotate(15deg) scale(1.2);
+}
+
+
+.hero-heading {
+  animation: fadeInDown 1.5s ease-in-out;
+}
+
+@keyframes fadeInDown {
+  from {
+      opacity: 0;
+      transform: translateY(-50px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
 
 .hero-content {
   display: flex;
