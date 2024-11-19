@@ -12,10 +12,9 @@ function Home() {
   const [isReady, setIsReady] = useState(false);
 
   useEffect(() => {
-    // Délai pour simuler le chargement complet de la page
     const timer = setTimeout(() => {
       setIsReady(true);
-    }, 3000); // 3000 ms = 3 secondes
+    }, 3000); // Simule un long chargement (3 secondes)
 
     return () => clearTimeout(timer);
   }, []);
@@ -24,33 +23,21 @@ function Home() {
     <>
       {!isReady ? (
         <div className="loading-screen">
-          <img src={fitnessGif} alt="Loading animation" className="loading-gif"/>
+          <img src={fitnessGif} alt="Loading animation" className="loading-gif" />
         </div>
       ) : (
         <CSSTransition
           in={isReady}
-          timeout={500} // Temps pour l'animation
+          timeout={500}
           classNames="fade"
           appear
         >
-          <div>
-            {/* Bloc de bienvenue */}
+          <div className="home-content">
             <WelcomeBlock />
-
-            
-
-            
-
-            {/* Ligne défilante avec messages de motivation */}
             <Divider type="scrolling" />
-
-            {/* Carousel des muscles */}
             <MuscleCarousel />
-
-            {/* Ligne avec le texte centré */}
             <Divider type="line" text="BODY MASS INDEX" />
             <BMICalculator />
-
             <div className="anchor-section">
               <Anchor />
             </div>
