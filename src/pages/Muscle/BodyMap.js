@@ -43,7 +43,9 @@ const BodyMap = () => {
   }, [db, auth]);
 
   useEffect(() => {
-    fetchAllExercises();
+    if (user){
+      fetchAllExercises();
+    }
   }, []); // [] garantit que l'effet est appelé uniquement lors du montage du composant
   
 
