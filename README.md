@@ -15,19 +15,54 @@
   <br>
     <img alt="snake eating my contributions" src="https://skillicons.dev/icons?i=firebase" />
   <br/>
-    <h2>Pros of Firebase</h2>
+    <h2>But fonctionnel de l'application</h2>
   <ul>
-<li>Real-time Database: Firebase's Firestore and Realtime Database provide real-time syncing of data between the app and the server, making it ideal for applications that require live updates.</li>
-<li>Easy Integration: Firebase has built-in SDKs and easy integration with web, iOS, and Android platforms. It's particularly friendly for developers using React, Vue.js, and other frameworks.</li>
-<li>Authentication: Firebase offers a robust authentication system that supports sign-in with Google, Facebook, Twitter, GitHub, and more, along with custom authentication mechanisms.</li>
-<li>Serverless Backend: No need to manage servers. Firebase automatically scales with your app, and services like Firebase Functions provide serverless compute options.</li>
-<li>Hosting: Firebase provides fast and reliable web hosting with a built-in content delivery network (CDN), making it a great option for deploying web applications.</li>
+<li>Muscles Map est une application dédiée aux passionnés de musculation, offrant des fonctionnalités qui sont tournées autour de l'utilisation de firebase.
+</li>
 
-  <h2>Cons of Firebase</h2>
-<li>Cost: While the free tier is useful for small apps, Firebase's pricing can escalate quickly as your app grows in terms of storage, real-time database reads/writes, and bandwidth usage.</li>
-<li>Limited Queries: Firebase’s NoSQL databases (Firestore and Realtime Database) have limitations when it comes to complex querying. Developers may find it challenging to perform advanced queries without restructuring data.</li>
-<li>Vendor Lock-in: Firebase is a proprietary Google service, meaning that once your app is built around Firebase services, it can be difficult to migrate to other platforms without a significant rewrite.</li>
-<li>Limited Relational Data Support: Firebase is a NoSQL database, and while it supports hierarchical data, it lacks strong relational database capabilities like SQL databases (e.g., MySQL or PostgreSQL).</li>
-<li>Not Suitable for Every Project: For complex, enterprise-level projects, developers may find Firebase lacking compared to more flexible, traditional backend solutions.</li>
+  <h2>Type d'architecture web</h2>
+<li>Single Page Application (SPA)</li>
+<li>Frontend : React</li>
+<li>Backend : Firebase</li>
+
+  <h2>Installation</h2>
+  
+### Prérequis
+
+1. Node.js et npm installés sur votre machine.
+
+### Installation
+
+1. Cloner le repository : 
+  git clone https://github.com/licaj-gerard-vinci/project-web3-2024.git
+
+2. Installer npm :
+  npm install
+
+3. Créer le fichier nommé firebaseConfig.js dans le dossier src
+
+4. Copier le code suivant dans le fichier firebaseConfig.js :
+
+import { initializeApp } from "firebase/app";
+import { getAuth } from 'firebase/auth';
+import { getDatabase } from 'firebase/database';
+import { getStorage } from 'firebase/storage'; 
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBTzjA42vr0Ecz3U9k1NnRltzs9hawRW80",
+  authDomain: "muscles-web3.firebaseapp.com",
+  projectId: "muscles-web3",
+  databaseURL: "https://muscles-web3-default-rtdb.europe-west1.firebasedatabase.app", // Remplacez ici par l'URL correcte
+  storageBucket: "muscles-web3.appspot.com",
+  messagingSenderId: "597277649833",
+  appId: "1:597277649833:web:50ed1ab9e7e0bf65f3b2b8",
+  measurementId: "G-FB4B9XM1D5"
+};
+
+const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app); // Export auth to use in authentication
+export const db = getDatabase(app); // Export database to use in real-time database// Export Realtime Database
+export const storage = getStorage(app); // Export Firebase Storage
+
 </div>
 </ul>
