@@ -6,7 +6,7 @@ import { storage } from '../../firebaseConfig';
 import './Navbar.css';
 import Image from '../../assets/logoM.png';
 
-function Navbar({ user, handleLogout }) {
+function Navbar({ user, handleLogout, isReady }) {
   const navigate = useNavigate();
   const location = useLocation();
   const [profileImage, setProfileImage] = useState(null);
@@ -30,13 +30,13 @@ function Navbar({ user, handleLogout }) {
   };
 
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${!isReady ? 'hidden' : ''}`}>
       <div className="navbar-logo">
         <Link to="/">
           <img src={Image} alt="Logo" className="logo" />
         </Link>
       </div>
-      
+
       {/* Section centrée pour les liens Home et BodyMap */}
       <div className="navbar-center-links">
         <ul>
