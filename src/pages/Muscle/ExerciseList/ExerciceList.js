@@ -15,6 +15,7 @@ const ExerciceList = ( {exercises, user} ) => {
   const [sortedExercises, setSortedExercises] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
   const [selectedDifficulty, setSelectedDifficulty] = useState("");
+  const [filterByLikes, setFilterByLikes] = useState(false);
   const isLikedByUser = (exerciseId) => likes[exerciseId] && likes[exerciseId][user?.uid];
   const getLikeCount = useCallback(
     (exerciseId) => (likes[exerciseId] ? Object.keys(likes[exerciseId]).length : 0),[likes]
@@ -39,6 +40,11 @@ const ExerciceList = ( {exercises, user} ) => {
         (exercise) => exercise.difficulty === selectedDifficulty
       );
     }
+    if (filterByLikes && user) {
+      filteredExercises = filteredExercises.filter((exercise) =>
+        isLikedByUser(exercise.id)
+      );
+    }
 
     filteredExercises.sort((a, b) => {
       const likesA = getLikeCount(a.id);
@@ -47,7 +53,7 @@ const ExerciceList = ( {exercises, user} ) => {
     });
 
     setSortedExercises(filteredExercises);
-  }, [exercises, sortOrder, selectedDifficulty, likes, getLikeCount]);
+  }, [exercises, sortOrder, selectedDifficulty, filterByLikes, likes, getLikeCount, user]);
 
   const toggleDescription = (id) => {
     setShowDescription((prevState) => ({
@@ -94,6 +100,14 @@ const ExerciceList = ( {exercises, user} ) => {
           <option value="asc">Ascending</option>
           <option value="desc">Descending</option>
         </select>
+        <label>
+          <input
+            type="checkbox"
+            checked={filterByLikes}
+            onChange={(e) => setFilterByLikes(e.target.checked)}
+          />
+          Favorites
+        </label>
       </div>
 
       <div className="exercise-list">

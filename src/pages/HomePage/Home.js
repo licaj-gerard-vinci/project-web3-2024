@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { CSSTransition } from 'react-transition-group';
 import WelcomeBlock from './WelcomeBlock/WelcomeBlock';
 import MuscleCarousel from './CarouselMuscle/CarouselMuscles';
@@ -10,11 +10,13 @@ import './Home.css';
 
 function Home() {
   const [isReady, setIsReady] = useState(false);
+  const transitionRef = useRef(null); // Create a ref for the transitioning element
 
   useEffect(() => {
+    // Simulate page loading
     const timer = setTimeout(() => {
       setIsReady(true);
-    }, 3000); // Simule un long chargement (3 secondes)
+    }, 3000); // 3000 ms = 3 seconds
 
     return () => clearTimeout(timer);
   }, []);
@@ -28,16 +30,27 @@ function Home() {
       ) : (
         <CSSTransition
           in={isReady}
-          timeout={500}
+          timeout={500} // Animation duration
           classNames="fade"
           appear
+          nodeRef={transitionRef} // Attach the ref to CSSTransition
         >
-          <div className="home-content">
+          <div ref={transitionRef}> {/* Attach the same ref to the transitioning element */}
+            {/* Welcome block */}
             <WelcomeBlock />
-            <Divider type="scrolling" />
-            <MuscleCarousel />
+
+            {/* Centered text line */}
             <Divider type="line" text="BODY MASS INDEX" />
             <BMICalculator />
+            
+            {/* Scrolling motivational messages */}
+            <Divider type="scrolling" />
+
+            {/* Muscle carousel */}
+            <MuscleCarousel />
+
+
+
             <div className="anchor-section">
               <Anchor />
             </div>
