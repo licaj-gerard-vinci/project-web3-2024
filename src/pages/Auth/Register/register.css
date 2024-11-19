@@ -1,6 +1,7 @@
 /* Container for the register page */
 .register-container {
     display: flex;
+    padding-top: 50px;
     min-height: 100vh;
     font-family: Arial, sans-serif;
     background-color: #000000; /* Black background for consistency */
