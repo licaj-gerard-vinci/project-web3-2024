@@ -8,6 +8,7 @@ import { AiFillMinusCircle } from "react-icons/ai";
 import ExerciseForm from './ExerciseForm/ExerciseForm';
 import { AiFillPlusCircle } from "react-icons/ai";
 import ExerciceList from './ExerciseList/ExerciceList';
+import { Link } from 'react-router-dom';
 
 
 const BodyMap = () => {
@@ -179,7 +180,17 @@ const BodyMap = () => {
               </div>
             )}
             {!user &&(
-              <p className='div'>Log in to see the exercises</p>
+              <>
+              <div className="login-section">
+                <p className="login-message">
+                 Log in to unlock personalized <span>exercises</span> 
+                </p>
+                <Link to="/authForm">
+                  <button className="hero-btn login-btn">Login</button>
+                </Link>
+              </div>
+            </>
+            
             )}
       </div>
 
