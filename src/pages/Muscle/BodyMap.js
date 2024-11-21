@@ -40,15 +40,13 @@ const BodyMap = () => {
         // Si l'utilisateur n'est pas connecté, il n'est pas admin
         setIsAdmin(false);        
       }
-    });
-  }, [db, auth]);
+      if (user === null){
 
-  useEffect(() => {
-    if (user){
-      fetchAllExercises();
-    }
-  }, []); // [] garantit que l'effet est appelé uniquement lors du montage du composant
-  
+      } else {
+        fetchAllExercises();
+      }
+    });
+  }, [db, auth]);  
 
   const handleMuscleClick = (e) => {
     const muscle = e.target.id;
