@@ -75,12 +75,12 @@ const Profil = ({ user, onUserUpdate }) => {
         <h2>Your profile</h2>
       </div>
       <div className="profile-info">
-        <p><strong>First Name :</strong> {profileData?.firstName || 'N/A'}</p>
-        <p><strong>Last Name :</strong> {profileData?.lastName || 'N/A'}</p>
-        <p><strong>Age :</strong> {profileData?.age || 'N/A'}</p>
-        <p><strong>Gender :</strong> {profileData?.gender || 'N/A'}</p>
-        <p><strong>Weight (kg)  :</strong> {profileData?.Weight || 'N/A'}</p>
-        <p><strong>Height (cm) :</strong> {profileData?.Height || 'N/A'}</p>
+        <p><strong>First Name :</strong> {profileData?.firstName || 'Not available'}</p>
+        <p><strong>Last Name :</strong> {profileData?.lastName || 'Not available'}</p>
+        <p><strong>Age :</strong> {profileData?.age || 'Not available'}</p>
+        <p><strong>Gender :</strong> {profileData?.gender || 'Not available'}</p>
+        <p><strong>Weight (kg)  :</strong> {profileData?.Weight || 'Not available'}</p>
+        <p><strong>Height (cm) :</strong> {profileData?.Height || 'Not available'}</p>
       </div>
 
       <div class="button-container">
