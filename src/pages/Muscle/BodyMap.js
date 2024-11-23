@@ -166,14 +166,14 @@ const BodyMap = () => {
             {user && (selectedMuscle === null || selectedMuscle === "") && (
               <div className="exercise-list-container">
                 <h2>{selectedMuscle}</h2>
-                <p>List of exercises for {selectedMuscle}:</p>
+                <p>List of exercises for {selectedMuscle} - (click on the video to see more)</p>
                 <ExerciceList exercises={allExercises} user={user} />
             </div>
             )}
             {user && selectedMuscle && (
               <div className="exercise-list-container">
                 <h2>{selectedMuscle}</h2>
-                <p>List of exercises for {selectedMuscle}:</p>
+                <p>List of exercises for {selectedMuscle} - (click on the video to see more)</p>
                 <ExerciceList exercises={exercises} user={user} />
               </div>
             )}
