@@ -32,6 +32,14 @@
   justify-content: center;
   stroke: white;
 }
+@keyframes blink {
+  0%, 100% { color: #ff7f50; }
+  50% { color: #FFFFFF; }
+}
+.animated-text {
+  animation: blink 1.5s infinite;
+}
+
 
 /* Login Section */
 .login-section {
