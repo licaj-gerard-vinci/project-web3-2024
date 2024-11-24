@@ -45,7 +45,7 @@
 Assurez-vous que les outils suivants sont installés sur votre machine :
 - [Node.js](https://nodejs.org/) et npm
 
-### Étapes d'installation1. Cloner le repository : 
+### Étapes d'installation : 
   1. **Cloner le repository** :
 ```bash
    git clone https://github.com/licaj-gerard-vinci/project-web3-2024.git
