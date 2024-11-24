@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  <img alt="Project Logo" src="[https://ibb.co/qxFpHzT]" />
+  <img alt="Project Logo" src="https://i.postimg.cc/Hs7pT2wP/logoM.png" width="300" />
 </p>
 
 <h2 align="center">🛠️ Languages & Frameworks Used 🛠️</h2>
