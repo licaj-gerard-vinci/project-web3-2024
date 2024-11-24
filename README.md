@@ -5,7 +5,7 @@
 </h1>
 
 <p align="center">
-  <img alt="Project Logo" src="https://via.placeholder.com/300x150.png?text=Muscles+Map+Logo" />
+  <img alt="Project Logo" src="[https://ibb.co/qxFpHzT]" />
 </p>
 
 <h2 align="center">🛠️ Languages & Frameworks Used 🛠️</h2>
