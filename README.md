@@ -1,8 +1,14 @@
 <h1 align="center">
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=35&duration=4000&pause=1000&color=237BA1&center=true&vCenter=true&random=false&width=500&height=70&lines=Hi+There!%F0%9F%91%8B;Web+3+Project" alt="Typing SVG" /></a>
+  <a href="https://git.io/typing-svg">
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=35&duration=4000&pause=1000&color=237BA1&center=true&vCenter=true&width=500&height=70&lines=Hi+There!%F0%9F%91%8B;Web+3+Project" alt="Typing SVG" />
+  </a>
 </h1>
 
-<h2 align="center">🛠️ Languages-Frameworks Used 🛠️</h2>
+<p align="center">
+  <img alt="Project Logo" src="https://via.placeholder.com/300x150.png?text=Muscles+Map+Logo" />
+</p>
+
+<h2 align="center">🛠️ Languages & Frameworks Used 🛠️</h2>
 <br/>
 <div align="center">
   <a href="https://skillicons.dev">
@@ -10,26 +16,34 @@
   </a>
 </div>
 
+<h2 align="center">⚙️ Framework ⚙️</h2>
+<br>
 <div align="center">
-  <h2>Framework</h2>
-  <br>
-    <img alt="snake eating my contributions" src="https://skillicons.dev/icons?i=firebase" />
-  <br/>
-    <h2>But fonctionnel de l'application</h2>
-  <ul>
-<li>Muscles Map est une application dédiée aux passionnés de musculation, offrant des fonctionnalités qui sont tournées autour de l'utilisation de firebase.
-</li>
+  <img src="https://skillicons.dev/icons?i=firebase" alt="Firebase" />
+</div>
 
-  <h2>Type d'architecture web</h2>
-<li>Single Page Application (SPA)</li>
-<li>Frontend : React</li>
-<li>Backend : Firebase</li>
+---
 
-  <h2>Installation</h2>
+## 🎯 Functional Goal of the Application
 
-### Prérequis
+**Muscles Map** is an application dedicated to fitness enthusiasts, providing features centered around Firebase integration.
 
-1. Node.js et npm installés sur votre machine.
+---
+
+## 🕸️ Web Architecture Type
+
+- **Architecture**: Single Page Application (SPA)
+- **Frontend**: React
+- **Backend**: Firebase
+
+---
+
+## 📦 Installation
+
+### Prerequisites
+
+Ensure the following are installed on your machine:
+- [Node.js](https://nodejs.org/) and npm
 
 ### Installation
 
