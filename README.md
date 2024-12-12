@@ -1,40 +1,35 @@
 <h1 align="center">
   <a href="https://git.io/typing-svg">
-    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=35&duration=4000&pause=1000&color=237BA1&center=true&vCenter=true&width=500&height=70&lines=Bonjour+!%F0%9F%91%8B;Muscle+Map" alt="Typing SVG" />
+    <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&weight=500&size=35&duration=4000&pause=1000&color=237BA1&center=true&vCenter=true&width=500&height=70&lines=Bonjour+!%F0%9F%91%8B;" alt="Typing SVG" />
   </a>
 </h1>
 
 <p align="center">
-  <img alt="Logo du projet" src="https://i.postimg.cc/Hs7pT2wP/logoM.png" width="300" />
+  <img alt="Logo du projet" src="https://i.postimg.cc/Dw73Y58x/logo-shiftingpact-vert-verteau.png" width="300" />
 </p>
 
 <h2 align="center">🛠️ Langages et Frameworks Utilisés 🛠️</h2>
 <br/>
 <div align="center">
   <a href="https://skillicons.dev">
-    <img src="https://skillicons.dev/icons?i=js,html,css,react" /><br>
+    <img src="https://skillicons.dev/icons?i=angular,python,django,postgresql" /><br>
   </a>
 </div>
 
-<h2 align="center">⚙️ Framework ⚙️</h2>
+<h2 align="center">⚙️ Backend ⚙️</h2>
 <br>
 <div align="center">
-  <img src="https://skillicons.dev/icons?i=firebase" alt="Firebase" />
+  <img src="https://skillicons.dev/icons?i=django" alt="Django" />
 </div>
 
 ---
 
-## 🎯 Objectif Fonctionnel de l'Application
-
-**Muscles Map** est une application dédiée aux passionnés de musculation, offrant des fonctionnalités basées sur l'intégration de Firebase.
-
----
 
 ## 🕸️ Type d'Architecture Web
 
 - **Architecture** : Single Page Application (SPA)
-- **Frontend** : React
-- **Backend** : Firebase
+- **Frontend** : Angular
+- **Backend** : Django + PostgreSQL
 
 ---
 
@@ -44,73 +39,51 @@
 
 Assurez-vous que les outils suivants sont installés sur votre machine :
 - [Node.js](https://nodejs.org/) et npm
+- [Python](https://www.python.org/) et pip
+- [PostgreSQL](https://www.postgresql.org/)
 
-### Étapes d'installation : 
-  1. **Cloner le repository** :
+### Étapes d'installation :
+
+1. **Cloner le repository** :
 ```bash
    git clone https://github.com/licaj-gerard-vinci/project-web3-2024.git
 ```
 
-2. **Installer npm :**
+2. **Installer les dépendances frontend :**
 ```bash
+   cd frontend
    npm install
 ```
 
-3. **Créer le fichier nommé firebaseConfig.js dans le dossier src**
+3. **Configurer la base de données backend :**
+
+4. **Configurer le backend :**
 
 
-4. **Copier le code suivant dans le fichier firebaseConfig.js :**
-```javascript
-import { initializeApp } from "firebase/app";
-import { getAuth } from 'firebase/auth';
-import { getDatabase } from 'firebase/database';
-import { getStorage } from 'firebase/storage'; 
+- Mettez à jour le fichier `settings.py` de Django pour refléter votre configuration de base de données PostgreSQL :
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBTzjA42vr0Ecz3U9k1NnRltzs9hawRW80",
-  authDomain: "muscles-web3.firebaseapp.com",
-  projectId: "muscles-web3",
-  databaseURL: "https://muscles-web3-default-rtdb.europe-west1.firebasedatabase.app",
-  storageBucket: "muscles-web3.appspot.com",
-  messagingSenderId: "597277649833",
-  appId: "1:597277649833:web:50ed1ab9e7e0bf65f3b2b8",
-  measurementId: "G-FB4B9XM1D5"
-};
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
-export const db = getDatabase(app);
-export const storage = getStorage(app);
-```
-5. **Démarrer le serveur de développement** :
+- Effectuez les migrations et démarrez le serveur backend :
 ```bash
+   python manage.py makemigrations
+   python manage.py migrate
+   python manage.py runserver
+```
+
+5. **Démarrer le serveur frontend :**
+```bash
+   cd ../frontend
    npm start
 ```
 
-## 🎨 Fonctionnalités
+## 🌈 Fonctionnalités
 
-- **Authentification Firebase** : Connexion et inscription sécurisées.
-- **Base de données en temps réel** : Gestion des données utilisateurs en temps réel.
-- **Stockage de fichiers** : Téléchargement et gestion des images via Firebase Storage.
-- **Déploiement** : Hébergement de l'application via Firebase Hosting pour un accès rapide et sécurisé.
-
----
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Consultez le fichier [LICENSE](https://muscles-web3.web.app/terms-of-use) pour plus de détails.
+- **Authentification utilisateur** : Gestion des connexions et inscriptions.
+- **Gestion des données utilisateur** : Stockage et gestion via PostgreSQL.
+- **API REST** : Intégration frontend-backend via Django REST Framework.
+- **Interface utilisateur moderne** : Conception réactive avec Angular.
 
 ---
 
-## 📫 Contact
-
-Pour toute question ou suggestion, vous pouvez nous contacter ici :
-- **Email** : gerard.licaj@student.vinci.be
-- **Email** : nadir.ahdid@student.vinci.be
-- **Email** : tiagoandre.amaral@student.vinci.be
-- **Email** : bastien.topet@student.vinci.be
-- **Email** : henry.obedekah@student.vinci.be
-
----
 
 <h3 align="center">Merci pour votre visite !</h3>
