@@ -67,7 +67,7 @@ import { getDatabase } from 'firebase/database';
 import { getStorage } from 'firebase/storage'; 
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBTzjA42vr0Ecz3U9k1NnRltzs9hawRW80",
+  apiKey: "ask by email",
   authDomain: "muscles-web3.firebaseapp.com",
   projectId: "muscles-web3",
   databaseURL: "https://muscles-web3-default-rtdb.europe-west1.firebasedatabase.app",
